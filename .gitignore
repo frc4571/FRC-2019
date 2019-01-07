@@ -1,0 +1,15 @@
+# builds
+/build/
+/out/
+
+# ide
+/.idea/
+*.iml
+
+# gradle
+/.gradle/
+
+# compiled classes
+*.class
+
+.DS_Store
