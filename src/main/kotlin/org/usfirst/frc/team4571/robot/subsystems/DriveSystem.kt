@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
+import org.usfirst.frc.team4571.robot.Robot
 import org.usfirst.frc.team4571.robot.RobotConstants
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 
@@ -19,9 +20,13 @@ object DriveSystem : Subsystem() {
     private val navx = AHRS(SPI.Port.kMXP)
 
     init {
+        topLeftMotor.inverted = true
+        topRightMotor.inverted = true
         bottomLeftMotor.follow(topLeftMotor)
         bottomRightMotor.follow(topRightMotor)
         differentialDrive = DifferentialDrive(topLeftMotor, topRightMotor)
+        differentialDrive.expiration = Robot.period
+        differentialDrive.isSafetyEnabled = false
     }
 
     val topLeftMotorSpeed
