@@ -21,7 +21,7 @@ class DriveStick(port: Int) : Joystick(port) {
         get() = getRawAxis(0)
 
     val yAxis: Double
-        get() = getRawAxis(1)
+        get() = -getRawAxis(1)
 
     val zAxis: Double
         get() = getRawAxis(2)
