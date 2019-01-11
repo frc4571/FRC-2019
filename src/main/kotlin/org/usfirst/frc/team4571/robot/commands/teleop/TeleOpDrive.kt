@@ -22,6 +22,11 @@ object TeleOpDrive : Command() {
                                  DriveSystem.topRightMotorSpeed)
         SmartDashboard.putNumber("Bottom Right Motor Output",
                                  DriveSystem.bottomRightMotorSpeed)
+
+        SmartDashboard.putNumber("Right encoder Tick",
+                                 DriveSystem.rightEncoderTick.toDouble())
+        SmartDashboard.putNumber("Left Encoder Tick",
+                                 DriveSystem.leftEncoderTick.toDouble())
     }
 
     override fun execute() {
