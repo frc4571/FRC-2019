@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4571.robot.subsystems
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
@@ -10,36 +11,53 @@ import org.usfirst.frc.team4571.robot.RobotConstants
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 
 object DriveSystem : Subsystem() {
-    private val topLeftMotor: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.TOP_LEFT_MOTOR)
-    private val bottomLeftMotor: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.BOTTOM_LEFT_MOTOR)
-    private val topRightMotor: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.TOP_RIGHT_MOTOR)
-    private val bottomRightMotor: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.BOTTOM_RIGHT_MOTOR)
+    private val leftFollower: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.FOLLOWER_LEFT_MOTOR)
+    private val leftMaster: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.MASTER_LEFT_MOTOR)
+    private val rightMaster: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.MASTER_RIGHT_MOTOR)
+    private val rightFollower: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.FOLLOWER_RIGHT_MOTOR)
 
     private val differentialDrive: DifferentialDrive
 
     private val navx = AHRS(SPI.Port.kMXP)
 
     init {
-        topLeftMotor.inverted = true
-        topRightMotor.inverted = true
-        bottomLeftMotor.follow(topLeftMotor)
-        bottomRightMotor.follow(topRightMotor)
-        differentialDrive = DifferentialDrive(topLeftMotor, topRightMotor)
+        leftFollower.inverted = true
+        leftMaster.inverted = true
+        rightMaster.inverted = true
+        rightFollower.inverted = true
+
+        leftMaster.follow(leftFollower)
+        rightMaster.follow(rightFollower)
+
+        differentialDrive = DifferentialDrive(leftFollower, rightMaster)
         differentialDrive.expiration = Robot.period
         differentialDrive.isSafetyEnabled = false
+
+        leftMaster.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
+        rightMaster.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
+
+        rightMaster.setSensorPhase(true)
     }
 
     val topLeftMotorSpeed
-        get() = topLeftMotor.get()
+        get() = leftFollower.get()
 
     val bottomLeftMotorSpeed
-        get() = bottomLeftMotor.get()
+        get() = leftMaster.get()
 
     val topRightMotorSpeed
-        get() = topRightMotor.get()
+        get() = rightMaster.get()
 
     val bottomRightMotorSpeed
-        get() = bottomRightMotor.get()
+        get() = rightFollower.get()
+
+    val leftEncoderTick
+        get() = leftMaster.getSelectedSensorPosition(0)
+
+    val rightEncoderTick
+        get() = rightMaster.getSelectedSensorPosition(0)
 
     val heading
         get() = navx.angle
