@@ -12,8 +12,8 @@ import org.usfirst.frc.team4571.robot.Constants
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 
 object DriveSystem : Subsystem() {
-    private val leftFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_FOLLOWER)
     private val leftMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_MASTER)
+    private val leftFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_FOLLOWER)
     private val rightMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_MASTER)
     private val rightFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_FOLLOWER)
 
@@ -31,7 +31,7 @@ object DriveSystem : Subsystem() {
         leftFollower.setInverted(InvertType.FollowMaster)
         rightFollower.setInverted(InvertType.FollowMaster)
 
-        differentialDrive = DifferentialDrive(leftFollower, rightMaster)
+        differentialDrive = DifferentialDrive(leftMaster, rightMaster)
         differentialDrive.expiration = Robot.period
         differentialDrive.isSafetyEnabled = false
 
