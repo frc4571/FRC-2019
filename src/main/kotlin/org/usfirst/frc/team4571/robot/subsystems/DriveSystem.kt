@@ -26,8 +26,8 @@ object DriveSystem : Subsystem() {
         rightMaster.inverted = true
         rightFollower.inverted = true
 
-        leftMaster.follow(leftFollower)
-        rightMaster.follow(rightFollower)
+        leftFollower.follow(leftMaster)
+        rightFollower.follow(rightMaster)
 
         differentialDrive = DifferentialDrive(leftFollower, rightMaster)
         differentialDrive.expiration = Robot.period
