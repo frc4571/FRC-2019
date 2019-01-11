@@ -18,6 +18,10 @@ class Robot : TimedRobot() {
 
     override fun robotInit() {}
 
+    override fun disabledInit() = Scheduler.getInstance().removeAll()
+
+    override fun disabledPeriodic() = Scheduler.getInstance().run()
+
     override fun autonomousInit() {
         autoCommand = autoChooser.selected
         autoCommand?.start()
