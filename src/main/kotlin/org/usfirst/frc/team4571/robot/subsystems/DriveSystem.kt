@@ -70,4 +70,9 @@ object DriveSystem : Subsystem() {
         differentialDrive.tankDrive(left, right)
 
     fun stop() = drive(0.0, 0.0)
+
+    fun resetEncoders() {
+        leftMaster.setSelectedSensorPosition(0, 0, 10)
+        rightMaster.setSelectedSensorPosition(0, 0, 10)
+    }
 }
