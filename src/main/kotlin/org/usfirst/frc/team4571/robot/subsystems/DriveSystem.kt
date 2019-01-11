@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4571.robot.subsystems
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
+import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
@@ -21,13 +22,14 @@ object DriveSystem : Subsystem() {
     private val navx = AHRS(SPI.Port.kMXP)
 
     init {
-        leftFollower.inverted = true
         leftMaster.inverted = true
         rightMaster.inverted = true
-        rightFollower.inverted = true
 
         leftFollower.follow(leftMaster)
         rightFollower.follow(rightMaster)
+
+        leftFollower.setInverted(InvertType.FollowMaster)
+        rightFollower.setInverted(InvertType.FollowMaster)
 
         differentialDrive = DifferentialDrive(leftFollower, rightMaster)
         differentialDrive.expiration = Robot.period
