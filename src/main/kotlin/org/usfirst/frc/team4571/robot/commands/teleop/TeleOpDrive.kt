@@ -36,5 +36,8 @@ object TeleOpDrive : Command() {
 
     override fun isFinished(): Boolean = false
 
-    override fun end() = DriveSystem.stop()
+    override fun end() {
+        DriveSystem.stop()
+        DriveSystem.resetEncoders()
+    }
 }
