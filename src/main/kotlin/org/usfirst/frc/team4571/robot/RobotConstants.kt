@@ -7,9 +7,9 @@ object RobotConstants {
     }
 
     object DRIVE {
-        const val TOP_LEFT_MOTOR = 2
-        const val BOTTOM_LEFT_MOTOR = 1
-        const val TOP_RIGHT_MOTOR = 3
-        const val BOTTOM_RIGHT_MOTOR = 4
+        const val FOLLOWER_LEFT_MOTOR = 2
+        const val MASTER_LEFT_MOTOR = 1
+        const val MASTER_RIGHT_MOTOR = 3
+        const val FOLLOWER_RIGHT_MOTOR = 4
     }
 }
