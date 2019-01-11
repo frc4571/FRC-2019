@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import org.usfirst.frc.team4571.robot.Robot
-import org.usfirst.frc.team4571.robot.RobotConstants
+import org.usfirst.frc.team4571.robot.Constants
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 
 object DriveSystem : Subsystem() {
-    private val leftFollower: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.FOLLOWER_LEFT_MOTOR)
-    private val leftMaster: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.MASTER_LEFT_MOTOR)
-    private val rightMaster: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.MASTER_RIGHT_MOTOR)
-    private val rightFollower: WPI_TalonSRX = CanTalon(RobotConstants.DRIVE.FOLLOWER_RIGHT_MOTOR)
+    private val leftFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_FOLLOWER)
+    private val leftMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_MASTER)
+    private val rightMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_MASTER)
+    private val rightFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_FOLLOWER)
 
     private val differentialDrive: DifferentialDrive
 

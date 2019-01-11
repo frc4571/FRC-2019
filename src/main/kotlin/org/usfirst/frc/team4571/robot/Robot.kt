@@ -12,8 +12,8 @@ class Robot : TimedRobot() {
 
     companion object {
         const val period = TimedRobot.kDefaultPeriod
-        val leftStick = DriveStick(RobotConstants.Controllers.LEFT_STICK)
-        val rightStick = DriveStick(RobotConstants.Controllers.RIGHT_STICK)
+        val leftStick = DriveStick(Constants.Controllers.LEFT_STICK)
+        val rightStick = DriveStick(Constants.Controllers.RIGHT_STICK)
     }
 
     override fun robotInit() {}
