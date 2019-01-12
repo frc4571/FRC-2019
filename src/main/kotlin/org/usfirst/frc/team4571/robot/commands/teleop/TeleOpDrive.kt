@@ -14,14 +14,14 @@ object TeleOpDrive : Command() {
         SmartDashboard.putNumber("Left Joystick", Robot.leftStick.yAxis)
         SmartDashboard.putNumber("Right Joystick", Robot.rightStick.yAxis)
 
-        SmartDashboard.putNumber("Top Left Motor Output",
-                                 DriveSystem.topLeftMotorSpeed)
-        SmartDashboard.putNumber("Bottom Left Motor Output",
-                                 DriveSystem.bottomLeftMotorSpeed)
-        SmartDashboard.putNumber("Top Right Motor Output",
-                                 DriveSystem.topRightMotorSpeed)
-        SmartDashboard.putNumber("Bottom Right Motor Output",
-                                 DriveSystem.bottomRightMotorSpeed)
+        SmartDashboard.putNumber("Left Follower Motor Output",
+                                 DriveSystem.leftFollowerSpeed)
+        SmartDashboard.putNumber("Left Master Motor Output",
+                                 DriveSystem.leftMasterSpeed)
+        SmartDashboard.putNumber("Right Master Motor Output",
+                                 DriveSystem.rightMasterSpeed)
+        SmartDashboard.putNumber("Right Follower Motor Output",
+                                 DriveSystem.rightFollowerSpeed)
 
         SmartDashboard.putNumber("Right encoder Tick",
                                  DriveSystem.rightEncoderTick.toDouble())

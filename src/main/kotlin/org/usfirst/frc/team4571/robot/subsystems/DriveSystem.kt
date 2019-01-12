@@ -43,16 +43,16 @@ object DriveSystem : Subsystem() {
         rightMaster.setSensorPhase(true)
     }
 
-    val topLeftMotorSpeed
+    val leftFollowerSpeed
         get() = leftFollower.get()
 
-    val bottomLeftMotorSpeed
+    val leftMasterSpeed
         get() = leftMaster.get()
 
-    val topRightMotorSpeed
+    val rightMasterSpeed
         get() = rightMaster.get()
 
-    val bottomRightMotorSpeed
+    val rightFollowerSpeed
         get() = rightFollower.get()
 
     val leftEncoderTick
