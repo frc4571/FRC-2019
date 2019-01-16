@@ -12,4 +12,14 @@ object Constants {
         const val RIGHT_MASTER = 3
         const val RIGHT_FOLLOWER = 5
     }
+
+    object Transmission {
+        private const val encoderTeeth = 36
+        private const val magnetTeeth = 12
+        private const val compoundGearTeeth = 24
+        private const val outputTeeth = 60
+        private const val wheelDiameter = 6.0
+        const val TICKS_PER_INCH = (encoderTeeth / magnetTeeth) *
+                (outputTeeth / compoundGearTeeth) * wheelDiameter * Math.PI
+    }
 }

@@ -61,6 +61,14 @@ object DriveSystem : Subsystem() {
     val rightEncoderTick
         get() = rightMaster.getSelectedSensorPosition(0)
 
+    val leftDistance
+        get() = leftMaster.getSelectedSensorPosition(0) *
+                Constants.Transmission.TICKS_PER_INCH
+
+    val rightDistance
+        get() = rightMaster.getSelectedSensorPosition(0) *
+                Constants.Transmission.TICKS_PER_INCH
+
     val heading
         get() = navx.angle
 
