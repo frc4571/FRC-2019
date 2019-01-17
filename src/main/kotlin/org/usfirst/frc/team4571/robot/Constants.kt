@@ -10,7 +10,7 @@ object Constants {
         const val LEFT_FOLLOWER = 2
         const val LEFT_MASTER = 1
         const val RIGHT_MASTER = 3
-        const val RIGHT_FOLLOWER = 5
+        const val RIGHT_FOLLOWER = 4
     }
 
     object Transmission {
