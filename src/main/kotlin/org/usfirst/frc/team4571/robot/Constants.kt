@@ -19,7 +19,9 @@ object Constants {
         private const val compoundGearTeeth = 24
         private const val outputTeeth = 60
         private const val wheelDiameter = 6.0
-        const val TICKS_PER_INCH = (encoderTeeth / magnetTeeth) *
-                (outputTeeth / compoundGearTeeth) * wheelDiameter * Math.PI
+        private const val ticksPerRotation = 4096
+        const val TICKS_PER_INCH = ((encoderTeeth / magnetTeeth) *
+                (outputTeeth / compoundGearTeeth) * ticksPerRotation) /
+                (wheelDiameter * Math.PI)
     }
 }
