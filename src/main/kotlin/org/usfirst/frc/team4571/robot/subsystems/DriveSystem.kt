@@ -7,7 +7,6 @@ import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
-import org.usfirst.frc.team4571.robot.Robot
 import org.usfirst.frc.team4571.robot.Constants
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 
@@ -32,7 +31,7 @@ object DriveSystem : Subsystem() {
         rightFollower.setInverted(InvertType.FollowMaster)
 
         differentialDrive = DifferentialDrive(leftMaster, rightMaster)
-        differentialDrive.expiration = Robot.period
+        differentialDrive.expiration = Constants.ROBOT_PERIOD
         differentialDrive.isSafetyEnabled = false
 
         leftMaster.configSelectedFeedbackSensor(

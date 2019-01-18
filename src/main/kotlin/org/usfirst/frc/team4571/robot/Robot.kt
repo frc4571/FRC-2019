@@ -6,12 +6,11 @@ import edu.wpi.first.wpilibj.command.Scheduler
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import org.usfirst.frc.team4571.robot.commands.teleop.TeleOpDrive
 
-class Robot : TimedRobot() {
+class Robot : TimedRobot(Constants.ROBOT_PERIOD) {
     private val autoChooser = SendableChooser<Command>()
     private var autoCommand: Command? = null
 
     companion object {
-        const val period = TimedRobot.kDefaultPeriod
         val leftStick = DriveStick(Constants.Controllers.LEFT_STICK)
         val rightStick = DriveStick(Constants.Controllers.RIGHT_STICK)
     }
