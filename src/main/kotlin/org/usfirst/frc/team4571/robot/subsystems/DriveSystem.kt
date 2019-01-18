@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.kauailabs.navx.frc.AHRS
+import edu.wpi.first.wpilibj.PIDController
+import edu.wpi.first.wpilibj.PIDOutput
 import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
@@ -19,6 +21,19 @@ object DriveSystem : Subsystem() {
     private val differentialDrive: DifferentialDrive
 
     private val navx = AHRS(SPI.Port.kMXP)
+
+    private object Gyro {
+        const val kP = 0.0
+        const val kI = 0.0
+        const val kD = 0.0
+    }
+
+    private object TurnOutput : PIDOutput {
+        override fun pidWrite(output: Double) = drive(-output, output)
+    }
+
+    val turnController: PIDController =
+        PIDController(Gyro.kP, Gyro.kI, Gyro.kD, navx, TurnOutput)
 
     init {
         leftMaster.inverted = true
@@ -40,6 +55,10 @@ object DriveSystem : Subsystem() {
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10)
 
         rightMaster.setSensorPhase(true)
+
+        turnController.setInputRange(-180.0, 180.0)
+        turnController.setOutputRange(-0.8, 0.8)
+        turnController.setAbsoluteTolerance(3.0)
     }
 
     val leftFollowerSpeed
@@ -71,6 +90,9 @@ object DriveSystem : Subsystem() {
     val heading
         get() = navx.angle
 
+    val isOnAngle
+        get() = turnController.onTarget()
+
     override fun initDefaultCommand() {}
 
     fun drive(left: Double, right: Double) =
@@ -81,5 +103,15 @@ object DriveSystem : Subsystem() {
     fun resetEncoders() {
         leftMaster.setSelectedSensorPosition(0, 0, 10)
         rightMaster.setSelectedSensorPosition(0, 0, 10)
+    }
+
+    fun turnToAngle(angle: Double) {
+        turnController.reset()
+        turnController.setpoint = angle
+        turnController.enable()
+    }
+
+    fun resetGyro() {
+        navx.reset()
     }
 }
