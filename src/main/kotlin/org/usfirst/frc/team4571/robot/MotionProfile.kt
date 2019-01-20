@@ -112,7 +112,7 @@ object MotionProfile {
 
     var setValue = SetValueMotionProfile.Disable
 
-    private val minPoints = 5
+    private const val minPoints = 5
     private var numOfLoopsTimeout = 10
 
     var path: String = ""
