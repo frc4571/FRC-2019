@@ -13,9 +13,9 @@ import org.usfirst.frc.team4571.robot.Constants
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 
 object DriveSystem : Subsystem() {
-    private val leftMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_MASTER)
+    val leftMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_MASTER)
+    val rightMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_MASTER)
     private val leftFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_FOLLOWER)
-    private val rightMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_MASTER)
     private val rightFollower: WPI_TalonSRX = CanTalon(Constants.DRIVE.RIGHT_FOLLOWER)
 
     private val differentialDrive: DifferentialDrive
@@ -81,11 +81,11 @@ object DriveSystem : Subsystem() {
 
     val leftDistance
         get() = leftMaster.getSelectedSensorPosition(0) /
-                Constants.Transmission.TICKS_PER_INCH
+                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH
 
     val rightDistance
         get() = rightMaster.getSelectedSensorPosition(0) /
-                Constants.Transmission.TICKS_PER_INCH
+                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH
 
     val heading
         get() = navx.angle
