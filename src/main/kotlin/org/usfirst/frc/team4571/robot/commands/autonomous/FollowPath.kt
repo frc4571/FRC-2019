@@ -21,6 +21,7 @@ class FollowPath(pathName: String) : Command() {
         MotionProfile.control()
         val output = MotionProfile.setValue
         DriveSystem.setMPOutput(output.value)
+        MotionProfile.startProfile()
     }
 
     override fun isFinished(): Boolean = MotionProfile.end
