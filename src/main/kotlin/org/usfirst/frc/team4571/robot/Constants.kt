@@ -2,6 +2,7 @@ package org.usfirst.frc.team4571.robot
 
 object Constants {
     const val ROBOT_PERIOD = 0.02
+    const val periodMs = 20
 
     object Controllers {
         const val LEFT_STICK = 0
@@ -15,6 +16,18 @@ object Constants {
         const val RIGHT_FOLLOWER = 4
     }
 
+    object MPGains {
+        private const val maxVel = 32169 // u / 100 ms
+        const val kP = 0.0
+        const val kI = 0.0
+        const val kD = 0.0
+        const val kF = (100.0 * 1023) / maxVel
+    }
+
+    object MP {
+        const val trajectoryPointPeriod = 10
+    }
+
     object Transmission {
         private const val encoderTeeth = 36
         private const val magnetTeeth = 12
@@ -26,7 +39,9 @@ object Constants {
         const val HIGH_GEAR_TICKS_PER_INCH = ((encoderTeeth / magnetTeeth) *
                 (outputTeeth / compoundGearTeeth) * ticksPerRotation) /
                 (wheelDiameter * Math.PI)
+        const val HIGH_GEAR_TICKS_PER_FEET = HIGH_GEAR_TICKS_PER_INCH * 12
         const val LOW_GEAR_TICKS_PER_INCH = HIGH_GEAR_TICKS_PER_INCH *
                 highToLowGearSpread
+        const val LOW_GEAR_TICKS_PER_FEET = LOW_GEAR_TICKS_PER_INCH * 12
     }
 }

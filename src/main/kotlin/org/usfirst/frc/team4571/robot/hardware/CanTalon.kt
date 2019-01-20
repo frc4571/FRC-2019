@@ -11,3 +11,10 @@ class CanTalon(deviceNumber: Int) : WPI_TalonSRX(deviceNumber) {
         setNeutralMode(NeutralMode.Brake)
     }
 }
+
+fun WPI_TalonSRX.config_PIDF(kP: Double, kI: Double, kD: Double, kF: Double) {
+    this.config_kP(0, kP, Constants.periodMs)
+    this.config_kI(0, kI, Constants.periodMs)
+    this.config_kD(0, kD, Constants.periodMs)
+    this.config_kF(0, kF, Constants.periodMs)
+}

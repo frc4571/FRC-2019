@@ -1,7 +1,9 @@
 package org.usfirst.frc.team4571.robot.subsystems
 
+import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.InvertType
+import com.ctre.phoenix.motorcontrol.StatusFrame
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.PIDController
@@ -10,7 +12,9 @@ import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import org.usfirst.frc.team4571.robot.Constants
+import org.usfirst.frc.team4571.robot.MotionProfile
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
+import org.usfirst.frc.team4571.robot.hardware.config_PIDF
 
 object DriveSystem : Subsystem() {
     val leftMaster: WPI_TalonSRX = CanTalon(Constants.DRIVE.LEFT_MASTER)
@@ -113,5 +117,42 @@ object DriveSystem : Subsystem() {
 
     fun resetGyro() {
         navx.reset()
+    }
+
+    fun setTalonsFactoryDefault() {
+        leftMaster.configFactoryDefault(20)
+        rightMaster.configFactoryDefault(20)
+        leftFollower.configFactoryDefault(20)
+        rightFollower.configFactoryDefault(20)
+    }
+
+    fun configMPGains() {
+        leftMaster.config_PIDF(Constants.MPGains.kP, Constants.MPGains.kI,
+                               Constants.MPGains.kD, Constants.MPGains.kF)
+        rightMaster.config_PIDF(Constants.MPGains.kP, Constants.MPGains.kI,
+                                Constants.MPGains.kD, Constants.MPGains.kF)
+    }
+
+    fun configTrajPointPeriod() {
+        leftMaster.configMotionProfileTrajectoryPeriod(
+                Constants.MP.trajectoryPointPeriod, Constants.periodMs)
+        rightMaster.configMotionProfileTrajectoryPeriod(
+                Constants.MP.trajectoryPointPeriod, Constants.periodMs)
+        leftMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,
+                                        Constants.MP.trajectoryPointPeriod,
+                                        Constants.periodMs)
+        rightMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic,
+                                         Constants.MP.trajectoryPointPeriod,
+                                         Constants.periodMs)
+    }
+
+    fun setMPOutput(value: Int) {
+        leftMaster.set(ControlMode.MotionProfile, value.toDouble())
+        rightMaster.set(ControlMode.MotionProfile, value.toDouble())
+    }
+
+    fun setPercentOuput() {
+        leftMaster.set(ControlMode.PercentOutput, 0.0)
+        rightMaster.set(ControlMode.PercentOutput, 0.0)
     }
 }
