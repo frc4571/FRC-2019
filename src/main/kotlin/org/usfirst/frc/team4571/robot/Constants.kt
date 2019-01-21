@@ -1,8 +1,13 @@
 package org.usfirst.frc.team4571.robot
 
 object Constants {
-    const val ROBOT_PERIOD = 0.02
+    const val period = 0.02
     const val periodMs = 20
+
+    enum class Unit {
+        Feet,
+        Inches
+    }
 
     object Controllers {
         const val LEFT_STICK = 0

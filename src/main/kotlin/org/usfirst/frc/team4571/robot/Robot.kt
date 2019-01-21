@@ -9,7 +9,7 @@ import org.usfirst.frc.team4571.robot.commands.autonomous.FollowPath
 import org.usfirst.frc.team4571.robot.commands.autonomous.TurnCommand
 import org.usfirst.frc.team4571.robot.commands.teleop.TeleOpDrive
 
-class Robot : TimedRobot(Constants.ROBOT_PERIOD) {
+class Robot : TimedRobot(Constants.period) {
     private val autoChooser = SendableChooser<Command>()
     private var autoCommand: Command? = null
 

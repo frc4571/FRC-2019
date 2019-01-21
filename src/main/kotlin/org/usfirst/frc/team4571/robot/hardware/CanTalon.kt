@@ -6,7 +6,7 @@ import org.usfirst.frc.team4571.robot.Constants
 
 class CanTalon(deviceNumber: Int) : WPI_TalonSRX(deviceNumber) {
     init {
-        expiration = Constants.ROBOT_PERIOD
+        expiration = Constants.period
         isSafetyEnabled = false
         setNeutralMode(NeutralMode.Brake)
     }
