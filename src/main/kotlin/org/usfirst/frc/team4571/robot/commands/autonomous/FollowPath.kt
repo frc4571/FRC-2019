@@ -29,5 +29,6 @@ class FollowPath(pathName: String) : Command() {
     override fun end() {
         DriveSystem.setPercentOuput()
         DriveSystem.resetEncoders()
+        MotionProfile.reset()
     }
 }
