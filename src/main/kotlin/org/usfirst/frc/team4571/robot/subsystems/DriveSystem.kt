@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.SPI
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import org.usfirst.frc.team4571.robot.Constants
-import org.usfirst.frc.team4571.robot.MotionProfile
 import org.usfirst.frc.team4571.robot.hardware.CanTalon
 import org.usfirst.frc.team4571.robot.hardware.config_PIDF
 
@@ -50,7 +49,7 @@ object DriveSystem : Subsystem() {
         rightFollower.setInverted(InvertType.FollowMaster)
 
         differentialDrive = DifferentialDrive(leftMaster, rightMaster)
-        differentialDrive.expiration = Constants.ROBOT_PERIOD
+        differentialDrive.expiration = Constants.period
         differentialDrive.isSafetyEnabled = false
 
         leftMaster.configSelectedFeedbackSensor(
@@ -83,13 +82,21 @@ object DriveSystem : Subsystem() {
     val rightEncoderTick
         get() = rightMaster.getSelectedSensorPosition(0)
 
-    val leftDistance
-        get() = leftMaster.getSelectedSensorPosition(0) /
-                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH
+    val leftDistance = {
+        unit: Constants.Unit -> leftMaster.getSelectedSensorPosition(0) /
+            when(unit) {
+                Constants.Unit.Feet -> Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET
+                Constants.Unit.Inches -> Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH
+            }
+    }
 
-    val rightDistance
-        get() = rightMaster.getSelectedSensorPosition(0) /
-                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH
+    val rightDistance = {
+        unit: Constants.Unit -> rightMaster.getSelectedSensorPosition(0) /
+            when(unit) {
+                Constants.Unit.Feet -> Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET
+                Constants.Unit.Inches -> Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH
+            }
+    }
 
     val heading
         get() = navx.angle
