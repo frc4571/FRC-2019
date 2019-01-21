@@ -7,8 +7,8 @@ import org.usfirst.frc.team4571.robot.Robot
 import org.usfirst.frc.team4571.robot.subsystems.DriveSystem
 
 object TeleOpDrive : Command() {
-    private var prevLeftDistance = 0.0
-    private var prevRightDistance = 0.0
+    private var prevLeftPos = 0.0
+    private var prevRightPos = 0.0
 
     init {
         requires(DriveSystem)
@@ -20,16 +20,17 @@ object TeleOpDrive : Command() {
         SmartDashboard.putNumber("Left Distance",
                                  DriveSystem.leftDistance(Constants.Unit.Feet))
 
-        val leftSpeed = (DriveSystem.leftDistance(Constants.Unit.Feet) -
-                prevLeftDistance) / Constants.period
-        val rightSpeed = (DriveSystem.rightDistance(Constants.Unit.Feet) -
-                prevLeftDistance) / Constants.period
+        val currentLeftPos = DriveSystem.leftDistance(Constants.Unit.Feet)
+        val currentRightPos = DriveSystem.rightDistance(Constants.Unit.Feet)
+
+        val leftSpeed = (currentLeftPos - prevLeftPos) / Constants.period
+        val rightSpeed = (currentRightPos - prevLeftPos) / Constants.period
 
         SmartDashboard.putNumber("Left Velocity (ft/s)", leftSpeed)
         SmartDashboard.putNumber("Right Velocity (ft/s)", rightSpeed)
 
-        prevLeftDistance = DriveSystem.leftDistance(Constants.Unit.Feet)
-        prevRightDistance = DriveSystem.rightDistance(Constants.Unit.Feet)
+        prevLeftPos = currentLeftPos
+        prevRightPos = currentRightPos
     }
 
     override fun execute() {
@@ -42,7 +43,7 @@ object TeleOpDrive : Command() {
     override fun end() {
         DriveSystem.stop()
         DriveSystem.resetEncoders()
-        prevLeftDistance = 0.0
-        prevRightDistance = 0.0
+        prevLeftPos = 0.0
+        prevRightPos = 0.0
     }
 }
