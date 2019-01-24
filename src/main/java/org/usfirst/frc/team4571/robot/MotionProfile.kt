@@ -6,7 +6,6 @@ import com.ctre.phoenix.motion.TrajectoryPoint
 import com.ctre.phoenix.motorcontrol.ControlMode
 import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.Timer.getFPGATimestamp
-import org.usfirst.frc.team4571.robot.subsystems.DriveSystem
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
@@ -101,14 +100,15 @@ object Instrumentation {
 object MotionProfile {
     private val status = MotionProfileStatus()
 
-    private val leftTalon = DriveSystem.leftMaster
-    private val rightTalon = DriveSystem.rightMaster
+    private val leftTalon = Robot.DRIVE_SYSTEM.leftMaster
+    private val rightTalon = Robot.DRIVE_SYSTEM.rightMaster
 
     private var state = 0
     private var loopTimeout = -1
 
     private var start = false
     var end = false
+        private set
 
     var setValue = SetValueMotionProfile.Disable
 

@@ -19,6 +19,12 @@ object Constants {
         const val LEFT_MASTER = 1
         const val RIGHT_MASTER = 3
         const val RIGHT_FOLLOWER = 4
+
+        object Turn {
+            const val kP = 0.0
+            const val kI = 0.0
+            const val kD = 0.0
+        }
     }
 
     object MPGains {
