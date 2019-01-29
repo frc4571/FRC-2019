@@ -28,6 +28,9 @@ deploy {
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 compileKotlin {
@@ -48,6 +51,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.github.frc4571:rampage:e24a3881f3'
 }
 
 jar {

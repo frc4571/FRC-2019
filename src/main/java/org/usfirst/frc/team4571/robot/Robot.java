@@ -5,12 +5,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.commands.autonomous.FollowPath;
 import org.usfirst.frc.team4571.robot.commands.autonomous.TurnCommand;
 import org.usfirst.frc.team4571.robot.commands.teleop.TeleOpDrive;
 import org.usfirst.frc.team4571.robot.subsystems.DriveSystem;
 
-public final class Robot extends TimedRobot {
+public class Robot extends TimedRobot {
     public static final DriveStick leftStick = new DriveStick(
             Constants.Controllers.LEFT_STICK);
     public static final DriveStick rightStick = new DriveStick(
@@ -27,7 +26,6 @@ public final class Robot extends TimedRobot {
 
     public void robotInit() {
         autoChooser.addOption("Turn 90 Degrees", new TurnCommand(90.0D));
-        autoChooser.addOption("Run test path", new FollowPath("testpath"));
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 

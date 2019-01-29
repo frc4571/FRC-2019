@@ -1,42 +1,63 @@
 package org.usfirst.frc.team4571.robot.commands.autonomous;
 
-import com.ctre.phoenix.motion.SetValueMotionProfile;
+import com.ctre.phoenix.motion.TrajectoryPoint;
+import com.rambots4571.rampage.hardware.LazyTalonSRX;
+import com.rambots4571.rampage.motionprofile.Parser;
+import com.rambots4571.rampage.motionprofile.Profile;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4571.robot.MotionProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.Robot;
 
-public class FollowPath extends Command {
+import java.util.ArrayList;
 
-    public FollowPath(String fileName) {
+public class FollowPath extends Command {
+    private String pathName;
+    private Profile profile;
+
+    public FollowPath(String pathName) {
+        this.pathName = pathName;
         requires(Robot.DRIVE_SYSTEM);
-        MotionProfile.INSTANCE.setPath(fileName);
+        LazyTalonSRX[] talons = Robot.DRIVE_SYSTEM.getTalonMasters();
+        Parser parser =
+                new Parser(Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET);
+        ArrayList<TrajectoryPoint> left =
+                parser.getPoints(Constants.paths.dir + pathName +
+                                 Constants.paths.leftSuffix, false);
+        ArrayList<TrajectoryPoint> right =
+                parser.getPoints(Constants.paths.dir + pathName +
+                                 Constants.paths.rightSuffix, false);
+        profile = new Profile(left, right, talons[0], talons[2]);
     }
 
     @Override
     protected void initialize() {
-        Robot.DRIVE_SYSTEM.setTalonsFactoryDefault();
-        Robot.DRIVE_SYSTEM.resetEncoders();
         Robot.DRIVE_SYSTEM.configMPGains();
-        Robot.DRIVE_SYSTEM.configTrajPointPeriod();
+        profile.execute();
     }
 
     @Override
     protected void execute() {
-        MotionProfile.INSTANCE.control();
-        SetValueMotionProfile output = MotionProfile.INSTANCE.getSetValue();
-        Robot.DRIVE_SYSTEM.setMPOutput(output.value);
-        MotionProfile.INSTANCE.startProfile();
+        SmartDashboard.putNumber(
+                "left distance", Robot.DRIVE_SYSTEM
+                        .getLeftDistance(Constants.Unit.Feet));
+        SmartDashboard.putNumber(
+                "right distance", Robot.DRIVE_SYSTEM
+                        .getRightDistance(Constants.Unit.Feet));
     }
 
     @Override
     protected boolean isFinished() {
-        return MotionProfile.INSTANCE.getEnd();
+        return profile.isFinished();
     }
 
     @Override
     protected void end() {
-        Robot.DRIVE_SYSTEM.setPercentOutput();
-        Robot.DRIVE_SYSTEM.resetEncoders();
-        MotionProfile.INSTANCE.reset();
+        Robot.DRIVE_SYSTEM.stop();
+    }
+
+    @Override
+    protected void interrupted() {
+        profile.onInterrupt();
     }
 }

@@ -3,6 +3,8 @@ package org.usfirst.frc.team4571.robot
 object Constants {
     const val period = 0.02
     const val periodMs = 20
+    const val timeoutMs = 100
+    const val longTimeoutMs = 1000
 
     enum class Unit {
         Feet,
@@ -19,6 +21,8 @@ object Constants {
         const val LEFT_MASTER = 1
         const val RIGHT_MASTER = 3
         const val RIGHT_FOLLOWER = 4
+
+        const val highGearPIDSlotIdx = 0
 
         object Turn {
             const val kP = 0.0
@@ -37,6 +41,12 @@ object Constants {
 
     object MP {
         const val trajectoryPointPeriod = 10
+    }
+
+    object paths {
+        const val dir = "/home/lvuser/deploy/paths"
+        const val leftSuffix = "_left.csv"
+        const val rightSuffix = "_right.csv"
     }
 
     object Transmission {
