@@ -7,8 +7,6 @@ import org.usfirst.frc.team4571.robot.Robot;
 
 public class TeleOpDrive extends Command {
     private static final TeleOpDrive instance = new TeleOpDrive();
-    private double prevLeftPos = 0;
-    private double prevRightPos = 0;
 
     private TeleOpDrive() {
         requires(Robot.DRIVE_SYSTEM);
@@ -23,22 +21,24 @@ public class TeleOpDrive extends Command {
                 Constants.Unit.Feet);
         double currentRightPos = Robot.DRIVE_SYSTEM.getRightDistance(
                 Constants.Unit.Feet);
-        SmartDashboard.putNumber("Left encoder", Robot.DRIVE_SYSTEM.getLeftEncoderTick());
-        SmartDashboard.putNumber("Left encoder", Robot.DRIVE_SYSTEM.getRightEncoderTick());
-
-        double leftSpeed = (currentLeftPos - prevLeftPos) / Constants.period;
-        double rightSpeed = (currentRightPos - prevRightPos) / Constants.period;
-
-        SmartDashboard.putNumber("left velocity (ft/s)", leftSpeed);
-        SmartDashboard.putNumber("right velocity (ft/s)", rightSpeed);
-
-        prevLeftPos = currentLeftPos;
-        prevRightPos = currentRightPos;
+        SmartDashboard.putNumber(
+                "Left encoder", Robot.DRIVE_SYSTEM.getLeftEncoderTick());
+        SmartDashboard.putNumber(
+                "Left encoder", Robot.DRIVE_SYSTEM.getRightEncoderTick());
+        SmartDashboard.putNumber(
+                "Left Speed",
+                Robot.DRIVE_SYSTEM.getLeftVelocity(
+                        Constants.Unit.Feet));
+        SmartDashboard.putNumber(
+                "Right Speed",
+                Robot.DRIVE_SYSTEM.getRightVelocity(
+                        Constants.Unit.Feet));
     }
 
     @Override
     protected void execute() {
-        Robot.DRIVE_SYSTEM.drive(Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
+        Robot.DRIVE_SYSTEM.drive(
+                Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
         log();
     }
 
@@ -51,7 +51,5 @@ public class TeleOpDrive extends Command {
     protected void end() {
         Robot.DRIVE_SYSTEM.stop();
         Robot.DRIVE_SYSTEM.resetEncoders();
-        prevLeftPos = 0;
-        prevRightPos = 0;
     }
 }

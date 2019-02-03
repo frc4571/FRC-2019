@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 
+import static com.rambots4571.rampage.hardware.UtilsKt.checkError;
+
 public final class DriveSystem extends Subsystem {
     private LazyTalonSRX leftMaster;
-    private LazyTalonSRX leftFollower;
     private LazyTalonSRX rightMaster;
-    private LazyTalonSRX rightFollower;
     private AHRS navx;
     private PIDController turnController;
 
@@ -27,21 +27,24 @@ public final class DriveSystem extends Subsystem {
         rightMaster = TalonSRXFactory.INSTANCE.createDefaultTalon(
                 Constants.DRIVE.RIGHT_MASTER);
         rightMaster.setInverted(true);
-        leftFollower = TalonSRXFactory.INSTANCE.createFollowerTalon(
-                Constants.DRIVE.LEFT_FOLLOWER,
-                Constants.DRIVE.LEFT_MASTER);
+        LazyTalonSRX leftFollower = TalonSRXFactory.INSTANCE
+                .createFollowerTalon(
+                        Constants.DRIVE.LEFT_FOLLOWER,
+                        Constants.DRIVE.LEFT_MASTER);
         leftFollower.setInverted(InvertType.FollowMaster);
-        rightFollower = TalonSRXFactory.INSTANCE.createFollowerTalon(
-                Constants.DRIVE.RIGHT_FOLLOWER,
-                Constants.DRIVE.RIGHT_MASTER);
+        LazyTalonSRX rightFollower = TalonSRXFactory.INSTANCE
+                .createFollowerTalon(
+                        Constants.DRIVE.RIGHT_FOLLOWER,
+                        Constants.DRIVE.RIGHT_MASTER);
         rightFollower.setInverted(InvertType.FollowMaster);
 
-        leftMaster.configSelectedFeedbackSensor(
+        checkError(leftMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
-                Constants.timeoutMs);
-        rightMaster.configSelectedFeedbackSensor(
+                Constants.timeoutMs), "can't initialize left encoder!");
+
+        checkError(rightMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
-                Constants.timeoutMs);
+                Constants.timeoutMs), "can't initialize right encoder!");
 
         rightMaster.setSensorPhase(true);
 
@@ -81,7 +84,19 @@ public final class DriveSystem extends Subsystem {
     }
 
     public double getLeftVelocity(Constants.Unit unit) {
-        return leftMaster.getSelectedSensorVelocity(Constants.DRIVE.highGearPIDSlotIdx);
+        return leftMaster.getSelectedSensorVelocity(
+                Constants.DRIVE.highGearPIDSlotIdx) /
+               ((unit == Constants.Unit.Feet) ?
+                Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
+                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
+    }
+
+    public double getRightVelocity(Constants.Unit unit) {
+        return rightMaster.getSelectedSensorVelocity(
+                Constants.DRIVE.highGearPIDSlotIdx) /
+               ((unit == Constants.Unit.Feet) ?
+                Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
+                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
     }
 
     public void resetEncoders() {
