@@ -1,9 +1,9 @@
 package org.usfirst.frc.team4571.robot.commands.autonomous;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
-import com.rambots4571.rampage.hardware.LazyTalonSRX;
-import com.rambots4571.rampage.motionprofile.Parser;
-import com.rambots4571.rampage.motionprofile.Profile;
+import com.rambots4571.rampage.ctre.hardware.LazyTalonSRX;
+import com.rambots4571.rampage.ctre.motionprofile.Parser;
+import com.rambots4571.rampage.ctre.motionprofile.Profile;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.Constants;

@@ -4,15 +4,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.kauailabs.navx.frc.AHRS;
-import com.rambots4571.rampage.hardware.LazyTalonSRX;
-import com.rambots4571.rampage.hardware.TalonSRXFactory;
+import com.rambots4571.rampage.ctre.hardware.LazyTalonSRX;
+import com.rambots4571.rampage.ctre.hardware.TalonSRXFactory;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 
-import static com.rambots4571.rampage.hardware.UtilsKt.checkError;
+import static com.rambots4571.rampage.ctre.hardware.UtilsKt.checkError;
 
 public final class DriveSystem extends Subsystem {
     private LazyTalonSRX leftMaster;
