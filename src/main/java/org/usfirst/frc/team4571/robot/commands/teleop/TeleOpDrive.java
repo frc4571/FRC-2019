@@ -17,10 +17,6 @@ public class TeleOpDrive extends Command {
     }
 
     private void log() {
-        double currentLeftPos = Robot.DRIVE_SYSTEM.getLeftDistance(
-                Constants.Unit.Feet);
-        double currentRightPos = Robot.DRIVE_SYSTEM.getRightDistance(
-                Constants.Unit.Feet);
         SmartDashboard.putNumber(
                 "Left encoder", Robot.DRIVE_SYSTEM.getLeftEncoderTick());
         SmartDashboard.putNumber(
