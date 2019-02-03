@@ -46,6 +46,7 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.github.frc4571:rampage:9e6372f1d2'
 }
 
 jar {
