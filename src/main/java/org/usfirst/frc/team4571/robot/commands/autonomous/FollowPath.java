@@ -12,11 +12,9 @@ import org.usfirst.frc.team4571.robot.Robot;
 import java.util.ArrayList;
 
 public class FollowPath extends Command {
-    private String pathName;
     private Profile profile;
 
     public FollowPath(String pathName) {
-        this.pathName = pathName;
         requires(Robot.DRIVE_SYSTEM);
         LazyTalonSRX[] talons = Robot.DRIVE_SYSTEM.getTalonMasters();
         Parser parser =
