@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4571.robot.commands.autonomous.FollowPath;
 import org.usfirst.frc.team4571.robot.commands.autonomous.TurnCommand;
 import org.usfirst.frc.team4571.robot.commands.teleop.TeleOpDrive;
 import org.usfirst.frc.team4571.robot.subsystems.DriveSystem;
@@ -20,11 +21,8 @@ public class Robot extends TimedRobot {
 
     public final static DriveSystem DRIVE_SYSTEM = new DriveSystem();
 
-    Robot() {
-        super(Constants.period);
-    }
-
     public void robotInit() {
+        autoChooser.addOption("run test path", new FollowPath("testpath"));
         autoChooser.addOption("Turn 90 Degrees", new TurnCommand(90.0D));
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
