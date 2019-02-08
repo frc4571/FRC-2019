@@ -21,7 +21,7 @@ public class FollowPath extends Command {
                 new Parser(Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET);
         ArrayList<TrajectoryPoint> left =
                 parser.getPoints(Constants.paths.dir + pathName +
-                                 Constants.paths.leftSuffix, false);
+                                 Constants.paths.leftSuffix, true);
         ArrayList<TrajectoryPoint> right =
                 parser.getPoints(Constants.paths.dir + pathName +
                                  Constants.paths.rightSuffix, false);
