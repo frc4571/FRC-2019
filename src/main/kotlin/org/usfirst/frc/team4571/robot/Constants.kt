@@ -45,7 +45,7 @@ object Constants {
     }
 
     object paths {
-        const val dir = "/home/lvuser/deploy/paths"
+        const val dir = "/home/lvuser/deploy/paths/"
         const val leftSuffix = "_left.csv"
         const val rightSuffix = "_right.csv"
     }
