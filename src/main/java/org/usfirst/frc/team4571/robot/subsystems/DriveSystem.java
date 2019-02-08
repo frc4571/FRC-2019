@@ -26,7 +26,6 @@ public final class DriveSystem extends Subsystem {
         leftMaster.setInverted(true);
         rightMaster = TalonSRXFactory.INSTANCE.createDefaultTalon(
                 Constants.DRIVE.RIGHT_MASTER);
-        rightMaster.setInverted(true);
 
         LazyTalonSRX leftFollower1 = TalonSRXFactory.INSTANCE
                 .createFollowerTalon(
