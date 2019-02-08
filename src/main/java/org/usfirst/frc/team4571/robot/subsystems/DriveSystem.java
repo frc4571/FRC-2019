@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 
-import static com.rambots4571.rampage.ctre.hardware.UtilsKt.checkError;
+import static com.rambots4571.rampage.ctre.hardware.TalonUtilsKt.checkError;
 
 public final class DriveSystem extends Subsystem {
     private LazyTalonSRX leftMaster;
