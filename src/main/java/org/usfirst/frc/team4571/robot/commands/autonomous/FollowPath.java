@@ -25,7 +25,7 @@ public class FollowPath extends Command {
         ArrayList<TrajectoryPoint> right =
                 parser.getPoints(Constants.paths.dir + pathName +
                                  Constants.paths.rightSuffix, false);
-        profile = new Profile(left, right, talons[0], talons[2]);
+        profile = new Profile(left, right, talons[0], talons[1]);
     }
 
     @Override
