@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4571.robot.commands.autonomous;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
-import com.rambots4571.rampage.ctre.hardware.LazyTalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.rampage.ctre.motionprofile.Parser;
 import com.rambots4571.rampage.ctre.motionprofile.Profile;
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,12 +11,13 @@ import org.usfirst.frc.team4571.robot.Robot;
 
 import java.util.ArrayList;
 
+// TODO: change the time duration of points
 public class FollowPath extends Command {
     private Profile profile;
 
     public FollowPath(String pathName) {
         requires(Robot.DRIVE_SYSTEM);
-        LazyTalonSRX[] talons = Robot.DRIVE_SYSTEM.getTalonMasters();
+        TalonSRX[] talons = Robot.DRIVE_SYSTEM.getTalonMasters();
         Parser parser =
                 new Parser(Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET);
         ArrayList<TrajectoryPoint> left =
