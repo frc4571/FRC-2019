@@ -21,33 +21,23 @@ public final class DriveSystem extends Subsystem {
     private PIDController turnController;
 
     public DriveSystem() {
-        leftMaster = TalonSRXFactory.INSTANCE.createDefaultTalon(
-                Constants.DRIVE.LEFT_MASTER);
-        rightMaster = TalonSRXFactory.INSTANCE.createDefaultTalon(
-                Constants.DRIVE.RIGHT_MASTER);
+        leftMaster = new TalonSRX(Constants.DRIVE.LEFT_MASTER);
+        rightMaster = new TalonSRX(Constants.DRIVE.RIGHT_MASTER);
         rightMaster.setInverted(true);
 
-        TalonSRX leftFollower1 =
-                TalonSRXFactory.INSTANCE.createDefaultTalon(
-                        Constants.DRIVE.LEFT_FOLLOWER1);
+        TalonSRX leftFollower1 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER1);
         leftFollower1.setInverted(InvertType.FollowMaster);
         leftFollower1.follow(leftMaster);
 
-        TalonSRX leftFollower2 =
-                TalonSRXFactory.INSTANCE.createDefaultTalon(
-                        Constants.DRIVE.LEFT_FOLLOWER2);
+        TalonSRX leftFollower2 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER2);
         leftFollower2.setInverted(InvertType.FollowMaster);
         leftFollower2.follow(leftMaster);
 
-        TalonSRX rightFollower1 =
-                TalonSRXFactory.INSTANCE.createDefaultTalon(
-                        Constants.DRIVE.RIGHT_FOLLOWER1);
+        TalonSRX rightFollower1 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER1);
         rightFollower1.setInverted(InvertType.FollowMaster);
         rightFollower1.follow(rightMaster);
 
-        TalonSRX rightFollower2 =
-                TalonSRXFactory.INSTANCE.createDefaultTalon(
-                        Constants.DRIVE.RIGHT_FOLLOWER2);
+        TalonSRX rightFollower2 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER2);
         rightFollower2.setInverted(InvertType.FollowMaster);
         rightFollower2.follow(rightMaster);
 
@@ -86,15 +76,13 @@ public final class DriveSystem extends Subsystem {
 
     public double getLeftDistance(Constants.Unit unit) {
         return getLeftEncoderTick() / ((unit == Constants.Unit.Feet) ?
-                                       Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET
-                                                                     :
+                                       Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
                                        Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH);
     }
 
     public double getRightDistance(Constants.Unit unit) {
         return getRightEncoderTick() / ((unit == Constants.Unit.Feet) ?
-                                        Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET
-                                                                      :
+                                        Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
                                         Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH);
     }
 
