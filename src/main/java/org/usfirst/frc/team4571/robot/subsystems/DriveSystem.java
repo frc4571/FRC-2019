@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import com.rambots4571.rampage.ctre.hardware.LazyTalonSRX;
 import com.rambots4571.rampage.ctre.hardware.TalonSRXFactory;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -41,12 +40,14 @@ public final class DriveSystem extends Subsystem {
         leftFollower2.follow(leftMaster);
 
         TalonSRX rightFollower1 =
-                TalonSRXFactory.INSTANCE.createDefaultTalon(Constants.DRIVE.RIGHT_FOLLOWER1);
+                TalonSRXFactory.INSTANCE.createDefaultTalon(
+                        Constants.DRIVE.RIGHT_FOLLOWER1);
         rightFollower1.setInverted(InvertType.FollowMaster);
         rightFollower1.follow(rightMaster);
 
         TalonSRX rightFollower2 =
-                TalonSRXFactory.INSTANCE.createDefaultTalon(Constants.DRIVE.RIGHT_FOLLOWER2);
+                TalonSRXFactory.INSTANCE.createDefaultTalon(
+                        Constants.DRIVE.RIGHT_FOLLOWER2);
         rightFollower2.setInverted(InvertType.FollowMaster);
         rightFollower2.follow(rightMaster);
 
@@ -141,24 +142,38 @@ public final class DriveSystem extends Subsystem {
     }
 
     public void configMPGains() {
-        leftMaster.config_kP(Constants.DRIVE.highGearPIDSlotIdx,
-                             Constants.MPGains.kP,
-                             Constants.timeoutMs);
-        leftMaster.config_kP(Constants.DRIVE.highGearPIDSlotIdx,
-                             Constants.MPGains.kI,
-                             Constants.timeoutMs);
-        leftMaster.config_kP(Constants.DRIVE.highGearPIDSlotIdx,
-                             Constants.MPGains.kD,
-                             Constants.timeoutMs);
-        rightMaster.config_kP(Constants.DRIVE.highGearPIDSlotIdx,
-                             Constants.MPGains.kP,
-                             Constants.timeoutMs);
-        rightMaster.config_kP(Constants.DRIVE.highGearPIDSlotIdx,
-                             Constants.MPGains.kI,
-                             Constants.timeoutMs);
-        rightMaster.config_kP(Constants.DRIVE.highGearPIDSlotIdx,
-                             Constants.MPGains.kD,
-                             Constants.timeoutMs);
+        leftMaster.config_kF(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kF,
+                Constants.timeoutMs);
+        leftMaster.config_kP(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kP,
+                Constants.timeoutMs);
+        leftMaster.config_kI(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kI,
+                Constants.timeoutMs);
+        leftMaster.config_kD(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kD,
+                Constants.timeoutMs);
+        rightMaster.config_kF(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kF,
+                Constants.timeoutMs);
+        rightMaster.config_kP(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kP,
+                Constants.timeoutMs);
+        rightMaster.config_kI(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kI,
+                Constants.timeoutMs);
+        rightMaster.config_kD(
+                Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kD,
+                Constants.timeoutMs);
     }
 
     public void drive(double left, double right) {
