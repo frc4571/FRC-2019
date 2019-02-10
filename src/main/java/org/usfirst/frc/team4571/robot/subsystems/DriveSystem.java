@@ -5,14 +5,14 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import com.rambots4571.rampage.ctre.hardware.TalonSRXFactory;
+import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 
-import static com.rambots4571.rampage.ctre.hardware.TalonUtilsKt.checkError;
+import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
 
 public final class DriveSystem extends Subsystem {
     private TalonSRX leftMaster;
@@ -26,20 +26,20 @@ public final class DriveSystem extends Subsystem {
         rightMaster.setInverted(true);
 
         TalonSRX leftFollower1 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER1);
-        leftFollower1.setInverted(InvertType.FollowMaster);
         leftFollower1.follow(leftMaster);
+        leftFollower1.setInverted(InvertType.FollowMaster);
 
         TalonSRX leftFollower2 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER2);
-        leftFollower2.setInverted(InvertType.FollowMaster);
         leftFollower2.follow(leftMaster);
+        leftFollower2.setInverted(InvertType.FollowMaster);
 
         TalonSRX rightFollower1 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER1);
-        rightFollower1.setInverted(InvertType.FollowMaster);
         rightFollower1.follow(rightMaster);
+        rightFollower1.setInverted(InvertType.FollowMaster);
 
         TalonSRX rightFollower2 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER2);
-        rightFollower2.setInverted(InvertType.FollowMaster);
         rightFollower2.follow(rightMaster);
+        rightFollower2.setInverted(InvertType.FollowMaster);
 
         checkError(leftMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
@@ -130,37 +130,15 @@ public final class DriveSystem extends Subsystem {
     }
 
     public void configMPGains() {
-        leftMaster.config_kF(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kF,
+        TalonUtilsKt.config_PIDF(
+                leftMaster, Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kP, Constants.MPGains.kI,
+                Constants.MPGains.kD, Constants.MPGains.kF,
                 Constants.timeoutMs);
-        leftMaster.config_kP(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kP,
-                Constants.timeoutMs);
-        leftMaster.config_kI(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kI,
-                Constants.timeoutMs);
-        leftMaster.config_kD(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kD,
-                Constants.timeoutMs);
-        rightMaster.config_kF(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kF,
-                Constants.timeoutMs);
-        rightMaster.config_kP(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kP,
-                Constants.timeoutMs);
-        rightMaster.config_kI(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kI,
-                Constants.timeoutMs);
-        rightMaster.config_kD(
-                Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kD,
+        TalonUtilsKt.config_PIDF(
+                rightMaster, Constants.DRIVE.highGearPIDSlotIdx,
+                Constants.MPGains.kP, Constants.MPGains.kI,
+                Constants.MPGains.kD, Constants.MPGains.kF,
                 Constants.timeoutMs);
     }
 
