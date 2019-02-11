@@ -1,0 +1,16 @@
+subprojects {
+    group 'com.rambots4571.rampage'
+
+    repositories {
+        maven {
+            url "http://first.wpi.edu/FRC/roborio/maven/release/"
+        }
+        maven  {
+            url "http://devsite.ctr-electronics.com/maven/release/"
+        }
+    }
+
+    jar {
+        destinationDir = file("$rootDir/build/libs")
+    }
+}

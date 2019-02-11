@@ -1,0 +1,3 @@
+dependencies {
+    implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilib_version"
+}
