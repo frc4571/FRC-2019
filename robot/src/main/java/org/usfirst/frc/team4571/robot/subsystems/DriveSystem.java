@@ -22,22 +22,28 @@ public final class DriveSystem extends Subsystem {
 
     public DriveSystem() {
         leftMaster = new TalonSRX(Constants.DRIVE.LEFT_MASTER);
+        leftMaster.configFactoryDefault();
         rightMaster = new TalonSRX(Constants.DRIVE.RIGHT_MASTER);
+        rightMaster.configFactoryDefault();
         rightMaster.setInverted(true);
 
         TalonSRX leftFollower1 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER1);
+        leftFollower1.configFactoryDefault();
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
 
         TalonSRX leftFollower2 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER2);
+        leftFollower2.configFactoryDefault();
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
         TalonSRX rightFollower1 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER1);
+        rightFollower1.configFactoryDefault();
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
         TalonSRX rightFollower2 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER2);
+        rightFollower2.configFactoryDefault();
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
 
