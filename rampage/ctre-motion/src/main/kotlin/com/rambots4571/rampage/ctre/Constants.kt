@@ -1,6 +1,6 @@
 package com.rambots4571.rampage.ctre
 
-object Constants {
+internal object Constants {
     object Talon {
         const val timeoutMs = 30
         const val trajectoryPointPeriod = 10
