@@ -3,7 +3,7 @@ package org.usfirst.frc.team4571.robot
 object Constants {
     const val period = 0.02
     const val periodMs = 20
-    const val timeoutMs = 50
+    const val timeoutMs = 30
     const val longTimeoutMs = 1000
 
     enum class Unit {
