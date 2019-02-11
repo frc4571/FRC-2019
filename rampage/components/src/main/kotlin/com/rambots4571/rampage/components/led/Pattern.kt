@@ -55,8 +55,8 @@ enum class PatternTable(val pulseWidth: Int, val value: Double) {
 //    COLOR_1_HEARTBEAT_SLOW(1515, 0.03),
 //    COLOR_1_HEARTBEAT_MEDIUM(1525, 0.05),
 //    COLOR_1_HEARTBEAT_FAST(1535, 0.07),
-    COLOR_1_BREATH_SLOW(1545, 0.09),
-    COLOR_1_BREATH_FAST(1555, 0.11),
+//    COLOR_1_BREATH_SLOW(1545, 0.09),
+//    COLOR_1_BREATH_FAST(1555, 0.11),
     COLOR_1_SHOT(1565, 0.13),
     COLOR_1_STROBE(1575, 0.15),
     COLOR_2_END_TO_END_BLACK(1585, 0.17),
@@ -65,8 +65,8 @@ enum class PatternTable(val pulseWidth: Int, val value: Double) {
 //    COLOR_2_HEARTBEAT_SLOW(1615, 0.23),
 //    COLOR_2_HEARTBEAT_MEDIUM(1625, 0.25),
 //    COLOR_2_HEARTBEAT_FAST(1635, 0.27),
-    COLOR_2_BREATH_SLOW(1645, 0.29),
-    COLOR_2_BREATH_FAST(1655, 0.31),
+//    COLOR_2_BREATH_SLOW(1645, 0.29),
+//    COLOR_2_BREATH_FAST(1655, 0.31),
     COLOR_2_SHOT(1665, 0.33),
     COLOR_2_STROBE(1675, 0.35),
     SPARKLE_COLOR_1_ON_COLOR_2(1685, 0.37),
@@ -168,7 +168,14 @@ object Pattern {
         val red = Pair(1415, -0.17)
         val blue = Pair(1425, -0.15)
         val gray = Pair(1435, -0.13)
-
+        object Slow {
+            val color1 = Pair(1545, 0.09)
+            val color2 = Pair(1645, 0.29)
+        }
+        object Fast {
+            val color1 = Pair(1555, 0.11)
+            val color2 = Pair(1655, 0.31)
+        }
     }
 
     object Strobe {
@@ -177,4 +184,6 @@ object Pattern {
         val gold = Pair(1465, -0.07)
         val white = Pair(1475, -0.05)
     }
+
+
 }
