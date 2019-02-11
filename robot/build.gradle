@@ -1,0 +1,42 @@
+import edu.wpi.first.gradlerio.GradleRIOPlugin
+
+plugins {
+    id "java"
+    id "edu.wpi.first.GradleRIO" version "2019.2.1"
+}
+
+deploy {
+    targets {
+        roboRIO("roborio") {
+            team = TEAM.toInteger()
+        }
+    }
+    artifacts {
+        frcJavaArtifact('frcJava') {
+            targets << "roborio"
+            debug = frc.getDebugOrDefault(false)
+        }
+        fileTreeArtifact('frcStaticFileDeploy') {
+            files = fileTree(dir: 'src/main/deploy')
+            targets << "roborio"
+            directory = '/home/lvuser/deploy'
+        }
+    }
+}
+
+dependencies {
+    compile wpi.deps.wpilib()
+    compile wpi.deps.vendor.java()
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+    compile project(':rampage:components')
+    compile project(':rampage:ctre-motion')
+}
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest GradleRIOPlugin.javaManifest(MAIN_CLASS)
+}
+repositories {
+    mavenCentral()
+}

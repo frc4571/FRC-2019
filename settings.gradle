@@ -1,0 +1,2 @@
+rootProject.name = 'Voyager-Chiriboga'
+include ':robot', ':rampage:ctre-motion', ':rampage:components'

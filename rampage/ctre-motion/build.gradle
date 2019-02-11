@@ -1,0 +1,4 @@
+dependencies {
+    implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilib_version"
+    implementation "com.ctre.phoenix:api-java:$ctre_version"
+}

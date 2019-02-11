@@ -1,60 +1,35 @@
-import edu.wpi.first.gradlerio.GradleRIOPlugin
-
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.11"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+    id "org.jetbrains.kotlin.jvm" version "1.3.11" apply false
 }
 
-deploy {
-    targets {
-        roboRIO("roborio") {
-            team = TEAM.toInteger()
+allprojects {
+    apply plugin: 'idea'
+}
+
+subprojects {
+    apply plugin: 'kotlin'
+
+    buildDir = file("$rootDir/build/${project.name}")
+
+    repositories {
+        mavenCentral()
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = java_version
         }
     }
-    artifacts {
-        frcJavaArtifact('frcJava') {
-            targets << "roborio"
-            debug = frc.getDebugOrDefault(false)
-        }
-        fileTreeArtifact('frcStaticFileDeploy') {
-            files = fileTree(dir: 'src/main/deploy')
-            targets << "roborio"
-            directory = '/home/lvuser/deploy'
+
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = java_version
         }
     }
-}
 
-repositories {
-    mavenCentral()
-    maven {
-        url "https://jitpack.io"
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     }
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = java_version
-    }
-}
-
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = java_version
-    }
-}
-
-dependencies {
-    compile wpi.deps.wpilib()
-    compile wpi.deps.vendor.java()
-    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
-    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.github.frc4571:rampage:d3acfe6cd3'
-}
-
-jar {
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest GradleRIOPlugin.javaManifest(MAIN_CLASS)
 }
 
 wrapper {
