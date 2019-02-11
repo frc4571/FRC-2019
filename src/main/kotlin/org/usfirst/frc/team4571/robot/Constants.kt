@@ -17,12 +17,12 @@ object Constants {
     }
 
     object DRIVE {
-        const val LEFT_MASTER = 1
-        const val LEFT_FOLLOWER1 = 2
-        const val LEFT_FOLLOWER2 = 5
-        const val RIGHT_MASTER = 3
-        const val RIGHT_FOLLOWER1 = 4
-        const val RIGHT_FOLLOWER2 = 6
+        const val LEFT_MASTER = 4
+        const val LEFT_FOLLOWER1 = 5
+        const val LEFT_FOLLOWER2 = 6
+        const val RIGHT_MASTER = 1
+        const val RIGHT_FOLLOWER1 = 2
+        const val RIGHT_FOLLOWER2 = 3
         const val highGearPIDSlotIdx = 0
 
         object Turn {
