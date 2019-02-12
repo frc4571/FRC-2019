@@ -1,4 +1,4 @@
-package com.rambots4571.rampage.components.led
+package com.rambots4571.rampage.led
 
 import edu.wpi.first.wpilibj.Spark
 
