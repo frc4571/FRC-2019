@@ -20,7 +20,7 @@ public class FollowPath extends Command {
         requires(drivetrain);
         TalonSRX[] talons = drivetrain.getTalonMasters();
         Parser parser =
-                new Parser(Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET);
+                new Parser(Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET);
         ArrayList<TrajectoryPoint> left =
                 parser.getPoints(Constants.Paths.dir + pathName +
                                  Constants.Paths.leftSuffix, true);
