@@ -24,33 +24,33 @@ public final class DriveSystem extends Subsystem {
     private PIDController turnController;
 
     private DriveSystem() {
-        leftMaster = new TalonSRX(Constants.DRIVE.LEFT_MASTER);
+        leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
         leftMaster.configFactoryDefault();
         leftMaster.setNeutralMode(NeutralMode.Brake);
-        rightMaster = new TalonSRX(Constants.DRIVE.RIGHT_MASTER);
+        rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
         rightMaster.setNeutralMode(NeutralMode.Brake);
         rightMaster.setInverted(true);
 
-        TalonSRX leftFollower1 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER1);
+        TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
         leftFollower1.setNeutralMode(NeutralMode.Brake);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
 
-        TalonSRX leftFollower2 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER2);
+        TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
         leftFollower2.setNeutralMode(NeutralMode.Brake);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
-        TalonSRX rightFollower1 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER1);
+        TalonSRX rightFollower1 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
         rightFollower1.setNeutralMode(NeutralMode.Brake);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
-        TalonSRX rightFollower2 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER2);
+        TalonSRX rightFollower2 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.setNeutralMode(NeutralMode.Brake);
         rightFollower2.follow(rightMaster);
@@ -67,9 +67,9 @@ public final class DriveSystem extends Subsystem {
         rightMaster.setSensorPhase(true);
 
         navx = new AHRS(SPI.Port.kMXP);
-        turnController = new PIDController(Constants.DRIVE.Turn.kP,
-                                           Constants.DRIVE.Turn.kI,
-                                           Constants.DRIVE.Turn.kD,
+        turnController = new PIDController(Constants.Drive.Turn.kP,
+                                           Constants.Drive.Turn.kI,
+                                           Constants.Drive.Turn.kD,
                                            navx, new TurnOutput());
         turnController.setInputRange(-180.0, 180.0);
         turnController.setOutputRange(-0.8, 0.8);
@@ -90,40 +90,40 @@ public final class DriveSystem extends Subsystem {
 
     public int getLeftEncoderTick() {
         return leftMaster.getSelectedSensorPosition(
-                Constants.DRIVE.highGearPIDSlotIdx);
+                Constants.Drive.highGearPIDSlotIdx);
     }
 
     public int getRightEncoderTick() {
         return rightMaster.getSelectedSensorPosition(
-                Constants.DRIVE.highGearPIDSlotIdx);
+                Constants.Drive.highGearPIDSlotIdx);
     }
 
     public double getLeftDistance(Constants.Unit unit) {
         return getLeftEncoderTick() / ((unit == Constants.Unit.Feet) ?
-                                       Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                                       Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH);
+                                       Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
+                                       Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH);
     }
 
     public double getRightDistance(Constants.Unit unit) {
         return getRightEncoderTick() / ((unit == Constants.Unit.Feet) ?
-                                        Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                                        Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH);
+                                        Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
+                                        Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH);
     }
 
     public double getLeftVelocity(Constants.Unit unit) {
         return leftMaster.getSelectedSensorVelocity(
-                Constants.DRIVE.highGearPIDSlotIdx) /
+                Constants.Drive.highGearPIDSlotIdx) /
                ((unit == Constants.Unit.Feet) ?
-                Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
+                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
+                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
     }
 
     public double getRightVelocity(Constants.Unit unit) {
         return rightMaster.getSelectedSensorVelocity(
-                Constants.DRIVE.highGearPIDSlotIdx) /
+                Constants.Drive.highGearPIDSlotIdx) /
                ((unit == Constants.Unit.Feet) ?
-                Constants.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                Constants.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
+                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
+                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
     }
 
     public void resetEncoders() {
@@ -155,14 +155,14 @@ public final class DriveSystem extends Subsystem {
 
     public void configMPGains() {
         TalonUtilsKt.config_PIDF(
-                leftMaster, Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.DRIVE.MP.Gains.kP, Constants.DRIVE.MP.Gains.kI,
-                Constants.DRIVE.MP.Gains.kD, Constants.DRIVE.MP.Gains.kF,
+                leftMaster, Constants.Drive.highGearPIDSlotIdx,
+                Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
+                Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
                 Constants.timeoutMs);
         TalonUtilsKt.config_PIDF(
-                rightMaster, Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.DRIVE.MP.Gains.kP, Constants.DRIVE.MP.Gains.kI,
-                Constants.DRIVE.MP.Gains.kD, Constants.DRIVE.MP.Gains.kF,
+                rightMaster, Constants.Drive.highGearPIDSlotIdx,
+                Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
+                Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
                 Constants.timeoutMs);
     }
 
