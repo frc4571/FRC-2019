@@ -6,21 +6,21 @@ import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
-    private TalonSRX elevatorMotor, toplevatorMotor;
+    private TalonSRX elevatorMotor, topelevatorMotor;
 
 
     private Elevator() {
-        this.elevatorMotor = new TalonSRX(RobotMap.ELEVATOR_MOTOR);
-        this.topelevatorMotor= new TalonSRX(RobotMap.TOPELEVATOR_MOTOR);
+        elevatorMotor = new TalonSRX(RobotMap.ELEVATOR_MOTOR);
+        topelevatorMotor= new TalonSRX(RobotMap.TOPELEVATOR_MOTOR);
 
-        this.elevatorMotor.setExperation(Robot.DEFAULT_PERIOD);
-        this.topelevatorMotor.setExperation(Robot.DEFAULT_PERIOD);
+        elevatorMotor.setExperation(Robot.DEFAULT_PERIOD);
+        topelevatorMotor.setExperation(Robot.DEFAULT_PERIOD);
 
-        this.elevatorMotor.setSafteyEnabled(false);
-        this.topelevatorMotor.setSafteyEnabled(false);
+        elevatorMotor.setSafteyEnabled(false);
+        topelevatorMotor.setSafteyEnabled(false);
 
-        this.elevatorMotor.satNeutralMode(NeutralMode.Brake);
-        this.topelevatorMotor.setNeutralMode(NeutralMode.Brake);
+        elevatorMotor.satNeutralMode(NeutralMode.Brake);
+        topelevatorMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
