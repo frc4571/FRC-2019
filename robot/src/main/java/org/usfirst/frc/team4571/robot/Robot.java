@@ -20,8 +20,6 @@ public class Robot extends TimedRobot {
             = new SendableChooser<>();
     private Command autoCommand;
 
-    public final static DriveSystem DRIVE_SYSTEM = new DriveSystem();
-
     public void robotInit() {
         autoChooser.addOption("run test path", new FollowPath("testpath"));
         autoChooser.addOption("Turn 90 Degrees", new TurnCommand(90.0D));

@@ -15,12 +15,13 @@ import org.usfirst.frc.team4571.robot.Constants;
 import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
 
 public final class DriveSystem extends Subsystem {
+    private static DriveSystem instance;
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
     private AHRS navx;
     private PIDController turnController;
 
-    public DriveSystem() {
+    private DriveSystem() {
         leftMaster = new TalonSRX(Constants.DRIVE.LEFT_MASTER);
         leftMaster.configFactoryDefault();
         rightMaster = new TalonSRX(Constants.DRIVE.RIGHT_MASTER);
@@ -65,6 +66,13 @@ public final class DriveSystem extends Subsystem {
         turnController.setInputRange(-180.0, 180.0);
         turnController.setOutputRange(-0.8, 0.8);
         turnController.setAbsoluteTolerance(3.0);
+    }
+
+    public static DriveSystem getInstance() {
+        if (instance == null) {
+            instance = new DriveSystem();
+        }
+        return instance;
     }
 
     @Override

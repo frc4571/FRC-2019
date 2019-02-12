@@ -4,36 +4,39 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.Robot;
+import org.usfirst.frc.team4571.robot.subsystems.DriveSystem;
 
 public class TeleOpDrive extends Command {
-    private static final TeleOpDrive instance = new TeleOpDrive();
+    private static TeleOpDrive instance;
+    private DriveSystem drivetrain;
 
     private TeleOpDrive() {
-        requires(Robot.DRIVE_SYSTEM);
+        drivetrain = DriveSystem.getInstance();
+        requires(drivetrain);
     }
 
     public static TeleOpDrive getInstance() {
+        if (instance == null) {
+            instance = new TeleOpDrive();
+        }
         return instance;
     }
 
     private void log() {
         SmartDashboard.putNumber(
-                "Left encoder", Robot.DRIVE_SYSTEM.getLeftEncoderTick());
+                "Left encoder", drivetrain.getLeftEncoderTick());
         SmartDashboard.putNumber(
-                "Left encoder", Robot.DRIVE_SYSTEM.getRightEncoderTick());
+                "Left encoder", drivetrain.getRightEncoderTick());
         SmartDashboard.putNumber(
-                "Left Speed",
-                Robot.DRIVE_SYSTEM.getLeftVelocity(
-                        Constants.Unit.Feet));
+                "Left Speed", drivetrain.getLeftVelocity(Constants.Unit.Feet));
         SmartDashboard.putNumber(
-                "Right Speed",
-                Robot.DRIVE_SYSTEM.getRightVelocity(
-                        Constants.Unit.Feet));
+                "Right Speed", drivetrain
+                        .getRightVelocity(Constants.Unit.Feet));
     }
 
     @Override
     protected void execute() {
-        Robot.DRIVE_SYSTEM.drive(
+        drivetrain.drive(
                 Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
         log();
     }
@@ -45,7 +48,7 @@ public class TeleOpDrive extends Command {
 
     @Override
     protected void end() {
-        Robot.DRIVE_SYSTEM.stop();
-        Robot.DRIVE_SYSTEM.resetEncoders();
+        drivetrain.stop();
+        drivetrain.resetEncoders();
     }
 }
