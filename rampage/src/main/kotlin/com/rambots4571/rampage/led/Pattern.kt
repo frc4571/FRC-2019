@@ -1,4 +1,4 @@
-package com.rambots4571.rampage.components.led
+package com.rambots4571.rampage.led
 
 enum class PatternTable(val pulseWidth: Int, val value: Double) {
 //    RAINBOW_PALETTE(1005, -0.99),

@@ -1,4 +1,4 @@
-package com.rambots4571.rampage.components.joystick
+package com.rambots4571.rampage.joystick
 
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
