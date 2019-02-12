@@ -19,7 +19,7 @@ public class Elevator extends Subsystem {
         elevatorMotor.setSafteyEnabled(false);
         topelevatorMotor.setSafteyEnabled(false);
 
-        elevatorMotor.satNeutralMode(NeutralMode.Brake);
+        elevatorMotor.setNeutralMode(NeutralMode.Brake);
         topelevatorMotor.setNeutralMode(NeutralMode.Brake);
     }
 
