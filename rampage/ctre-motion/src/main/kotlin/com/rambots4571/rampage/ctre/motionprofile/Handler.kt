@@ -3,6 +3,8 @@ package com.rambots4571.rampage.ctre.motionprofile
 import com.ctre.phoenix.motion.MotionProfileStatus
 import com.ctre.phoenix.motion.SetValueMotionProfile
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.StatusFrame
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.rambots4571.rampage.ctre.Constants
 import edu.wpi.first.wpilibj.Notifier
@@ -29,6 +31,10 @@ internal class Handler(
         talons.forEach {
             it.changeMotionControlFramePeriod(
                     profile.motionControlFramePeriod)
+            it.setStatusFramePeriod(
+                    StatusFrameEnhanced.Status_10_MotionMagic,
+                    Constants.Talon.trajectoryPointPeriod,
+                    Constants.Talon.timeoutMs)
         }
         executorThread = Notifier(PeriodicExecutor())
     }
