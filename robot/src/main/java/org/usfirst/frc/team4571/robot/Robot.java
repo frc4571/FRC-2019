@@ -6,10 +6,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.commands.autonomous.FollowPath;
-import org.usfirst.frc.team4571.robot.commands.autonomous.TurnCommand;
-import org.usfirst.frc.team4571.robot.commands.teleop.TeleOpDrive;
-import org.usfirst.frc.team4571.robot.subsystems.DriveSystem;
+import org.usfirst.frc.team4571.robot.command.autonomous.FollowPath;
+import org.usfirst.frc.team4571.robot.command.autonomous.TurnCommand;
+import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
 public class Robot extends TimedRobot {
     public static final DriveStick leftStick = new DriveStick(

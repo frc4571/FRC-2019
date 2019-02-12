@@ -1,17 +1,16 @@
-package org.usfirst.frc.team4571.robot.commands.teleop;
+package org.usfirst.frc.team4571.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.Robot;
-import org.usfirst.frc.team4571.robot.subsystems.DriveSystem;
+import org.usfirst.frc.team4571.robot.subsystem.DriveSystem;
 
 public class TeleOpDrive extends Command {
     private static TeleOpDrive instance;
-    private DriveSystem drivetrain;
+    private DriveSystem drivetrain = DriveSystem.getInstance();
 
     private TeleOpDrive() {
-        drivetrain = DriveSystem.getInstance();
         requires(drivetrain);
     }
 

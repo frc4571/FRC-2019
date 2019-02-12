@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4571.robot.subsystems;
+package org.usfirst.frc.team4571.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
