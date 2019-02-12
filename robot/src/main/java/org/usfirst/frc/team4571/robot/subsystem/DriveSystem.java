@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
+import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
 import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
 
@@ -75,15 +76,17 @@ public final class DriveSystem extends Subsystem {
         turnController.setAbsoluteTolerance(3.0);
     }
 
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(TeleOpDrive.getInstance());
+    }
+
     public static DriveSystem getInstance() {
         if (instance == null) {
             instance = new DriveSystem();
         }
         return instance;
     }
-
-    @Override
-    protected void initDefaultCommand() {}
 
     public int getLeftEncoderTick() {
         return leftMaster.getSelectedSensorPosition(

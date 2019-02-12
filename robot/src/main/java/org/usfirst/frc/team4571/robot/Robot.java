@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.command.autonomous.FollowPath;
 import org.usfirst.frc.team4571.robot.command.autonomous.TurnCommand;
-import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
 public class Robot extends TimedRobot {
     public static final DriveStick leftStick = new DriveStick(
@@ -48,7 +47,6 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel();
         }
-        Scheduler.getInstance().add(TeleOpDrive.getInstance());
     }
 
     public void teleopPeriodic() {
