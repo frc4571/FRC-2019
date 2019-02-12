@@ -3,6 +3,7 @@ package org.usfirst.frc.team4571.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
@@ -24,27 +25,33 @@ public final class DriveSystem extends Subsystem {
     private DriveSystem() {
         leftMaster = new TalonSRX(Constants.DRIVE.LEFT_MASTER);
         leftMaster.configFactoryDefault();
+        leftMaster.setNeutralMode(NeutralMode.Brake);
         rightMaster = new TalonSRX(Constants.DRIVE.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
+        rightMaster.setNeutralMode(NeutralMode.Brake);
         rightMaster.setInverted(true);
 
         TalonSRX leftFollower1 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
+        leftFollower1.setNeutralMode(NeutralMode.Brake);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
 
         TalonSRX leftFollower2 = new TalonSRX(Constants.DRIVE.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
+        leftFollower2.setNeutralMode(NeutralMode.Brake);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
         TalonSRX rightFollower1 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
+        rightFollower1.setNeutralMode(NeutralMode.Brake);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
         TalonSRX rightFollower2 = new TalonSRX(Constants.DRIVE.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
+        rightFollower2.setNeutralMode(NeutralMode.Brake);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
 
