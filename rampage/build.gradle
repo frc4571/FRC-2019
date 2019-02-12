@@ -1,6 +1,6 @@
-subprojects {
-    group 'com.rambots4571.rampage'
+group 'com.rambots4571'
 
+allprojects {
     repositories {
         maven {
             url "http://first.wpi.edu/FRC/roborio/maven/release/"
@@ -9,8 +9,16 @@ subprojects {
             url "http://devsite.ctr-electronics.com/maven/release/"
         }
     }
+}
+
+subprojects {
+    group 'com.rambots4571.rampage'
 
     jar {
         destinationDir = file("$rootDir/build/libs")
     }
+}
+
+dependencies {
+    implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilib_version"
 }
