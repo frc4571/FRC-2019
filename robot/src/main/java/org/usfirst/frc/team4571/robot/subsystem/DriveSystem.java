@@ -156,13 +156,13 @@ public final class DriveSystem extends Subsystem {
     public void configMPGains() {
         TalonUtilsKt.config_PIDF(
                 leftMaster, Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kP, Constants.MPGains.kI,
-                Constants.MPGains.kD, Constants.MPGains.kF,
+                Constants.DRIVE.MP.Gains.kP, Constants.DRIVE.MP.Gains.kI,
+                Constants.DRIVE.MP.Gains.kD, Constants.DRIVE.MP.Gains.kF,
                 Constants.timeoutMs);
         TalonUtilsKt.config_PIDF(
                 rightMaster, Constants.DRIVE.highGearPIDSlotIdx,
-                Constants.MPGains.kP, Constants.MPGains.kI,
-                Constants.MPGains.kD, Constants.MPGains.kF,
+                Constants.DRIVE.MP.Gains.kP, Constants.DRIVE.MP.Gains.kI,
+                Constants.DRIVE.MP.Gains.kD, Constants.DRIVE.MP.Gains.kF,
                 Constants.timeoutMs);
     }
 

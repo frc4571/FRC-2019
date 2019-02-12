@@ -30,21 +30,20 @@ object Constants {
             const val kI = 0.0
             const val kD = 0.0
         }
+
+        object MP {
+            const val trajectoryPointPeriod = 10
+            private const val maxVel = 32169 // u / 100 ms
+            object Gains {
+                const val kP = 0.0
+                const val kI = 0.0
+                const val kD = 0.0
+                const val kF = (100.0 * 1023) / maxVel
+            }
+        }
     }
 
-    object MPGains {
-        private const val maxVel = 32169 // u / 100 ms
-        const val kP = 0.0
-        const val kI = 0.0
-        const val kD = 0.0
-        const val kF = (100.0 * 1023) / maxVel
-    }
-
-    object MP {
-        const val trajectoryPointPeriod = 10
-    }
-
-    object paths {
+    object Paths {
         const val dir = "/home/lvuser/deploy/paths/"
         const val leftSuffix = "_left.csv"
         const val rightSuffix = "_right.csv"
