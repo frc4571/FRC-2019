@@ -6,6 +6,8 @@ jdk:
 before_install:
   - chmod +x gradlew
 
+install: true
+
 script:
   - ./gradlew build --scan -s
 
