@@ -1,26 +1,22 @@
 package org.usfirst.frc.team4571.robot.subsystem;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
-    private TalonSRX elevatorMotor, topelevatorMotor;
+    private TalonSRX baseMotor, topMotor;
 
 
     private Elevator() {
-        elevatorMotor = new TalonSRX(RobotMap.ELEVATOR_MOTOR);
-        topelevatorMotor= new TalonSRX(RobotMap.TOPELEVATOR_MOTOR);
-
-        elevatorMotor.setExperation(Robot.DEFAULT_PERIOD);
-        topelevatorMotor.setExperation(Robot.DEFAULT_PERIOD);
-
-        elevatorMotor.setSafteyEnabled(false);
-        topelevatorMotor.setSafteyEnabled(false);
-
-        elevatorMotor.setNeutralMode(NeutralMode.Brake);
-        topelevatorMotor.setNeutralMode(NeutralMode.Brake);
+        baseMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
+        topMotor = new TalonSRX(Constants.Elevator.BASE_MOTOR);
+        baseMotor.setNeutralMode(NeutralMode.Brake);
+        topMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     @Override
@@ -33,5 +29,13 @@ public class Elevator extends Subsystem {
             instance = new Elevator();
         }
         return instance;
+    }
+
+    public void setBaseMotor(double value) {
+        baseMotor.set(ControlMode.PercentOutput, value);
+    }
+
+    public void setTopMotor(double value) {
+        topMotor.set(ControlMode.PercentOutput, value);
     }
 }

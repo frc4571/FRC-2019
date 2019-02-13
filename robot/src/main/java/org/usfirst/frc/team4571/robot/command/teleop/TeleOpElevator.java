@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4571.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team4571.robot.Robot;
 import org.usfirst.frc.team4571.robot.subsystem.Elevator;
 
 public class TeleOpElevator extends Command {
@@ -20,7 +21,8 @@ public class TeleOpElevator extends Command {
 
     @Override
     protected void execute() {
-        // code here
+        elevator.setBaseMotor(Robot.leftStick.getYAxis());
+        elevator.setTopMotor(Robot.rightStick.getYAxis());
     }
 
     @Override

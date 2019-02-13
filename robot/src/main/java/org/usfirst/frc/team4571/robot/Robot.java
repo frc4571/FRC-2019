@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4571.robot;
 
+import com.rambots4571.rampage.joystick.DriveStick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -10,6 +11,11 @@ public class Robot extends TimedRobot {
     private final SendableChooser<Command> autoChooser
             = new SendableChooser<>();
     private Command autoCommand;
+
+    public static DriveStick leftStick =
+            new DriveStick(Constants.Controllers.LEFT_STICK);
+    public static DriveStick rightStick =
+            new DriveStick(Constants.Controllers.RIGHT_STICK);
 
     public void robotInit() {
         SmartDashboard.putData("Auto Chooser", autoChooser);
