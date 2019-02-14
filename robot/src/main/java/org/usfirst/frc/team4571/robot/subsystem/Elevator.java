@@ -38,10 +38,10 @@ public class Elevator extends Subsystem {
     public void setTopMotor(double value) {
         topMotor.set(ControlMode.PercentOutput, value);
     }
-     public void StopBaseMotor(){
+     public void stopBaseMotor(){
         baseMotor.set(ControlMode.PercentOutput, 0);
     }
-    public void StopTopMotor(){
+    public void stopTopMotor(){
         topMotor.set(ControlMode.PercentOutput,0);
     }
 }
