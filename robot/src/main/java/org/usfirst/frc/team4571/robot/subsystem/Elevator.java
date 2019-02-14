@@ -10,7 +10,7 @@ import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
 public class Elevator extends Subsystem {
     private static Elevator instance;
     private TalonSRX baseMotor, topMotor;
-    
+
     private Elevator() {
         baseMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor = new TalonSRX(Constants.Elevator.BASE_MOTOR);
@@ -20,7 +20,7 @@ public class Elevator extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(TeleOpElevator.getInstance());
+        setDefaultCommand(new TeleOpElevator());
     }
 
     public static Elevator getInstance() {
