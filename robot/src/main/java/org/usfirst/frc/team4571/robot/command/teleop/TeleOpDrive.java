@@ -7,18 +7,10 @@ import org.usfirst.frc.team4571.robot.Robot;
 import org.usfirst.frc.team4571.robot.subsystem.DriveSystem;
 
 public class TeleOpDrive extends Command {
-    private static TeleOpDrive instance;
     private DriveSystem drivetrain = DriveSystem.getInstance();
 
-    private TeleOpDrive() {
+    public TeleOpDrive() {
         requires(drivetrain);
-    }
-
-    public static TeleOpDrive getInstance() {
-        if (instance == null) {
-            instance = new TeleOpDrive();
-        }
-        return instance;
     }
 
     private void log() {

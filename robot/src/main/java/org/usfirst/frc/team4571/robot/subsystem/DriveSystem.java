@@ -78,7 +78,7 @@ public final class DriveSystem extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(TeleOpDrive.getInstance());
+        setDefaultCommand(new TeleOpDrive());
     }
 
     public static DriveSystem getInstance() {
