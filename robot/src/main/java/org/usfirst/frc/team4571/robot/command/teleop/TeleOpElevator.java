@@ -13,7 +13,11 @@ public class TeleOpElevator extends Command {
 
     @Override
     protected void execute() {
-        elevator.setBaseMotor(Robot.leftStick.getYAxis());
+        if (elevator.isLimitSwitchPressed() && Robot.leftStick.getYAxis() < 0) {
+            elevator.stopBaseMotor();
+        } else {
+            elevator.setBaseMotor(Robot.leftStick.getYAxis());
+        }
         elevator.setTopMotor(Robot.rightStick.getYAxis());
     }
 
