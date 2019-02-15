@@ -25,6 +25,8 @@ object Constants {
         const val RIGHT_FOLLOWER2 = 3
         const val highGearPIDSlotIdx = 0
 
+        const val deadband = 0.06
+
         object Turn {
             const val kP = 0.0
             const val kI = 0.0
