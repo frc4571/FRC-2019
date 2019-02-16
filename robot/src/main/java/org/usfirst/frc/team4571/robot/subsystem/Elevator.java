@@ -49,11 +49,11 @@ public class Elevator extends Subsystem {
                                  Constants.Elevator.Gains.kD,
                                  Constants.Elevator.Gains.kF,
                                  Constants.Elevator.timeoutMs);
-
-        baseMotor.configMotionCruiseVelocity(Constants.Elevator.cruiseVel,
-                                             Constants.Elevator.timeoutMs);
-        baseMotor.configMotionAcceleration(Constants.Elevator.acceleration,
-                                           Constants.Elevator.timeoutMs);
+        
+//        baseMotor.configMotionCruiseVelocity(Constants.Elevator.cruiseVel,
+//                                             Constants.Elevator.timeoutMs);
+//        baseMotor.configMotionAcceleration(Constants.Elevator.acceleration,
+//                                           Constants.Elevator.timeoutMs);
     }
 
     @Override
