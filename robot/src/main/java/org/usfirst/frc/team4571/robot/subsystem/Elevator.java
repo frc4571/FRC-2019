@@ -1,8 +1,11 @@
 package org.usfirst.frc.team4571.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
@@ -19,6 +22,38 @@ public class Elevator extends Subsystem {
         baseMotor.setNeutralMode(NeutralMode.Brake);
         topMotor.setNeutralMode(NeutralMode.Brake);
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
+
+        baseMotor.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative,
+                Constants.Elevator.kPIDLoopIdx, Constants.Elevator.timeoutMs);
+
+        baseMotor.setStatusFramePeriod(
+                StatusFrameEnhanced.Status_13_Base_PIDF0, 10,
+                Constants.Elevator.timeoutMs);
+        baseMotor.setStatusFramePeriod(
+                StatusFrameEnhanced.Status_10_MotionMagic, 10,
+                Constants.Elevator.timeoutMs);
+
+        baseMotor.configNominalOutputForward(0, Constants.Elevator.timeoutMs);
+        baseMotor.configNominalOutputReverse(0, Constants.Elevator.timeoutMs);
+        baseMotor.configPeakOutputForward(1, Constants.Elevator.timeoutMs);
+        baseMotor.configPeakOutputReverse(-1, Constants.Elevator.timeoutMs);
+
+        baseMotor.selectProfileSlot(
+                Constants.Elevator.kSlotIdx,
+                Constants.Elevator.kPIDLoopIdx);
+
+        TalonUtilsKt.config_PIDF(baseMotor, Constants.Elevator.kPIDLoopIdx,
+                                 Constants.Elevator.Gains.kP,
+                                 Constants.Elevator.Gains.kI,
+                                 Constants.Elevator.Gains.kD,
+                                 Constants.Elevator.Gains.kF,
+                                 Constants.Elevator.timeoutMs);
+
+        baseMotor.configMotionCruiseVelocity(Constants.Elevator.cruiseVel,
+                                             Constants.Elevator.timeoutMs);
+        baseMotor.configMotionAcceleration(Constants.Elevator.acceleration,
+                                           Constants.Elevator.timeoutMs);
     }
 
     @Override
@@ -51,11 +86,16 @@ public class Elevator extends Subsystem {
         return limitSwitch.get();
     }
 
-    public void resetEncoder(){
+    public void resetEncoder() {
         baseMotor.setSelectedSensorPosition(0);
     }
 
-    public int getEncoderTick(){
-        return baseMotor.getSelectedSensorPosition();
+    public int getEncoderTick() {
+        return baseMotor.getSelectedSensorPosition(
+                Constants.Elevator.kPIDLoopIdx);
+    }
+
+    public double getHeight() {
+        return getEncoderTick() / Constants.Elevator.TICKS_PER_INCH;
     }
 }
