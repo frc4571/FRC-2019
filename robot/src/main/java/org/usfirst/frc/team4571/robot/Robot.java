@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
 
 public class Robot extends TimedRobot {
     private final SendableChooser<Command> autoChooser
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) {
             autoCommand.cancel();
         }
+        Scheduler.getInstance().add(new TeleOpElevator());
     }
 
     public void teleopPeriodic() {

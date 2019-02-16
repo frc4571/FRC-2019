@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
-import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
@@ -23,9 +22,7 @@ public class Elevator extends Subsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleOpElevator());
-    }
+    protected void initDefaultCommand() {}
 
     public static Elevator getInstance() {
         if (instance == null) {
@@ -53,10 +50,12 @@ public class Elevator extends Subsystem {
     public boolean isLimitSwitchPressed() {
         return limitSwitch.get();
     }
+
     public void resetEncoder(){
         baseMotor.setSelectedSensorPosition(0);
     }
+
     public int getEncoderTick(){
-        baseMotor.getSelectedSensorPosition();
+        return baseMotor.getSelectedSensorPosition();
     }
 }
