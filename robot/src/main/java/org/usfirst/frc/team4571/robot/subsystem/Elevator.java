@@ -56,4 +56,7 @@ public class Elevator extends Subsystem {
     public void resetEncoder(){
         baseMotor.setSelectedSensorPosition(0);
     }
+    public int getEncoderTick(){
+        baseMotor.getSelectedSensorPosition();
+    }
 }
