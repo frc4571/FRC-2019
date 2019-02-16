@@ -53,4 +53,7 @@ public class Elevator extends Subsystem {
     public boolean isLimitSwitchPressed() {
         return limitSwitch.get();
     }
+    public void resetEncoder(){
+        baseMotor.setSelectedSensorPosition(0);
+    }
 }
