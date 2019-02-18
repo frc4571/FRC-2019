@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4571.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -14,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
+import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
+
 public final class DriveSystem extends Subsystem {
     private static DriveSystem instance;
     private TalonSRX leftMaster;
@@ -24,8 +27,9 @@ public final class DriveSystem extends Subsystem {
     private DriveSystem() {
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
         leftMaster.configFactoryDefault();
-        leftMaster.setNeutralMode(NeutralMode.Brake);
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
+        leftMaster.setNeutralMode(NeutralMode.Brake);
+
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
@@ -46,31 +50,31 @@ public final class DriveSystem extends Subsystem {
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
-        VictorSPX rightFollower1 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER1);
+        VictorSPX rightFollower1 = new VictorSPX(
+                Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
         rightFollower1.configNeutralDeadband(Constants.Drive.deadband);
         rightFollower1.setNeutralMode(NeutralMode.Brake);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
-        VictorSPX rightFollower2 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER2);
+        VictorSPX rightFollower2 = new VictorSPX(
+                Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
         rightFollower2.setNeutralMode(NeutralMode.Brake);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
 
-        //        checkError(leftMaster.configSelectedFeedbackSensor(
-        //                FeedbackDevice.CTRE_MagEncoder_Relative, 0,
-        //                Constants.timeoutMs), "can't initialize left
-        //                encoder!");
-        //
-        //        checkError(rightMaster.configSelectedFeedbackSensor(
-        //                FeedbackDevice.CTRE_MagEncoder_Relative, 0,
-        //                Constants.timeoutMs), "can't initialize right
-        //                encoder!");
+        checkError(leftMaster.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative, 0,
+                Constants.timeoutMs), "can't initialize left encoder!");
 
-        //        rightMaster.setSensorPhase(true);
+        checkError(rightMaster.configSelectedFeedbackSensor(
+                FeedbackDevice.CTRE_MagEncoder_Relative, 0,
+                Constants.timeoutMs), "can't initialize right encoder!");
+
+        rightMaster.setSensorPhase(true);
 
         navx = new AHRS(SPI.Port.kMXP);
         turnController = new PIDController(Constants.Drive.Turn.kP,
