@@ -13,3 +13,9 @@
 *.class
 
 .DS_Store
+
+**/bin/
+**/.settings/
+
+.project
+.classpath
