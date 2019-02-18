@@ -1,21 +1,27 @@
-# builds
+# Builds
+
 /build/
 /out/
+**/bin/
 
-# ide
+# IDE
+
+# IntelliJ
+
 /.idea/
 *.iml
 
-# gradle
+# Eclipse
+
+.project
+.classpath
+**/.settings/
+
+# Gradle
+
 /.gradle/
 
 # compiled classes
 *.class
 
 .DS_Store
-
-**/bin/
-**/.settings/
-
-.project
-.classpath
