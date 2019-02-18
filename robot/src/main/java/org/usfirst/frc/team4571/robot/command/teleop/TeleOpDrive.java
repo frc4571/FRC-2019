@@ -19,10 +19,10 @@ public class TeleOpDrive extends Command {
 //        SmartDashboard.putNumber(
 //                "Left encoder", drivetrain.getRightEncoderTick());
 //        SmartDashboard.putNumber(
-//                "Left Speed", drivetrain.getLeftVelocity(Constants.Unit.Feet));
+//                "Left Speed", drivetrain.getLeftVelocity(Constants.Units.Feet));
 //        SmartDashboard.putNumber(
 //                "Right Speed", drivetrain
-//                        .getRightVelocity(Constants.Unit.Feet));
+//                        .getRightVelocity(Constants.Units.Feet));
         SmartDashboard.putNumber("left joystick", Robot.leftStick.getYAxis());
         SmartDashboard.putNumber("right joystick", Robot.rightStick.getYAxis());
     }

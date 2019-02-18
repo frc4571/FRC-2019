@@ -6,9 +6,8 @@ object Constants {
     const val timeoutMs = 30
     const val longTimeoutMs = 1000
 
-    enum class Unit {
-        Feet,
-        Inches
+    enum class Units {
+        Feet, Inches, Ticks
     }
 
     object Controllers {
@@ -66,10 +65,6 @@ object Constants {
         const val dir = "/home/lvuser/deploy/paths/"
         const val leftSuffix = "_left.csv"
         const val rightSuffix = "_right.csv"
-    }
-
-    enum class Units {
-        Ticks, Inches
     }
 
     object Elevator {
