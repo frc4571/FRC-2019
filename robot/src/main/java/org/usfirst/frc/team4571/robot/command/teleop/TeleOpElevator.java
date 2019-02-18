@@ -2,6 +2,7 @@ package org.usfirst.frc.team4571.robot.command.teleop;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.Robot;
 import org.usfirst.frc.team4571.robot.subsystem.Elevator;
 
@@ -12,23 +13,23 @@ public class TeleOpElevator extends Command {
         requires(elevator);
     }
 
+    @Override
+    protected void initialize() {
+        elevator.teleOpInit();
+    }
+
     private void log() {
-        SmartDashboard.putNumber("elevator encoder tick",
-                                 elevator.getEncoderTick());
+        SmartDashboard.putNumber(
+                "elevator encoder tick",
+                elevator.getEncoderTick());
         SmartDashboard.putNumber("elevator height", elevator.getHeight());
+        SmartDashboard.putNumber("velocity", elevator.getVelocity(
+                Constants.Units.Ticks));
     }
 
     @Override
     protected void execute() {
-        if (elevator.isLimitSwitchPressed() && Robot.leftStick.getYAxis() < 0) {
-            elevator.stopBaseMotor();
-        } else {
-            elevator.setBaseMotor(Robot.leftStick.getYAxis());
-        }
-        elevator.setTopMotor(Robot.rightStick.getYAxis());
-        if (elevator.isLimitSwitchPressed()) {
-            elevator.resetEncoder();
-        }
+        elevator.setBaseMotor(Robot.rightStick.getYAxis());
         log();
     }
 

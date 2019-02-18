@@ -6,6 +6,10 @@ object Constants {
         const val RIGHT_STICK = 1
     }
 
+    enum class Units {
+        Ticks, Inches
+    }
+
     object Elevator {
         const val BASE_MOTOR = 1
         const val TOP_MOTOR = 2
@@ -15,9 +19,7 @@ object Constants {
         const val kSlotIdx = 0
         const val cruiseVel = 0
         const val acceleration = 0
-        private const val TICK_PER_REV = 4096
-        private const val SPROCKET_DIAMETER = 1.79 // inches
-        const val TICKS_PER_INCH = TICK_PER_REV / SPROCKET_DIAMETER
+        const val TICKS_PER_INCH = 723.16129
         object Gains {
             const val kP = 0.0
             const val kI = 0.0
