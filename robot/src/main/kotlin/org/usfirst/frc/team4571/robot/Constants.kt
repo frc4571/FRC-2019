@@ -67,4 +67,25 @@ object Constants {
         const val leftSuffix = "_left.csv"
         const val rightSuffix = "_right.csv"
     }
+
+    enum class Units {
+        Ticks, Inches
+    }
+
+    object Elevator {
+        const val BASE_MOTOR = 1
+        const val TOP_MOTOR = 2
+        const val LIMIT_SWITCH = 0 // DIO port
+        const val kPIDLoopIdx = 0
+        const val kSlotIdx = 0
+        const val cruiseVel = 0
+        const val acceleration = 0
+        const val TICKS_PER_INCH = 723.16129
+        object Gains {
+            const val kP = 0.0
+            const val kI = 0.0
+            const val kD = 0.0
+            const val kF = 0.0
+        }
+    }
 }
