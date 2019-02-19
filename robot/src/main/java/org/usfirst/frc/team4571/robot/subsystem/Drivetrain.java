@@ -17,7 +17,7 @@ import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
 import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
 
-public final class Drivetrain extends Subsystem {
+public class Drivetrain extends Subsystem {
     private static Drivetrain instance;
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
