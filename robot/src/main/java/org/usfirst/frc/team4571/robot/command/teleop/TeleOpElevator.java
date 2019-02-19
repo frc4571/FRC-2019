@@ -29,7 +29,7 @@ public class TeleOpElevator extends Command {
 
     @Override
     protected void execute() {
-        elevator.setBaseMotor(Robot.rightStick.getYAxis());
+        elevator.setBaseMotor(Robot.gamepad.getLeftYAxis());
         log();
     }
 
