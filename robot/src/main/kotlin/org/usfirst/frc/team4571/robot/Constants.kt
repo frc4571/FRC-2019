@@ -13,6 +13,7 @@ object Constants {
     object Controllers {
         const val LEFT_STICK = 0
         const val RIGHT_STICK = 1
+        const val GAMEPAD = 2
     }
 
     object Drive {
@@ -71,6 +72,7 @@ object Constants {
         const val BASE_MOTOR = 1
         const val TOP_MOTOR = 2
         const val LIMIT_SWITCH = 0 // DIO port
+
         const val kPIDLoopIdx = 0
         const val kSlotIdx = 0
         const val cruiseVel = 0
@@ -82,5 +84,10 @@ object Constants {
             const val kD = 0.0
             const val kF = 0.0
         }
+    }
+
+    object Intake {
+        const val LEFT_MOTOR = 3
+        const val RIGHT_MOTOR = 4
     }
 }
