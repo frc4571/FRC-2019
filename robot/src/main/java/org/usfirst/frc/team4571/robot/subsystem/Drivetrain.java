@@ -17,14 +17,14 @@ import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
 import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
 
-public final class DriveSystem extends Subsystem {
-    private static DriveSystem instance;
+public final class Drivetrain extends Subsystem {
+    private static Drivetrain instance;
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
     private AHRS navx;
     private PIDController turnController;
 
-    private DriveSystem() {
+    private Drivetrain() {
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
         leftMaster.configFactoryDefault();
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
@@ -91,9 +91,9 @@ public final class DriveSystem extends Subsystem {
         setDefaultCommand(new TeleOpDrive());
     }
 
-    public static DriveSystem getInstance() {
+    public static Drivetrain getInstance() {
         if (instance == null) {
-            instance = new DriveSystem();
+            instance = new Drivetrain();
         }
         return instance;
     }

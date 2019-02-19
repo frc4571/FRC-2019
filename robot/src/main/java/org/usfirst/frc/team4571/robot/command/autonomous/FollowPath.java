@@ -7,13 +7,13 @@ import com.rambots4571.rampage.ctre.motionprofile.Profile;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.Constants;
-import org.usfirst.frc.team4571.robot.subsystem.DriveSystem;
+import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
 import java.util.ArrayList;
 
 // TODO: change the time duration of points
 public class FollowPath extends Command {
-    private DriveSystem drivetrain = DriveSystem.getInstance();
+    private Drivetrain drivetrain = Drivetrain.getInstance();
     private Profile profile;
 
     public FollowPath(String pathName) {
