@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4571.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
@@ -14,6 +16,9 @@ public class Intake extends Subsystem {
         leftMotor = new VictorSPX(Constants.Intake.LEFT_MOTOR);
         rightMotor = new VictorSPX(Constants.Intake.RIGHT_MOTOR);
         rightMotor.follow(leftMotor);
+        rightMotor.setInverted(InvertType.OpposeMaster);
+        leftMotor.setNeutralMode(NeutralMode.Brake);
+        rightMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public static Intake getInstance() {
