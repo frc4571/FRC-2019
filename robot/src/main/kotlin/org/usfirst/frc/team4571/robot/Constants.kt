@@ -4,6 +4,7 @@ object Constants {
     object Controllers {
         const val LEFT_STICK = 0
         const val RIGHT_STICK = 1
+        const val GAMEPAD = 2
     }
 
     enum class Units {
