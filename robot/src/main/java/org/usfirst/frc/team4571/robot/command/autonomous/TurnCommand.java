@@ -2,10 +2,10 @@ package org.usfirst.frc.team4571.robot.command.autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.subsystem.DriveSystem;
+import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
 public class TurnCommand extends Command {
-    private DriveSystem drivetrain = DriveSystem.getInstance();
+    private Drivetrain drivetrain = Drivetrain.getInstance();
     private double angle;
 
     public TurnCommand(double angle) {
