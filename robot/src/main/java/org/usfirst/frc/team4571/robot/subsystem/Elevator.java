@@ -29,8 +29,8 @@ public class Elevator extends Subsystem {
         baseMotor.setSensorPhase(true);
 
         baseMotor.enableCurrentLimit(true);
-        baseMotor.configContinuousCurrentLimit(20,
-                                               Constants.timeoutMs);
+        baseMotor.configContinuousCurrentLimit(20, Constants.timeoutMs);
+        baseMotor.configPeakCurrentLimit(40, Constants.timeoutMs);
 
         baseMotor.configNeutralDeadband(0.06, Constants.timeoutMs);
 
