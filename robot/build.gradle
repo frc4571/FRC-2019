@@ -29,6 +29,7 @@ dependencies {
     compile wpi.deps.vendor.java()
     compile project(':rampage')
     compile project(':rampage:ctre-motion')
+    compile project(':rampage:structure')
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 }
