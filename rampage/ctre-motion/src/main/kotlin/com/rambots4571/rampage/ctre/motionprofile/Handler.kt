@@ -115,27 +115,30 @@ internal class Handler(
         }
         var numPointsToFill = Constants.Talon.MAX_TOP_BUFFER_COUNT - maxFilled
         isFinished = false
-        while (!isFinished && numPointsToFill > 0) {
+        while (!isFinished && numPointsToFill > 0 &&
+                profile.leftProfile.hasNext() &&
+                profile.rightProfile.hasNext()) {
             if (pointIndex >= profile.length) {
                 isFinished = true
                 break
             }
-            profile.leftProfile[pointIndex].zeroPos = false
-            profile.rightProfile[pointIndex].zeroPos = false
+            val leftPoint = profile.leftProfile.next()
+            val rightPoint = profile.rightProfile.next()
+
+            leftPoint.zeroPos = false
+            rightPoint.zeroPos = false
             if (pointIndex == 0) {
-                profile.leftProfile[pointIndex].zeroPos = true
-                profile.rightProfile[pointIndex].zeroPos = true
+                leftPoint.zeroPos = true
+                rightPoint.zeroPos = true
             }
-            profile.leftProfile[pointIndex].isLastPoint = false
-            profile.rightProfile[pointIndex].isLastPoint = false
+            leftPoint.isLastPoint = false
+            rightPoint.isLastPoint = false
             if (pointIndex + 1 == profile.length) {
-                profile.leftProfile[pointIndex].isLastPoint = true
-                profile.rightProfile[pointIndex].isLastPoint = true
+                leftPoint.isLastPoint = true
+                rightPoint.isLastPoint = true
             }
-            leftTalon.pushMotionProfileTrajectory(
-                    profile.leftProfile[pointIndex])
-            rightTalon.pushMotionProfileTrajectory(
-                    profile.rightProfile[pointIndex])
+            leftTalon.pushMotionProfileTrajectory(leftPoint)
+            rightTalon.pushMotionProfileTrajectory(rightPoint)
             pointIndex++
             numPointsToFill--
         }
