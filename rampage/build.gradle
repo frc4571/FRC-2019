@@ -1,3 +1,5 @@
+apply plugin: 'java'
+
 group 'com.rambots4571'
 
 allprojects {
