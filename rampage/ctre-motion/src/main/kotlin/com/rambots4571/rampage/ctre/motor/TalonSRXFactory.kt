@@ -20,7 +20,8 @@ data class Configuration(
     val magEncoderStatusFrameRateMs: Int = Constants.Talon.timeoutMs,
     val analogTempVBatStatusFrameRateMs: Int = Constants.Talon.timeoutMs,
     val pulseWidthStatusFrameRateMs: Int = Constants.Talon.timeoutMs,
-    val velocityMeasPeriod: VelocityMeasPeriod = VelocityMeasPeriod.Period_100Ms,
+    val velocityMeasPeriod: VelocityMeasPeriod =
+        VelocityMeasPeriod.Period_100Ms,
     val velMeasRollingAvgWindow: Int = 64,
     val openLoopRampRate: Double = 0.0, val closedLoopRampRate: Double = 0.0)
 
@@ -38,11 +39,11 @@ fun createTalon(id: Int, config: Configuration): TalonSRX {
     talon.clearStickyFaults(kTimeoutMs)
 
     talon.configForwardLimitSwitchSource(
-            LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
-            kTimeoutMs)
+            LimitSwitchSource.FeedbackConnector,
+            LimitSwitchNormal.NormallyOpen, kTimeoutMs)
     talon.configReverseLimitSwitchSource(
-            LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen,
-            kTimeoutMs)
+            LimitSwitchSource.FeedbackConnector,
+            LimitSwitchNormal.NormallyOpen, kTimeoutMs)
     talon.overrideLimitSwitchesEnable(config.enableLimitSwitch)
 
     // Turn off re-zeroing by default.

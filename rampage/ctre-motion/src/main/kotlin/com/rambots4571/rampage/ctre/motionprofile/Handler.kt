@@ -80,9 +80,9 @@ internal class Handler(
                 }
             ExecutionState.STARTED -> {
                 for (status in statuses) {
-                    if (status.btmBufferCnt <= Constants.Talon.MIN_POINTS_IN_TALON) {
+                    if (status.btmBufferCnt <=
+                            Constants.Talon.MIN_POINTS_IN_TALON)
                         readyToProgress = false
-                    }
                 }
                 if (readyToProgress) {
                     setMode(SetValueMotionProfile.Enable)
@@ -166,11 +166,10 @@ internal class Handler(
 
     private inner class PeriodicBufferProcessor : Runnable {
         override fun run() {
-            for (i in 0 until statuses.size) {
-                if (statuses[i].btmBufferCnt < Constants.Talon.MAX_BTM_BUFFER_COUNT) {
+            for (i in 0 until statuses.size)
+                if (statuses[i].btmBufferCnt <
+                        Constants.Talon.MAX_BTM_BUFFER_COUNT)
                     talons[i].processMotionProfileBuffer()
-                }
-            }
         }
     }
 
