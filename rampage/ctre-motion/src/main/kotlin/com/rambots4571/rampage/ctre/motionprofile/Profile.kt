@@ -10,7 +10,7 @@ class Profile(
     val leftProfile: Sequence<TrajectoryPoint>,
     val rightProfile: Sequence<TrajectoryPoint>, leftTalon: TalonSRX,
     rightTalon: TalonSRX) {
-    val length: Int = leftProfile.size()
+    val length: Int = leftProfile.size
     private val handler: Handler =
         Handler(this, leftTalon, rightTalon)
     var timeoutMs = Constants.Talon.timeoutMs
@@ -19,7 +19,7 @@ class Profile(
     val isFinished = handler.isFinished
 
     fun execute() {
-        if (leftProfile.size() != 0 && rightProfile.size() != 0) {
+        if (leftProfile.size != 0 && rightProfile.size != 0) {
             handler.execute()
         } else {
             DriverStation.getInstance()
