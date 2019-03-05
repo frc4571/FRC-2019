@@ -2,7 +2,6 @@ package com.rambots4571.rampage.ctre.motionprofile
 
 import com.ctre.phoenix.motion.TrajectoryPoint
 import java.io.File
-import java.lang.NumberFormatException
 import java.util.*
 
 class Parser(private var ticksPerUnit: Double) {
@@ -18,10 +17,11 @@ class Parser(private var ticksPerUnit: Double) {
             val point = TrajectoryPoint()
             try {
                 point.position = values[positionCol].toDouble() * ticksPerUnit
-                point.velocity = values[velocityCol].toDouble() * ticksPerUnit / 10
+                point.velocity =
+                    values[velocityCol].toDouble() * ticksPerUnit / 10
                 point.timeDur = values[timeDurationCol].toInt()
             } catch (e: NumberFormatException) {
-                println("couldn't parse '$it' into a number, skipping line..." )
+                println("couldn't parse '$it' into a number, skipping line...")
             }
             point.headingDeg = 0.0
             point.profileSlotSelect0 = 0
