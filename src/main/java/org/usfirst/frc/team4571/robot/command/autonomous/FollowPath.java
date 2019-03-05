@@ -4,11 +4,12 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.rampage.ctre.motionprofile.Parser;
 import com.rambots4571.rampage.ctre.motionprofile.Profile;
-import com.rambots4571.rampage.structure.Sequence;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
+
+import java.util.Queue;
 
 // TODO: change the time duration of points
 public class FollowPath extends Command {
@@ -18,14 +19,12 @@ public class FollowPath extends Command {
     public FollowPath(String pathName) {
         requires(drivetrain);
         TalonSRX[] talons = drivetrain.getTalonMasters();
-        Parser parser =
-                new Parser(Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET);
-        Sequence<TrajectoryPoint> left =
-                parser.getPoints(Constants.Paths.dir + pathName +
-                                 Constants.Paths.leftSuffix, true);
-        Sequence<TrajectoryPoint> right =
-                parser.getPoints(Constants.Paths.dir + pathName +
-                                 Constants.Paths.rightSuffix, false);
+        Parser parser = new Parser(
+                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET);
+        Queue<TrajectoryPoint> left = parser.getPoints(
+                Constants.Paths.dir + pathName + Constants.Paths.leftSuffix);
+        Queue<TrajectoryPoint> right = parser.getPoints(
+                Constants.Paths.dir + pathName + Constants.Paths.rightSuffix);
         profile = new Profile(left, right, talons[0], talons[1]);
     }
 
