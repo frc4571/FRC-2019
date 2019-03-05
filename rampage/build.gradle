@@ -1,8 +1,7 @@
 group 'com.rambots4571'
 
-buildDir = file("$rootDir/build/${project.name}")
-
 def lib = project.name
+buildDir = file("$rootDir/build/$lib")
 
 allprojects {
     repositories {
