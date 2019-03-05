@@ -42,10 +42,6 @@ allprojects {
     }
 }
 
-subprojects {
-    buildDir = file("$rootDir/build/${project.name}")
-}
-
 deploy {
     targets {
         roboRIO("roborio") {
