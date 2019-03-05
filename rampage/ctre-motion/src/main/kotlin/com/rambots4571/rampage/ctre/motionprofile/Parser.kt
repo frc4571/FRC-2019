@@ -9,6 +9,7 @@ class Parser(private var ticksPerUnit: Double) {
     var positionCol = 0
     var velocityCol = 1
     var timeDurationCol = 2
+
     fun getPoints(
         filePath: String): Queue<TrajectoryPoint> {
         val sequence: Queue<TrajectoryPoint> = LinkedList<TrajectoryPoint>()
