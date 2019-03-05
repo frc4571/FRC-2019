@@ -1,7 +1,6 @@
 package com.rambots4571.rampage.ctre.motionprofile
 
 import com.ctre.phoenix.motion.TrajectoryPoint
-import com.rambots4571.rampage.structure.Sequence
 import edu.wpi.first.wpilibj.DriverStation
 import java.io.File
 import java.io.FileNotFoundException
@@ -13,9 +12,9 @@ class Parser(private var ticksPerUnit: Double) {
     var timeDurationCol = 2
     fun getPoints(
         filePath: String,
-        skipFirstLine: Boolean = false): Sequence<TrajectoryPoint> {
+        skipFirstLine: Boolean = false): Queue<TrajectoryPoint> {
         val file = File(filePath)
-        val sequence = Sequence<TrajectoryPoint>()
+        val sequence: Queue<TrajectoryPoint> = LinkedList<TrajectoryPoint>()
         try {
             val reader = Scanner(file)
             if (skipFirstLine) reader.nextLine()
