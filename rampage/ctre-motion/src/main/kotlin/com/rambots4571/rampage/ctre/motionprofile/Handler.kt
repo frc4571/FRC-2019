@@ -120,15 +120,13 @@ internal class Handler(
         }
         var numPointsToFill = Constants.Talon.MAX_TOP_BUFFER_COUNT - maxFilled
         isFinished = false
-        while (!isFinished && numPointsToFill > 0 &&
-                profile.leftProfile.hasNext() &&
-                profile.rightProfile.hasNext()) {
+        while (!isFinished && numPointsToFill > 0) {
             if (pointIndex >= profile.length) {
                 isFinished = true
                 break
             }
-            val leftPoint = profile.leftProfile.next()
-            val rightPoint = profile.rightProfile.next()
+            val leftPoint = profile.leftProfile.remove()
+            val rightPoint = profile.rightProfile.remove()
 
             leftPoint.zeroPos = false
             rightPoint.zeroPos = false
