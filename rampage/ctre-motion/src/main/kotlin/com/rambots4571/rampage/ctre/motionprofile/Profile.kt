@@ -3,12 +3,12 @@ package com.rambots4571.rampage.ctre.motionprofile
 import com.ctre.phoenix.motion.TrajectoryPoint
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.rambots4571.rampage.ctre.Constants
-import com.rambots4571.rampage.structure.Sequence
 import edu.wpi.first.wpilibj.DriverStation
+import java.util.*
 
 class Profile(
-    val leftProfile: Sequence<TrajectoryPoint>,
-    val rightProfile: Sequence<TrajectoryPoint>, leftTalon: TalonSRX,
+    val leftProfile: Queue<TrajectoryPoint>,
+    val rightProfile: Queue<TrajectoryPoint>, leftTalon: TalonSRX,
     rightTalon: TalonSRX) {
     val length: Int = leftProfile.size
     private val handler: Handler =
