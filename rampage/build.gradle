@@ -1,22 +1,27 @@
 group 'com.rambots4571'
 
+buildDir = file("$rootDir/build/${project.name}")
+
+def lib = project.name
+
 allprojects {
     repositories {
         maven {
             url "http://first.wpi.edu/FRC/roborio/maven/release/"
         }
-        maven  {
+        maven {
             url "http://devsite.ctr-electronics.com/maven/release/"
         }
+    }
+
+    jar {
+        destinationDir = file("$rootDir/build/libs")
     }
 }
 
 subprojects {
     group 'com.rambots4571.rampage'
-
-    jar {
-        destinationDir = file("$rootDir/build/libs")
-    }
+    buildDir = file("$rootDir/build/$lib/${project.name}")
 }
 
 dependencies {
