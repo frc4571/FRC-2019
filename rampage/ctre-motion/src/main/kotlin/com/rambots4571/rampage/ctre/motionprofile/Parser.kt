@@ -1,10 +1,11 @@
 package com.rambots4571.rampage.ctre.motionprofile
 
 import com.ctre.phoenix.motion.TrajectoryPoint
+import edu.wpi.first.wpilibj.DriverStation
 import java.io.File
 import java.util.*
 
-class Parser(private var ticksPerUnit: Double) {
+class Parser(private val ticksPerUnit: Double) {
     var positionCol = 0
     var velocityCol = 1
     var timeDurationCol = 2
@@ -22,6 +23,14 @@ class Parser(private var ticksPerUnit: Double) {
                 point.timeDur = values[timeDurationCol].toInt()
             } catch (e: NumberFormatException) {
                 println("couldn't parse '$it' into a number, skipping line...")
+            } catch (e: IndexOutOfBoundsException) {
+                DriverStation.reportWarning(
+                        "could not parse $values because column values were " +
+                        "not specified correctly, \n" +
+                        "position column = $positionCol \n" +
+                        "velocity column = $velocityCol \n" +
+                        "time duration column = $timeDurationCol \n" +
+                        "there are only ${values.size} columns", false)
             }
             point.headingDeg = 0.0
             point.profileSlotSelect0 = 0

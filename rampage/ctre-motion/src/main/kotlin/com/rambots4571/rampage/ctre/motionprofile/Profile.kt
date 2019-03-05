@@ -11,8 +11,7 @@ class Profile(
     val rightProfile: Queue<TrajectoryPoint>, leftTalon: TalonSRX,
     rightTalon: TalonSRX) {
     val length: Int = leftProfile.size
-    private val handler: Handler =
-        Handler(this, leftTalon, rightTalon)
+    private val handler: Handler = Handler(this, leftTalon, rightTalon)
     var timeoutMs = Constants.Talon.timeoutMs
     var trajectoryPointPeriod = Constants.Talon.trajectoryPointPeriod
     var motionControlFramePeriod = timeoutMs / 2
