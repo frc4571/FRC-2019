@@ -13,6 +13,9 @@ allprojects {
         }
     }
 
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     jar {
         destinationDir = file("$rootDir/build/libs")
     }
