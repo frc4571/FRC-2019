@@ -18,13 +18,14 @@ public class TeleOpIntake extends Command {
     protected void execute() {
         if (intakeButton.get() ^ outtakeButton.get()) {
             if (intakeButton.get()) {
-                intake.setPower(1);
+                intake.setIntakePower(1);
             } else if (outtakeButton.get()) {
-                intake.setPower(-1);
+                intake.setIntakePower(-1);
             }
         } else {
-            intake.setPower(0);
+            intake.setIntakePower(0);
         }
+        intake.setPulleyPower(Robot.gamepad.getRightYAxis());
     }
 
     @Override

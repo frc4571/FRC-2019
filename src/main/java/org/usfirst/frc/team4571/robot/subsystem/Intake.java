@@ -3,22 +3,29 @@ package org.usfirst.frc.team4571.robot.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 
+import java.net.PortUnreachableException;
+
 public class Intake extends Subsystem {
     private static Intake instance;
-    private VictorSPX leftMotor;
-    private VictorSPX rightMotor;
+    private TalonSRX leftIntakeMotor;
+    private TalonSRX rightIntakeMotor;
+    private TalonSRX pulleyMotor;
 
     private Intake() {
-        leftMotor = new VictorSPX(Constants.Intake.LEFT_MOTOR);
-        rightMotor = new VictorSPX(Constants.Intake.RIGHT_MOTOR);
-        rightMotor.follow(leftMotor);
-        rightMotor.setInverted(InvertType.OpposeMaster);
-        leftMotor.setNeutralMode(NeutralMode.Brake);
-        rightMotor.setNeutralMode(NeutralMode.Brake);
+        leftIntakeMotor = new TalonSRX(Constants.Intake.LEFT_INTAKE_MOTOR);
+        leftIntakeMotor.setNeutralMode(NeutralMode.Brake);
+
+        rightIntakeMotor = new TalonSRX(Constants.Intake.RIGHT_INTAKE_MOTOR);
+        rightIntakeMotor.setNeutralMode(NeutralMode.Brake);
+        rightIntakeMotor.follow(leftIntakeMotor);
+        rightIntakeMotor.setInverted(InvertType.OpposeMaster);
+
+        pulleyMotor = new TalonSRX(Constants.Intake.PULLEY_MOTOR);
+        pulleyMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public static Intake getInstance() {
@@ -31,7 +38,11 @@ public class Intake extends Subsystem {
     @Override
     protected void initDefaultCommand() {}
 
-    public void setPower(double value) {
-        leftMotor.set(ControlMode.PercentOutput, value);
+    public void setIntakePower(double value) {
+        leftIntakeMotor.set(ControlMode.PercentOutput, value);
+    }
+
+    public void setPulleyPower(double value) {
+        pulleyMotor.set(ControlMode.PercentOutput, value);
     }
 }
