@@ -36,21 +36,21 @@ public class Drivetrain extends Subsystem {
         rightMaster.setNeutralMode(NeutralMode.Brake);
         rightMaster.setInverted(true);
 
-        VictorSPX leftFollower1 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER1);
+        TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
         leftFollower1.configNeutralDeadband(Constants.Drive.deadband);
         leftFollower1.setNeutralMode(NeutralMode.Brake);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
 
-        VictorSPX leftFollower2 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER2);
+        TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
         leftFollower2.configNeutralDeadband(Constants.Drive.deadband);
         leftFollower2.setNeutralMode(NeutralMode.Brake);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
-        VictorSPX rightFollower1 = new VictorSPX(
+        TalonSRX rightFollower1 = new TalonSRX(
                 Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
         rightFollower1.configNeutralDeadband(Constants.Drive.deadband);
@@ -58,7 +58,7 @@ public class Drivetrain extends Subsystem {
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
-        VictorSPX rightFollower2 = new VictorSPX(
+        TalonSRX rightFollower2 = new TalonSRX(
                 Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
