@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
             autoCommand.cancel();
         }
         Scheduler.getInstance().add(new TeleOpElevator());
-        Scheduler.getInstance().add(new TeleOpIntake());
+//        Scheduler.getInstance().add(new TeleOpIntake());
     }
 
     public void teleopPeriodic() {
