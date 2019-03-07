@@ -111,37 +111,47 @@ internal class Handler(
                 it.clearMotionProfileHasUnderrun(profile.timeoutMs)
             }
         }
+
         updateMPStatuses()
         var maxFilled = statuses[0].btmBufferCnt
+
         for (status in statuses) {
             if (status.topBufferCnt > maxFilled) {
                 maxFilled = status.topBufferCnt
             }
         }
+
         var numPointsToFill = Constants.Talon.MAX_TOP_BUFFER_COUNT - maxFilled
         isFinished = false
+
         while (!isFinished && numPointsToFill > 0) {
             if (pointIndex >= profile.length) {
                 isFinished = true
                 break
             }
+
             val leftPoint = profile.leftProfile.remove()
             val rightPoint = profile.rightProfile.remove()
 
             leftPoint.zeroPos = false
             rightPoint.zeroPos = false
+
             if (pointIndex == 0) {
                 leftPoint.zeroPos = true
                 rightPoint.zeroPos = true
             }
+
             leftPoint.isLastPoint = false
             rightPoint.isLastPoint = false
+
             if (pointIndex + 1 == profile.length) {
                 leftPoint.isLastPoint = true
                 rightPoint.isLastPoint = true
             }
+
             leftTalon.pushMotionProfileTrajectory(leftPoint)
             rightTalon.pushMotionProfileTrajectory(rightPoint)
+
             pointIndex++
             numPointsToFill--
         }

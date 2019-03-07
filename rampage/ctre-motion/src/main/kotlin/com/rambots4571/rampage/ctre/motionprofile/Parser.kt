@@ -11,7 +11,7 @@ class Parser(private val ticksPerUnit: Double) {
     var timeDurationCol = 2
 
     fun getPoints(filePath: String): Queue<TrajectoryPoint> {
-        val sequence: Queue<TrajectoryPoint> = LinkedList<TrajectoryPoint>()
+        val sequence: Queue<TrajectoryPoint> = ArrayDeque<TrajectoryPoint>(600)
         File(filePath).forEachLine {
             val values = it.split(", ")
             val point = TrajectoryPoint()
