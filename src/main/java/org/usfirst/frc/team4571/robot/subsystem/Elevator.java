@@ -82,8 +82,7 @@ public class Elevator extends Subsystem {
 
     public void teleOpInit() {
         baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(
-                0.35, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
     }
 
     public void setBaseMotor(double value) {
