@@ -1,6 +1,8 @@
 package org.usfirst.frc.team4571.robot
 
 object Constants {
+    const val timeoutMs = 30
+
     object Controllers {
         const val LEFT_STICK = 0
         const val RIGHT_STICK = 1
@@ -13,12 +15,11 @@ object Constants {
 
     object Elevator {
         const val BASE_MOTOR_MASTER = 1
-        const val TOP_MOTOR = 2
         const val BASE_MOTOR_FOLLOWER = 3
+        const val TOP_MOTOR = 2
         const val LIMIT_SWITCH = 0 // DIO port
 
         const val kPIDLoopIdx = 0
-        const val timeoutMs = 30
         const val kSlotIdx = 0
         const val cruiseVel = 0
         const val acceleration = 0
@@ -33,7 +34,8 @@ object Constants {
     }
 
     object Intake {
-        const val LEFT_MOTOR = 3
-        const val RIGHT_MOTOR = 4
+        const val LEFT_INTAKE_MOTOR = 4
+        const val RIGHT_INTAKE_MOTOR = 5
+        const val PULLEY_MOTOR = 6
     }
 }
