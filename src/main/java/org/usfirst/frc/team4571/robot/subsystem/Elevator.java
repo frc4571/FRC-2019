@@ -66,6 +66,7 @@ public class Elevator extends Subsystem {
         baseMotorFollower.setNeutralMode(NeutralMode.Brake);
         baseMotorFollower.follow(baseMotorMaster);
         baseMotorFollower.setInverted(InvertType.FollowMaster);
+        baseMotorFollower.enableCurrentLimit(true);
         baseMotorFollower.configContinuousCurrentLimit(
                 20, Constants.Elevator.timeoutMs);
         baseMotorFollower.configPeakCurrentLimit(
