@@ -17,7 +17,6 @@ public class Elevator extends Subsystem {
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
-        baseMotorMaster.setInverted(true);
         baseMotorMaster.setSensorPhase(true);
         baseMotorMaster.enableCurrentLimit(true);
         baseMotorMaster.configContinuousCurrentLimit(
