@@ -29,12 +29,12 @@ public class Drivetrain extends Subsystem {
         leftMaster.configFactoryDefault();
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
         leftMaster.setNeutralMode(NeutralMode.Brake);
+        leftMaster.setInverted(true);
 
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
         rightMaster.setNeutralMode(NeutralMode.Brake);
-        rightMaster.setInverted(true);
 
         TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
