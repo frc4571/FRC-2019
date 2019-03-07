@@ -19,38 +19,30 @@ public class Elevator extends Subsystem {
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
         baseMotorMaster.setSensorPhase(true);
         baseMotorMaster.enableCurrentLimit(true);
-        baseMotorMaster.configContinuousCurrentLimit(
-                20, Constants.Elevator.timeoutMs);
-        baseMotorMaster.configPeakCurrentLimit(
-                35, Constants.Elevator.timeoutMs);
-        baseMotorMaster.configPeakCurrentDuration(
-                500, Constants.Elevator.timeoutMs);
-        baseMotorMaster.configNeutralDeadband(
-                0.06, Constants.Elevator.timeoutMs);
+        baseMotorMaster.configContinuousCurrentLimit(20, Constants.timeoutMs);
+        baseMotorMaster.configPeakCurrentLimit(35, Constants.timeoutMs);
+        baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
+        baseMotorMaster.configNeutralDeadband(0.06, Constants.timeoutMs);
         baseMotorMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative,
-                Constants.Elevator.kPIDLoopIdx, Constants.Elevator.timeoutMs);
+                Constants.Elevator.kPIDLoopIdx, Constants.timeoutMs);
         baseMotorMaster.setStatusFramePeriod(
                 StatusFrameEnhanced.Status_13_Base_PIDF0, 10,
-                Constants.Elevator.timeoutMs);
+                Constants.timeoutMs);
         baseMotorMaster.setStatusFramePeriod(
                 StatusFrameEnhanced.Status_10_MotionMagic, 10,
-                Constants.Elevator.timeoutMs);
-        baseMotorMaster.configNominalOutputForward(
-                0, Constants.Elevator.timeoutMs);
-        baseMotorMaster.configNominalOutputReverse(
-                0, Constants.Elevator.timeoutMs);
-        baseMotorMaster.configPeakOutputForward(
-                1, Constants.Elevator.timeoutMs);
-        baseMotorMaster.configPeakOutputReverse(
-                -1, Constants.Elevator.timeoutMs);
+                Constants.timeoutMs);
+        baseMotorMaster.configNominalOutputForward(0, Constants.timeoutMs);
+        baseMotorMaster.configNominalOutputReverse(0, Constants.timeoutMs);
+        baseMotorMaster.configPeakOutputForward(1, Constants.timeoutMs);
+        baseMotorMaster.configPeakOutputReverse(-1, Constants.timeoutMs);
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
         TalonUtilsKt.config_PIDF(
                 baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
                 Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
                 Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
-                Constants.Elevator.timeoutMs);
+                Constants.timeoutMs);
         //        baseMotorMaster.configMotionCruiseVelocity(Constants.Elevator
         //        .cruiseVel,
         //                                             Constants.Elevator
@@ -67,12 +59,9 @@ public class Elevator extends Subsystem {
         baseMotorFollower.follow(baseMotorMaster);
         baseMotorFollower.setInverted(InvertType.FollowMaster);
         baseMotorFollower.enableCurrentLimit(true);
-        baseMotorFollower.configContinuousCurrentLimit(
-                20, Constants.Elevator.timeoutMs);
-        baseMotorFollower.configPeakCurrentLimit(
-                35, Constants.Elevator.timeoutMs);
-        baseMotorFollower.configPeakCurrentDuration(
-                500, Constants.Elevator.timeoutMs);
+        baseMotorFollower.configContinuousCurrentLimit(20, Constants.timeoutMs);
+        baseMotorFollower.configPeakCurrentLimit(35, Constants.timeoutMs);
+        baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
@@ -92,9 +81,9 @@ public class Elevator extends Subsystem {
     protected void initDefaultCommand() {}
 
     public void teleOpInit() {
-        baseMotorMaster.configOpenloopRamp(0.35, Constants.Elevator.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
         baseMotorFollower.configOpenloopRamp(
-                0.35, Constants.Elevator.timeoutMs);
+                0.35, Constants.timeoutMs);
     }
 
     public void setBaseMotor(double value) {
