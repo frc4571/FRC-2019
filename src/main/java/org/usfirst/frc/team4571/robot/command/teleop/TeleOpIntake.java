@@ -13,7 +13,8 @@ public class TeleOpIntake extends Command {
 
     @Override
     protected void execute() {
-        intake.setIntakePower(Robot.gamepad.getLeftTrigger() - Robot.gamepad.getRightTrigger());
+        intake.setIntakePower(Robot.gamepad.getLeftTrigger() -
+                              Robot.gamepad.getRightTrigger());
         intake.setPulleyPower(Robot.gamepad.getRightYAxis());
     }
 

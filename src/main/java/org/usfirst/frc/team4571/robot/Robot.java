@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.command.autonomous.FollowPath;
 import org.usfirst.frc.team4571.robot.command.autonomous.TurnCommand;
 import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
+import org.usfirst.frc.team4571.robot.command.teleop.TeleOpIntake;
 
 public class Robot extends TimedRobot {
     public static final DriveStick leftStick = new DriveStick(
@@ -53,7 +54,7 @@ public class Robot extends TimedRobot {
             autoCommand.cancel();
         }
         Scheduler.getInstance().add(new TeleOpElevator());
-        //        Scheduler.getInstance().add(new TeleOpIntake());
+        Scheduler.getInstance().add(new TeleOpIntake());
     }
 
     public void teleopPeriodic() {
