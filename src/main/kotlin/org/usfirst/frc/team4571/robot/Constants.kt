@@ -6,7 +6,7 @@ object Constants {
     const val timeoutMs = 30
     const val longTimeoutMs = 1000
 
-    enum class Unit {
+    enum class Units {
         Feet,
         Inches
     }

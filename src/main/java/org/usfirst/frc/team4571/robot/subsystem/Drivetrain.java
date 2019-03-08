@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
 import edu.wpi.first.wpilibj.PIDController;
@@ -108,32 +107,32 @@ public class Drivetrain extends Subsystem {
                 Constants.Drive.highGearPIDSlotIdx);
     }
 
-    public double getLeftDistance(Constants.Unit unit) {
+    public double getLeftDistance(Constants.Units units) {
         return getLeftEncoderTick() /
-               ((unit == Constants.Unit.Feet) ?
+               ((units == Constants.Units.Feet) ?
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH);
     }
 
-    public double getRightDistance(Constants.Unit unit) {
+    public double getRightDistance(Constants.Units units) {
         return getRightEncoderTick() /
-               ((unit == Constants.Unit.Feet) ?
+               ((units == Constants.Units.Feet) ?
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH);
     }
 
-    public double getLeftVelocity(Constants.Unit unit) {
+    public double getLeftVelocity(Constants.Units units) {
         return leftMaster.getSelectedSensorVelocity(
                 Constants.Drive.highGearPIDSlotIdx) /
-               ((unit == Constants.Unit.Feet) ?
+               ((units == Constants.Units.Feet) ?
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
     }
 
-    public double getRightVelocity(Constants.Unit unit) {
+    public double getRightVelocity(Constants.Units units) {
         return rightMaster.getSelectedSensorVelocity(
                 Constants.Drive.highGearPIDSlotIdx) /
-               ((unit == Constants.Unit.Feet) ?
+               ((units == Constants.Units.Feet) ?
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
     }

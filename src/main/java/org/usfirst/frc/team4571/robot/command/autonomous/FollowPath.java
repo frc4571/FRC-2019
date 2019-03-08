@@ -37,9 +37,9 @@ public class FollowPath extends Command {
     @Override
     protected void execute() {
         SmartDashboard.putNumber("left distance", drivetrain
-                .getLeftDistance(Constants.Unit.Feet));
+                .getLeftDistance(Constants.Units.Feet));
         SmartDashboard.putNumber("right distance", drivetrain
-                .getRightDistance(Constants.Unit.Feet));
+                .getRightDistance(Constants.Units.Feet));
     }
 
     @Override
