@@ -12,11 +12,13 @@ import org.usfirst.frc.team4571.robot.command.autonomous.TurnCommand;
 import org.usfirst.frc.team4571.robot.command.teleop.TeleOpElevator;
 
 public class Robot extends TimedRobot {
-    public static DriveStick leftStick =
-            new DriveStick(Constants.Controllers.LEFT_STICK);
-    public static DriveStick rightStick =
-            new DriveStick(Constants.Controllers.RIGHT_STICK);
-    public static Gamepad gamepad = new Gamepad(Constants.Controllers.GAMEPAD);
+    public static final DriveStick leftStick = new DriveStick(
+            Constants.Controllers.LEFT_STICK);
+    public static final DriveStick rightStick = new DriveStick(
+            Constants.Controllers.RIGHT_STICK);
+    public static final Gamepad gamepad = new Gamepad(
+            Constants.Controllers.GAMEPAD);
+
     private final SendableChooser<Command> autoChooser
             = new SendableChooser<>();
     private Command autoCommand;
