@@ -66,6 +66,7 @@ public class Elevator extends Subsystem {
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
         topMotor.setNeutralMode(NeutralMode.Brake);
+        topMotor.setInverted(true);
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
     }
