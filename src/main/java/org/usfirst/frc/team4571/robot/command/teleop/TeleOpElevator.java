@@ -20,8 +20,7 @@ public class TeleOpElevator extends Command {
 
     private void log() {
         SmartDashboard.putNumber(
-                "elevator encoder tick",
-                elevator.getEncoderTick());
+                "elevator encoder tick", elevator.getEncoderTick());
         SmartDashboard.putNumber("elevator height", elevator.getHeight());
         SmartDashboard.putNumber("velocity", elevator.getVelocity(
                 Constants.Units.Ticks));

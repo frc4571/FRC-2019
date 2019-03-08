@@ -11,7 +11,6 @@ import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
 import java.util.Queue;
 
-// TODO: change the time duration of points
 public class FollowPath extends Command {
     private Drivetrain drivetrain = Drivetrain.getInstance();
     private Profile profile;
