@@ -4,22 +4,21 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
-
-import java.net.PortUnreachableException;
 
 public class Intake extends Subsystem {
     private static Intake instance;
     private TalonSRX leftIntakeMotor;
-    private TalonSRX rightIntakeMotor;
+    private VictorSPX rightIntakeMotor;
     private TalonSRX pulleyMotor;
 
     private Intake() {
         leftIntakeMotor = new TalonSRX(Constants.Intake.LEFT_INTAKE_MOTOR);
         leftIntakeMotor.setNeutralMode(NeutralMode.Brake);
 
-        rightIntakeMotor = new TalonSRX(Constants.Intake.RIGHT_INTAKE_MOTOR);
+        rightIntakeMotor = new VictorSPX(Constants.Intake.RIGHT_INTAKE_MOTOR);
         rightIntakeMotor.setNeutralMode(NeutralMode.Brake);
         rightIntakeMotor.follow(leftIntakeMotor);
         rightIntakeMotor.setInverted(InvertType.OpposeMaster);
