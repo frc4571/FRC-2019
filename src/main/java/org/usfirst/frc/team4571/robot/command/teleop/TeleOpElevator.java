@@ -30,6 +30,8 @@ public class TeleOpElevator extends Command {
     @Override
     protected void execute() {
         elevator.setBaseMotor(Robot.gamepad.getLeftYAxis());
+        if (Robot.gamepad.getPOV() == 0) elevator.setTopMotor(0.5);
+        else if (Robot.gamepad.getPOV() == 180) elevator.setTopMotor(-0.5);
         log();
     }
 
