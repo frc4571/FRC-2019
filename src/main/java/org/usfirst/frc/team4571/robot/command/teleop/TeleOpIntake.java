@@ -32,4 +32,10 @@ public class TeleOpIntake extends Command {
     protected boolean isFinished() {
         return false;
     }
+
+    @Override
+    protected void end() {
+        intake.setIntakePower(0);
+        intake.setPulleyPower(0);
+    }
 }
