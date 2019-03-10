@@ -69,8 +69,8 @@ object Constants {
     }
 
     object Elevator {
-        const val BASE_MOTOR_MASTER = 1
-        const val BASE_MOTOR_FOLLOWER = 3
+        const val BASE_MOTOR_MASTER = 7
+        const val BASE_MOTOR_FOLLOWER = 8
         const val TOP_MOTOR = 2
         const val LIMIT_SWITCH = 0 // DIO port
 
