@@ -5,11 +5,13 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
@@ -35,30 +37,28 @@ public class Drivetrain extends Subsystem {
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
         rightMaster.setNeutralMode(NeutralMode.Brake);
 
-        TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
+        VictorSPX leftFollower1 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
         leftFollower1.configNeutralDeadband(Constants.Drive.deadband);
         leftFollower1.setNeutralMode(NeutralMode.Brake);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
 
-        TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
+        VictorSPX leftFollower2 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
         leftFollower2.configNeutralDeadband(Constants.Drive.deadband);
         leftFollower2.setNeutralMode(NeutralMode.Brake);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
-        TalonSRX rightFollower1 = new TalonSRX(
-                Constants.Drive.RIGHT_FOLLOWER1);
+        VictorSPX rightFollower1 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
         rightFollower1.configNeutralDeadband(Constants.Drive.deadband);
         rightFollower1.setNeutralMode(NeutralMode.Brake);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
-        TalonSRX rightFollower2 = new TalonSRX(
-                Constants.Drive.RIGHT_FOLLOWER2);
+        VictorSPX rightFollower2 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
         rightFollower2.setNeutralMode(NeutralMode.Brake);
