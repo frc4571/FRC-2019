@@ -2,7 +2,7 @@ package org.usfirst.frc.team4571.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
+import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
@@ -38,7 +38,7 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configPeakOutputReverse(-1, Constants.timeoutMs);
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
-        TalonUtilsKt.config_PIDF(
+        TalonUtils.config_PIDF(
                 baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
                 Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
                 Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,

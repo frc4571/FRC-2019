@@ -25,6 +25,8 @@ public class Intake extends Subsystem {
 
         pulleyMotor = new TalonSRX(Constants.Intake.PULLEY_MOTOR);
         pulleyMotor.setNeutralMode(NeutralMode.Brake);
+        pulleyMotor.configPeakOutputForward(0.5, Constants.timeoutMs);
+        pulleyMotor.configPeakOutputReverse(-0.5, Constants.timeoutMs);
     }
 
     public static Intake getInstance() {
@@ -45,3 +47,4 @@ public class Intake extends Subsystem {
         pulleyMotor.set(ControlMode.PercentOutput, value);
     }
 }
+

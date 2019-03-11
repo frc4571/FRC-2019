@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
+import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
-import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
+import static com.rambots4571.rampage.ctre.motor.TalonUtils.checkError;
 
 public class Drivetrain extends Subsystem {
     private static Drivetrain instance;
@@ -29,11 +29,13 @@ public class Drivetrain extends Subsystem {
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftMaster.setInverted(true);
+        leftMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
         rightMaster.setNeutralMode(NeutralMode.Brake);
+        rightMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
@@ -41,6 +43,7 @@ public class Drivetrain extends Subsystem {
         leftFollower1.setNeutralMode(NeutralMode.Brake);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
+        leftFollower1.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
@@ -48,6 +51,7 @@ public class Drivetrain extends Subsystem {
         leftFollower2.setNeutralMode(NeutralMode.Brake);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
+        leftFollower2.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         TalonSRX rightFollower1 = new TalonSRX(
                 Constants.Drive.RIGHT_FOLLOWER1);
@@ -56,6 +60,7 @@ public class Drivetrain extends Subsystem {
         rightFollower1.setNeutralMode(NeutralMode.Brake);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
+        rightFollower1.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         TalonSRX rightFollower2 = new TalonSRX(
                 Constants.Drive.RIGHT_FOLLOWER2);
@@ -64,6 +69,7 @@ public class Drivetrain extends Subsystem {
         rightFollower2.setNeutralMode(NeutralMode.Brake);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
+        rightFollower2.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         checkError(leftMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
@@ -165,12 +171,12 @@ public class Drivetrain extends Subsystem {
     }
 
     public void configMPGains() {
-        TalonUtilsKt.config_PIDF(
+        TalonUtils.config_PIDF(
                 leftMaster, Constants.Drive.highGearPIDSlotIdx,
                 Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
                 Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
                 Constants.timeoutMs);
-        TalonUtilsKt.config_PIDF(
+        TalonUtils.config_PIDF(
                 rightMaster, Constants.Drive.highGearPIDSlotIdx,
                 Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
                 Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
