@@ -1,3 +1,5 @@
+@file:JvmName("TalonSRXFactory")
+
 package com.rambots4571.rampage.ctre.motor
 
 import com.ctre.phoenix.ParamEnum
