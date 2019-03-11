@@ -1,3 +1,5 @@
+@file:JvmName("TalonUtils")
+
 package com.rambots4571.rampage.ctre.motor
 
 import com.ctre.phoenix.ErrorCode
