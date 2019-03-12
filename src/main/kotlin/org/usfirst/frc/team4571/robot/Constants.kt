@@ -93,4 +93,8 @@ object Constants {
         const val RIGHT_INTAKE_MOTOR = 5
         const val PULLEY_MOTOR = 6
     }
+
+    object Piplines {
+        const val CARGO = 0
+    }
 }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc.team4571.robot.Constants;
 import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 import org.usfirst.frc.team4571.robot.subsystem.Intake;
 
@@ -20,6 +21,7 @@ public class SeekCargo extends Command {
     public SeekCargo() {
         requires(drivetrain);
         requires(intake);
+        Limelight.setPipeline(Constants.Piplines.CARGO);
         turnController = new PIDController(kP, kI, kD, new PIDSource() {
             @Override
             public PIDSourceType getPIDSourceType() {
