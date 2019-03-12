@@ -18,7 +18,7 @@ public class Drivetrain extends Subsystem {
     private static Drivetrain instance;
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
-    private AHRS navx;
+    public final AHRS navx;
 
     private Drivetrain() {
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
@@ -135,10 +135,6 @@ public class Drivetrain extends Subsystem {
     public void resetEncoders() {
         leftMaster.setSelectedSensorPosition(0);
         rightMaster.setSelectedSensorPosition(0);
-    }
-
-    public AHRS getNavx() {
-        return navx;
     }
 
     public double getHeading() {

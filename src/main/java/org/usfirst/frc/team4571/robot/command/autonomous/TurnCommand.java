@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4571.robot.command.autonomous;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
@@ -17,7 +16,8 @@ public class TurnCommand extends Command {
         this.angle = angle;
         requires(drivetrain);
         turnController = new PIDController(
-                kP, kI, kD, drivetrain.getNavx(), new TurnOutput());
+                kP, kI, kD, drivetrain.navx,
+                output -> drivetrain.drive(-output, output));
         turnController.setInputRange(-180.0, 180.0);
         turnController.setOutputRange(-0.8, 0.8);
         turnController.setAbsoluteTolerance(3.0);
@@ -46,12 +46,5 @@ public class TurnCommand extends Command {
     protected void end() {
         turnController.disable();
         drivetrain.stop();
-    }
-
-    private class TurnOutput implements PIDOutput {
-        @Override
-        public void pidWrite(double output) {
-            drivetrain.drive(-output, output);
-        }
     }
 }
