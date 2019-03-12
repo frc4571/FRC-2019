@@ -7,8 +7,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team4571.robot.Constants;
@@ -21,7 +19,6 @@ public class Drivetrain extends Subsystem {
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
     private AHRS navx;
-    private PIDController turnController;
 
     private Drivetrain() {
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
@@ -33,6 +30,7 @@ public class Drivetrain extends Subsystem {
 
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
+        rightMaster.setSensorPhase(true);
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
         rightMaster.setNeutralMode(NeutralMode.Brake);
         rightMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
@@ -79,16 +77,7 @@ public class Drivetrain extends Subsystem {
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
                 Constants.timeoutMs), "can't initialize right encoder!");
 
-        rightMaster.setSensorPhase(true);
-
         navx = new AHRS(SPI.Port.kMXP);
-        turnController = new PIDController(Constants.Drive.Turn.kP,
-                                           Constants.Drive.Turn.kI,
-                                           Constants.Drive.Turn.kD,
-                                           navx, new TurnOutput());
-        turnController.setInputRange(-180.0, 180.0);
-        turnController.setOutputRange(-0.8, 0.8);
-        turnController.setAbsoluteTolerance(3.0);
     }
 
     @Override
@@ -148,6 +137,10 @@ public class Drivetrain extends Subsystem {
         rightMaster.setSelectedSensorPosition(0);
     }
 
+    public AHRS getNavx() {
+        return navx;
+    }
+
     public double getHeading() {
         return navx.getAngle();
     }
@@ -158,16 +151,6 @@ public class Drivetrain extends Subsystem {
 
     public void resetGyro() {
         navx.reset();
-    }
-
-    public void turnToAngle(double angle) {
-        turnController.reset();
-        turnController.setSetpoint(angle);
-        turnController.enable();
-    }
-
-    public PIDController getTurnController() {
-        return turnController;
     }
 
     public void configMPGains() {
@@ -190,12 +173,5 @@ public class Drivetrain extends Subsystem {
 
     public void stop() {
         drive(0, 0);
-    }
-
-    private class TurnOutput implements PIDOutput {
-        @Override
-        public void pidWrite(double output) {
-            drive(-output, output);
-        }
     }
 }
