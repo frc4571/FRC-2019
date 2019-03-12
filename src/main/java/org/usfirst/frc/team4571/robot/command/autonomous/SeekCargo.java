@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4571.robot.command.autonomous;
 
+import com.rambots4571.rampage.sensor.pid.SourceSupplier;
 import com.rambots4571.rampage.vision.Limelight;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,20 +22,9 @@ public class SeekCargo extends Command {
         requires(drivetrain);
         requires(intake);
         Limelight.setPipeline(Constants.Piplines.CARGO);
-        turnController = new PIDController(kP, kI, kD, new PIDSource() {
-            @Override
-            public PIDSourceType getPIDSourceType() {
-                return PIDSourceType.kDisplacement;
-            }
-
-            @Override
-            public void setPIDSourceType(PIDSourceType pidSource) {}
-
-            @Override
-            public double pidGet() {
-                return Limelight.getXOffset();
-            }
-        }, output -> drivetrain.drive(-output, +output));
+        turnController = new PIDController(kP, kI, kD, new SourceSupplier(
+                Limelight::getXOffset, PIDSourceType.kDisplacement),
+                output -> drivetrain.drive(-output, +output));
         turnController.setInputRange(Limelight.TX_MIN, Limelight.TX_MAX);
         turnController.setOutputRange(-0.5, 0.5);
         turnController.setAbsoluteTolerance(0.3);
