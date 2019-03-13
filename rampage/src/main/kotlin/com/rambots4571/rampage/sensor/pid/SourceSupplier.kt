@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj.PIDSource
 import edu.wpi.first.wpilibj.PIDSourceType
 import java.util.function.DoubleSupplier
 
-class SourceSupplier(private val func: DoubleSupplier,
+/**
+ * Class used to send values as a source without needing to implement PID
+ * source all the time, inspired by team 166.
+ */
+class SourceSupplier(private val sensorValue: DoubleSupplier,
                      private var sourceType: PIDSourceType) : PIDSource {
 
     constructor(func: DoubleSupplier) : this(func, PIDSourceType.kDisplacement)
@@ -15,5 +19,5 @@ class SourceSupplier(private val func: DoubleSupplier,
         sourceType = pidSource!!
     }
 
-    override fun pidGet(): Double = func.asDouble
+    override fun pidGet(): Double = sensorValue.asDouble
 }
