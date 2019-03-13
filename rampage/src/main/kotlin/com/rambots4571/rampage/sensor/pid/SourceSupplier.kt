@@ -11,7 +11,7 @@ import java.util.function.DoubleSupplier
 class SourceSupplier(private val sensorValue: DoubleSupplier,
                      private var sourceType: PIDSourceType) : PIDSource {
 
-    constructor(func: DoubleSupplier) : this(func, PIDSourceType.kDisplacement)
+    constructor(sensorValue: DoubleSupplier) : this(func, PIDSourceType.kDisplacement)
 
     override fun getPIDSourceType(): PIDSourceType = sourceType
 
