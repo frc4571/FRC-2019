@@ -13,14 +13,14 @@ public class TipFreeDrive extends Command {
     private double kP = 0;
     private double kI = 0;
     private double kD = 0;
-    private double tipCompentation;
+    private double tipCompensation;
 
     public TipFreeDrive() {
         requires(drivetrain);
         tipController = new PIDController(
                 kP, kI, kD, new SourceSupplier(
                 () -> (double) drivetrain.navx.getRoll()),
-                output -> tipCompentation = output);
+                output -> tipCompensation = output);
         tipController.setInputRange(-180, 180);
         tipController.setOutputRange(-0.5, 0.5);
         tipController.setAbsoluteTolerance(5);
@@ -37,7 +37,7 @@ public class TipFreeDrive extends Command {
     @Override
     protected void execute() {
         if (Math.abs(drivetrain.navx.getRoll()) > 5) drivetrain.drive(
-                tipCompentation, tipCompentation);
+                tipCompensation, tipCompensation);
         else drivetrain.drive(
                 Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
     }
