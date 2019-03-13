@@ -59,7 +59,7 @@ public class Elevator extends Subsystem {
         baseMotorFollower.follow(baseMotorMaster);
         baseMotorFollower.setInverted(InvertType.FollowMaster);
         baseMotorFollower.enableCurrentLimit(true);
-        baseMotorFollower.configContinuousCurrentLimit(20, Constants.timeoutMs);
+        baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentLimit(35, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
 
