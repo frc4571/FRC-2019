@@ -4,9 +4,8 @@ import edu.wpi.first.wpilibj.PIDSource
 import edu.wpi.first.wpilibj.PIDSourceType
 import java.util.function.DoubleSupplier
 
-class SourceSupplier(
-    private val func: DoubleSupplier, private var sourceType: PIDSourceType) :
-        PIDSource {
+class SourceSupplier(private val func: DoubleSupplier,
+                     private var sourceType: PIDSourceType) : PIDSource {
 
     constructor(func: DoubleSupplier) : this(func, PIDSourceType.kDisplacement)
 
