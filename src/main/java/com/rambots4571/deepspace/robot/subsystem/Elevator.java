@@ -1,11 +1,12 @@
-package org.usfirst.frc.team4571.robot.subsystem;
+package com.rambots4571.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team4571.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
@@ -17,10 +18,12 @@ public class Elevator extends Subsystem {
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
-        baseMotorMaster.setSensorPhase(true);
+        baseMotorMaster.configReverseLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyOpen, Constants.timeoutMs);
         baseMotorMaster.enableCurrentLimit(true);
         baseMotorMaster.configContinuousCurrentLimit(25, Constants.timeoutMs);
-        baseMotorMaster.configPeakCurrentLimit(35, Constants.timeoutMs);
+        baseMotorMaster.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorMaster.configNeutralDeadband(0.06, Constants.timeoutMs);
         baseMotorMaster.configSelectedFeedbackSensor(
@@ -39,9 +42,7 @@ public class Elevator extends Subsystem {
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
         TalonUtils.config_PIDF(
-                baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
-                Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
-                Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
+                baseMotorMaster, Constants.Elevator.kPIDLoopIdx, Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI, Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
                 Constants.timeoutMs);
         //        baseMotorMaster.configMotionCruiseVelocity(Constants.Elevator
         //        .cruiseVel,
@@ -60,7 +61,7 @@ public class Elevator extends Subsystem {
         baseMotorFollower.setInverted(InvertType.FollowMaster);
         baseMotorFollower.enableCurrentLimit(true);
         baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
-        baseMotorFollower.configPeakCurrentLimit(35, Constants.timeoutMs);
+        baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
@@ -80,6 +81,11 @@ public class Elevator extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {}
+
+    @Override
+    public void periodic() {
+        SmartDashboard.getBoolean("limit switch pressed", isAtReverseLimit());
+    }
 
     public void teleOpInit() {
         baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
@@ -131,5 +137,9 @@ public class Elevator extends Subsystem {
 
     public double getHeight() {
         return getEncoderTick() / Constants.Elevator.TICKS_PER_INCH;
+    }
+
+    public boolean isAtReverseLimit() {
+        return baseMotorMaster.getSensorCollection().isRevLimitSwitchClosed();
     }
 }

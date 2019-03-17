@@ -1,9 +1,9 @@
-package org.usfirst.frc.team4571.robot.command.teleop;
+package com.rambots4571.deepspace.robot.command.teleop;
 
+import com.rambots4571.deepspace.robot.Robot;
+import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.Robot;
-import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
 public class TeleOpDrive extends Command {
     private Drivetrain drivetrain = Drivetrain.getInstance();

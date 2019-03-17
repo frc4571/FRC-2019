@@ -1,29 +1,42 @@
-package org.usfirst.frc.team4571.robot.command.teleop;
+package com.rambots4571.deepspace.robot.command.teleop;
 
+import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.Robot;
+import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.Constants;
-import org.usfirst.frc.team4571.robot.Robot;
-import org.usfirst.frc.team4571.robot.subsystem.Elevator;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
+    private double maxAcceleration = 0;
+    private double maxVel = 0;
+    private double prevVel;
 
     public TeleOpElevator() {
         requires(elevator);
+        prevVel = 0;
     }
 
     @Override
     protected void initialize() {
         elevator.teleOpInit();
+        elevator.resetEncoder();
     }
 
     private void log() {
+        double vel = elevator.getVelocity(Constants.Units.Inches);
+        double acceleration = (vel - prevVel) / 0.02;
+        prevVel = vel;
+        if (Math.abs(acceleration) > Math.abs(maxAcceleration))
+            maxAcceleration = acceleration;
+        if (Math.abs(vel) > Math.abs(maxVel)) maxVel = vel;
         SmartDashboard.putNumber(
                 "elevator encoder tick", elevator.getEncoderTick());
         SmartDashboard.putNumber("elevator height", elevator.getHeight());
-        SmartDashboard.putNumber("velocity", elevator.getVelocity(
-                Constants.Units.Ticks));
+        SmartDashboard.putNumber("velocity", vel);
+        SmartDashboard.putNumber("max velocity", maxVel);
+        SmartDashboard.putNumber("acceleration", acceleration);
+        SmartDashboard.putNumber("max acceleration", maxAcceleration);
     }
 
     @Override

@@ -1,13 +1,13 @@
-package org.usfirst.frc.team4571.robot.command.autonomous;
+package com.rambots4571.deepspace.robot.command.autonomous;
 
+import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
+import com.rambots4571.deepspace.robot.subsystem.Intake;
 import com.rambots4571.rampage.sensor.pid.SourceSupplier;
 import com.rambots4571.rampage.vision.Limelight;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.Constants;
-import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
-import org.usfirst.frc.team4571.robot.subsystem.Intake;
 
 public class SeekCargo extends Command {
     private Drivetrain drivetrain = Drivetrain.getInstance();

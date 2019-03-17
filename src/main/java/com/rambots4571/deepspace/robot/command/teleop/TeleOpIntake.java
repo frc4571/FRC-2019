@@ -1,8 +1,8 @@
-package org.usfirst.frc.team4571.robot.command.teleop;
+package com.rambots4571.deepspace.robot.command.teleop;
 
+import com.rambots4571.deepspace.robot.Robot;
+import com.rambots4571.deepspace.robot.subsystem.Intake;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team4571.robot.Robot;
-import org.usfirst.frc.team4571.robot.subsystem.Intake;
 
 public class TeleOpIntake extends Command {
     private Intake intake = Intake.getInstance();

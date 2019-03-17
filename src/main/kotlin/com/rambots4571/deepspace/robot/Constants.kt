@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4571.robot
+package com.rambots4571.deepspace.robot
 
 object Constants {
     const val period = 0.02
@@ -69,9 +69,9 @@ object Constants {
     }
 
     object Elevator {
-        const val BASE_MOTOR_MASTER = 7
-        const val BASE_MOTOR_FOLLOWER = 8
-        const val TOP_MOTOR = 2
+        const val BASE_MOTOR_MASTER = 8
+        const val BASE_MOTOR_FOLLOWER = 7
+        const val TOP_MOTOR = 12
         const val LIMIT_SWITCH = 0 // DIO port
 
         const val kPIDLoopIdx = 0
@@ -89,9 +89,9 @@ object Constants {
     }
 
     object Intake {
-        const val LEFT_INTAKE_MOTOR = 4
-        const val RIGHT_INTAKE_MOTOR = 5
-        const val PULLEY_MOTOR = 6
+        const val LEFT_INTAKE_MOTOR = 9
+        const val RIGHT_INTAKE_MOTOR = 10
+        const val PULLEY_MOTOR = 11
     }
 
     object Piplines {

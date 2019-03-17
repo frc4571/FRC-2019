@@ -1,12 +1,12 @@
-package org.usfirst.frc.team4571.robot.subsystem;
+package com.rambots4571.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.rambots4571.deepspace.robot.Constants;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team4571.robot.Constants;
 
 public class Intake extends Subsystem {
     private static Intake instance;

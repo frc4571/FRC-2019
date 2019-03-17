@@ -1,11 +1,11 @@
-package org.usfirst.frc.team4571.robot.command.autonomous;
+package com.rambots4571.deepspace.robot.command.autonomous;
 
+import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
-import static org.usfirst.frc.team4571.robot.Constants.Drive.Turn.*;
+import static com.rambots4571.deepspace.robot.Constants.Drive.Turn.*;
 
 public class TurnCommand extends Command {
     private Drivetrain drivetrain = Drivetrain.getInstance();

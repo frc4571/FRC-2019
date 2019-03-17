@@ -1,15 +1,17 @@
-package org.usfirst.frc.team4571.robot.command.teleop;
+package com.rambots4571.deepspace.robot.command.teleop;
 
+import com.rambots4571.deepspace.robot.Robot;
+import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
+import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import com.rambots4571.rampage.sensor.pid.SourceSupplier;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.Robot;
-import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
 public class TipFreeDrive extends Command {
-    Drivetrain drivetrain = Drivetrain.getInstance();
-    PIDController tipController;
+    private Drivetrain drivetrain = Drivetrain.getInstance();
+    private Elevator elevator = Elevator.getInstance();
+    private PIDController tipController;
     private double kP = 0;
     private double kI = 0;
     private double kD = 0;
@@ -17,6 +19,7 @@ public class TipFreeDrive extends Command {
 
     public TipFreeDrive() {
         requires(drivetrain);
+        requires(elevator);
         tipController = new PIDController(
                 kP, kI, kD, new SourceSupplier(
                 () -> (double) drivetrain.navx.getRoll()),
@@ -28,6 +31,7 @@ public class TipFreeDrive extends Command {
 
     @Override
     protected void initialize() {
+        drivetrain.resetGyro();
         tipController.reset();
         tipController.setSetpoint(0);
         SmartDashboard.putData(tipController);
