@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem {
     private static Intake instance;
     private TalonSRX leftIntakeMotor;
-    private VictorSPX rightIntakeMotor;
     private TalonSRX pulleyMotor;
 
     private Intake() {
         leftIntakeMotor = new TalonSRX(Constants.Intake.LEFT_INTAKE_MOTOR);
         leftIntakeMotor.setNeutralMode(NeutralMode.Brake);
 
-        rightIntakeMotor = new VictorSPX(Constants.Intake.RIGHT_INTAKE_MOTOR);
+        VictorSPX rightIntakeMotor = new VictorSPX(
+                Constants.Intake.RIGHT_INTAKE_MOTOR);
         rightIntakeMotor.setNeutralMode(NeutralMode.Brake);
         rightIntakeMotor.follow(leftIntakeMotor);
         rightIntakeMotor.setInverted(InvertType.OpposeMaster);
