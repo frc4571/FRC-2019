@@ -30,15 +30,15 @@ public class TeleOpElevator extends Command {
         double acceleration = (vel - prevVel) / 0.02;
         prevVel = vel;
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
-            maxAcceleration = acceleration;
-        if (Math.abs(vel) > Math.abs(maxVel)) maxVel = vel;
+            maxAcceleration = Math.abs(acceleration);
+        if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
         SmartDashboard.putNumber(
                 "elevator encoder tick", elevator.getEncoderTick());
         SmartDashboard.putNumber("elevator height", elevator.getHeight());
-        SmartDashboard.putNumber("velocity", vel);
-        SmartDashboard.putNumber("max velocity", maxVel);
-        SmartDashboard.putNumber("acceleration", acceleration);
-        SmartDashboard.putNumber("max acceleration", maxAcceleration);
+        SmartDashboard.putNumber("velocity in/s", vel);
+        SmartDashboard.putNumber("max velocity in/s", maxVel);
+        SmartDashboard.putNumber("acceleration in/s^2", acceleration);
+        SmartDashboard.putNumber("max acceleration in/s^2", maxAcceleration);
     }
 
     @Override
