@@ -42,7 +42,9 @@ public class Elevator extends Subsystem {
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
         TalonUtils.config_PIDF(
-                baseMotorMaster, Constants.Elevator.kPIDLoopIdx, Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI, Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
+                baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
+                Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
+                Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
                 Constants.timeoutMs);
         //        baseMotorMaster.configMotionCruiseVelocity(Constants.Elevator
         //        .cruiseVel,
@@ -74,7 +76,9 @@ public class Elevator extends Subsystem {
 
     public static Elevator getInstance() {
         if (instance == null) {
-            instance = new Elevator();
+            synchronized (Elevator.class) {
+                instance = new Elevator();
+            }
         }
         return instance;
     }

@@ -87,7 +87,9 @@ public class Drivetrain extends Subsystem {
 
     public static Drivetrain getInstance() {
         if (instance == null) {
-            instance = new Drivetrain();
+            synchronized (Drivetrain.class) {
+                instance = new Drivetrain();
+            }
         }
         return instance;
     }

@@ -32,7 +32,9 @@ public class Intake extends Subsystem {
 
     public static Intake getInstance() {
         if (instance == null) {
-            instance = new Intake();
+            synchronized (Intake.class) {
+                instance = new Intake();
+            }
         }
         return instance;
     }
