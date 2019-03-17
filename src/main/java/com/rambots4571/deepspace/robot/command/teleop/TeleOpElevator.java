@@ -8,19 +8,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
-    private double maxAcceleration = 0;
-    private double maxVel = 0;
+    private double maxAcceleration;
+    private double maxVel;
     private double prevVel;
 
     public TeleOpElevator() {
         requires(elevator);
-        prevVel = 0;
     }
 
     @Override
     protected void initialize() {
         elevator.teleOpInit();
         elevator.resetEncoder();
+        maxAcceleration = 0;
+        maxVel = 0;
+        prevVel = 0;
     }
 
     private void log() {
