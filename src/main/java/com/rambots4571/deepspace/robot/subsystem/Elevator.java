@@ -144,13 +144,19 @@ public class Elevator extends Subsystem {
 
     public void setPosition(Height height) {
         if (positionMode == PositionMode.Hatch) {
-            if (height == Height.Bottom) setPosition(Constants.Elevator.Height.hatchBottom);
-            else if (height == Height.Middle) setPosition(Constants.Elevator.Height.hatchMiddle);
-            else if (height == Height.Top) setPosition(Constants.Elevator.Height.hatchTop);
+            if (height == Height.Bottom)
+                setPosition(Constants.Elevator.Height.hatchBottom);
+            else if (height == Height.Middle)
+                setPosition(Constants.Elevator.Height.hatchMiddle);
+            else if (height == Height.Top)
+                setPosition(Constants.Elevator.Height.hatchTop);
         } else  if (positionMode == PositionMode.Cargo) {
-            if (height == Height.Bottom) setPosition(Constants.Elevator.Height.cargoBottom);
-            else if (height == Height.Middle) setPosition(Constants.Elevator.Height.cargoMiddle);
-            else if (height == Height.Top) setPosition(Constants.Elevator.Height.cargoTop);
+            if (height == Height.Bottom)
+                setPosition(Constants.Elevator.Height.cargoBottom);
+            else if (height == Height.Middle)
+                setPosition(Constants.Elevator.Height.cargoMiddle);
+            else if (height == Height.Top)
+                setPosition(Constants.Elevator.Height.cargoTop);
         }
     }
 
