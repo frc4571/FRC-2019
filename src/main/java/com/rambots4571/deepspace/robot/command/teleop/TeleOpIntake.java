@@ -16,6 +16,9 @@ public class TeleOpIntake extends Command {
         intake.setIntakePower(Robot.gamepad.getLeftTrigger() -
                               Robot.gamepad.getRightTrigger());
         intake.setPulleyPower(Robot.gamepad.getRightYAxis() * 0.5);
+        if (Robot.gamepad.getStartButton().get()) intake.setHatchMotor(0.25);
+        else if (Robot.gamepad.getBackButton().get()) intake.setHatchMotor(-0.25);
+        else intake.setHatchMotor(0);
     }
 
     @Override

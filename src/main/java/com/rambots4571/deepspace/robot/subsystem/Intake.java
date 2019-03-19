@@ -12,6 +12,7 @@ public class Intake extends Subsystem {
     private static Intake instance;
     private TalonSRX leftIntakeMotor;
     private TalonSRX pulleyMotor;
+    private TalonSRX hatchMotor;
 
     private Intake() {
         leftIntakeMotor = new TalonSRX(Constants.Intake.LEFT_INTAKE_MOTOR);
@@ -26,6 +27,9 @@ public class Intake extends Subsystem {
         pulleyMotor = new TalonSRX(Constants.Intake.PULLEY_MOTOR);
         pulleyMotor.setInverted(true);
         pulleyMotor.setNeutralMode(NeutralMode.Brake);
+
+        hatchMotor = new TalonSRX(Constants.Intake.HATCH_MOTOR);
+        hatchMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public static Intake getInstance() {
@@ -46,5 +50,9 @@ public class Intake extends Subsystem {
 
     public void setPulleyPower(double value) {
         pulleyMotor.set(ControlMode.PercentOutput, value);
+    }
+
+    public void setHatchMotor(double value) {
+        hatchMotor.set(ControlMode.PercentOutput, value);
     }
 }

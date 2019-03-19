@@ -101,6 +101,7 @@ object Constants {
         const val LEFT_INTAKE_MOTOR = 9
         const val RIGHT_INTAKE_MOTOR = 10
         const val PULLEY_MOTOR = 11
+        const val HATCH_MOTOR = 13
     }
 
     object Pipelines {
