@@ -13,6 +13,7 @@ public class Elevator extends Subsystem {
     private TalonSRX baseMotorMaster, baseMotorFollower;
     private TalonSRX topMotor;
     private DigitalInput limitSwitch;
+    private PositionMode positionMode;
 
     private Elevator() {
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
@@ -46,14 +47,10 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
                 Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
                 Constants.timeoutMs);
-        //        baseMotorMaster.configMotionCruiseVelocity(Constants.Elevator
-        //        .cruiseVel,
-        //                                             Constants.Elevator
-        //                                             .timeoutMs);
-        //        baseMotorMaster.configMotionAcceleration(Constants.Elevator
-        //        .acceleration,
-        //                                           Constants.Elevator
-        //                                           .timeoutMs);
+        baseMotorMaster.configMotionCruiseVelocity(
+                Constants.Elevator.cruiseVel, Constants.timeoutMs);
+        baseMotorMaster.configMotionAcceleration(
+                Constants.Elevator.acceleration, Constants.timeoutMs);
 
         baseMotorFollower = new TalonSRX(
                 Constants.Elevator.BASE_MOTOR_FOLLOWER);
@@ -72,6 +69,7 @@ public class Elevator extends Subsystem {
         topMotor.setInverted(true);
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
+        positionMode = PositionMode.Hatch;
     }
 
     public static Elevator getInstance() {
@@ -139,11 +137,45 @@ public class Elevator extends Subsystem {
         }
     }
 
+    public void setPosition(double inches) {
+        double ticks = inches * Constants.Elevator.TICKS_PER_INCH;
+        baseMotorMaster.set(ControlMode.MotionMagic, ticks);
+    }
+
+    public void setPosition(Height height) {
+        if (positionMode == PositionMode.Hatch) {
+            if (height == Height.Bottom) setPosition(Constants.Elevator.Height.hatchBottom);
+            else if (height == Height.Middle) setPosition(Constants.Elevator.Height.hatchMiddle);
+            else if (height == Height.Top) setPosition(Constants.Elevator.Height.hatchTop);
+        } else  if (positionMode == PositionMode.Cargo) {
+            if (height == Height.Bottom) setPosition(Constants.Elevator.Height.cargoBottom);
+            else if (height == Height.Middle) setPosition(Constants.Elevator.Height.cargoMiddle);
+            else if (height == Height.Top) setPosition(Constants.Elevator.Height.cargoTop);
+        }
+    }
+
     public double getHeight() {
         return getEncoderTick() / Constants.Elevator.TICKS_PER_INCH;
     }
 
+    public void togglePositionMode() {
+        positionMode = positionMode == PositionMode.Hatch ?
+                       PositionMode.Cargo : PositionMode.Hatch;
+    }
+
     public boolean isAtReverseLimit() {
         return baseMotorMaster.getSensorCollection().isRevLimitSwitchClosed();
+    }
+
+    public PositionMode getPositionMode() {
+        return positionMode;
+    }
+
+    public enum PositionMode {
+        Hatch, Cargo
+    }
+
+    public enum Height {
+        Bottom, Middle, Top
     }
 }

@@ -11,6 +11,8 @@ public class TeleOpElevator extends Command {
     private double maxAcceleration;
     private double maxVel;
     private double prevVel;
+    private boolean prevButton;
+    private boolean currentButton;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -23,10 +25,12 @@ public class TeleOpElevator extends Command {
         maxAcceleration = 0;
         maxVel = 0;
         prevVel = 0;
+        prevButton = false;
+        currentButton = false;
     }
 
     private void log() {
-        double vel = elevator.getVelocity(Constants.Units.Inches);
+        double vel = elevator.getVelocity(Constants.Units.Ticks);
         double acceleration = (vel - prevVel) / 0.02;
         prevVel = vel;
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
@@ -35,17 +39,29 @@ public class TeleOpElevator extends Command {
         SmartDashboard.putNumber(
                 "elevator encoder tick", elevator.getEncoderTick());
         SmartDashboard.putNumber("elevator height", elevator.getHeight());
-        SmartDashboard.putNumber("velocity in/s", vel);
-        SmartDashboard.putNumber("max velocity in/s", maxVel);
-        SmartDashboard.putNumber("acceleration in/s^2", acceleration);
-        SmartDashboard.putNumber("max acceleration in/s^2", maxAcceleration);
+        SmartDashboard.putNumber("velocity u/100ms", vel);
+        SmartDashboard.putNumber("max velocity u/100ms", maxVel);
+        SmartDashboard.putNumber("acceleration u/100ms^2", acceleration);
+        SmartDashboard.putNumber("max acceleration u/100ms^2", maxAcceleration);
+        SmartDashboard.putString("position mode", elevator.getPositionMode().toString());
     }
 
     @Override
     protected void execute() {
-        elevator.setBaseMotor(Robot.gamepad.getLeftYAxis());
-        if (Robot.gamepad.getPOV() == 0) elevator.setTopMotor(0.5);
-        else if (Robot.gamepad.getPOV() == 180) elevator.setTopMotor(-0.5);
+        prevButton = currentButton;
+        currentButton = Robot.gamepad.getRightBumper().get();
+        if (currentButton && !prevButton) elevator.togglePositionMode();
+        if (Robot.gamepad.getLeftBumper().get()) elevator.resetEncoder();
+        if (Robot.gamepad.getY().get())
+            elevator.setPosition(Elevator.Height.Top);
+        else if (Robot.gamepad.getB().get())
+            elevator.setPosition(Elevator.Height.Middle);
+        else if (Robot.gamepad.getA().get())
+            elevator.setPosition(Elevator.Height.Bottom);
+        else elevator.setBaseMotor(Robot.gamepad.getLeftYAxis());
+
+        if (Robot.gamepad.getPOV() == 0) elevator.setTopMotor(1);
+        else if (Robot.gamepad.getPOV() == 180) elevator.setTopMotor(-1);
         else elevator.setTopMotor(0);
         log();
     }
