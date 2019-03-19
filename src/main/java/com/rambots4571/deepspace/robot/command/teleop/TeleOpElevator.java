@@ -4,6 +4,7 @@ import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.Robot;
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TeleOpElevator extends Command {
@@ -43,7 +44,8 @@ public class TeleOpElevator extends Command {
         SmartDashboard.putNumber("max velocity u/100ms", maxVel);
         SmartDashboard.putNumber("acceleration u/100ms^2", acceleration);
         SmartDashboard.putNumber("max acceleration u/100ms^2", maxAcceleration);
-        SmartDashboard.putString("position mode", elevator.getPositionMode().toString());
+        SmartDashboard.putString(
+                "position mode", elevator.getPositionMode().toString());
     }
 
     @Override
@@ -51,7 +53,9 @@ public class TeleOpElevator extends Command {
         prevButton = currentButton;
         currentButton = Robot.gamepad.getRightBumper().get();
         if (currentButton && !prevButton) elevator.togglePositionMode();
-        if (Robot.gamepad.getLeftBumper().get()) elevator.resetEncoder();
+        if (Robot.gamepad.getLeftBumper().get()) elevator.setPosition(0);
+        Robot.gamepad.getLeftBumper().whenReleased(
+                new InstantCommand(elevator::resetEncoder));
         if (Robot.gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);
         else if (Robot.gamepad.getB().get())
