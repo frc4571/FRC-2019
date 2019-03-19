@@ -20,7 +20,7 @@ public class SeekCargo extends Command {
     public SeekCargo() {
         requires(drivetrain);
         requires(intake);
-        Limelight.setPipeline(Constants.Piplines.CARGO);
+        Limelight.setPipeline(Constants.Pipelines.CARGO);
         turnController = new PIDController(kP, kI, kD, new SourceSupplier(
                 Limelight::getXOffset), output -> drivetrain
                 .drive(-output, +output));
