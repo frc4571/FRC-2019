@@ -51,6 +51,8 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.cruiseVel, Constants.timeoutMs);
         baseMotorMaster.configMotionAcceleration(
                 Constants.Elevator.acceleration, Constants.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
 
         baseMotorFollower = new TalonSRX(
                 Constants.Elevator.BASE_MOTOR_FOLLOWER);
@@ -69,7 +71,6 @@ public class Elevator extends Subsystem {
         topMotor.setInverted(true);
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
-        positionMode = PositionMode.Hatch;
     }
 
     public static Elevator getInstance() {
@@ -90,8 +91,7 @@ public class Elevator extends Subsystem {
     }
 
     public void teleOpInit() {
-        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
+        positionMode = PositionMode.Hatch;
     }
 
     public void setBaseMotor(double value) {
