@@ -52,7 +52,6 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configMotionAcceleration(
                 Constants.Elevator.acceleration, Constants.timeoutMs);
         baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
 
         baseMotorFollower = new TalonSRX(
                 Constants.Elevator.BASE_MOTOR_FOLLOWER);
@@ -64,6 +63,7 @@ public class Elevator extends Subsystem {
         baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
