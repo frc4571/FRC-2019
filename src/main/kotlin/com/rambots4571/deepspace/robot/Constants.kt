@@ -78,7 +78,7 @@ object Constants {
         const val kSlotIdx = 0
         const val cruiseVel = 1177 // u/100ms
         const val acceleration = 9500 // u/100ms^2
-        const val TICKS_PER_INCH = 741.96875
+        const val TICKS_PER_INCH = 908.202839757 // u/inch
 
         object Gains {
             const val kP = 0.3
