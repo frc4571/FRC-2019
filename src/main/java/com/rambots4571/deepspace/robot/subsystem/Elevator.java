@@ -71,6 +71,7 @@ public class Elevator extends Subsystem {
         topMotor.setInverted(true);
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
+        resetEncoder();
     }
 
     public static Elevator getInstance() {

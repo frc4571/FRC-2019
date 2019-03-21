@@ -49,22 +49,25 @@ public class TeleOpElevator extends Command {
 
     @Override
     protected void execute() {
+        // toggling position mode
         prevButton = currentButton;
         currentButton = Robot.gamepad.getRightBumper().get();
         if (currentButton && !prevButton) elevator.togglePositionMode();
-        if (Robot.gamepad.getLeftBumper().get()) elevator.resetEncoder();
+        // set position
         if (Robot.gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);
         else if (Robot.gamepad.getB().get())
             elevator.setPosition(Elevator.Height.Middle);
         else if (Robot.gamepad.getA().get())
             elevator.setPosition(Elevator.Height.Bottom);
-        else if (Robot.gamepad.getLeftStick().get()) elevator.setPosition(0);
+        else if (Robot.gamepad.getLeftBumper().get()) elevator.setPosition(0);
         else elevator.setBaseMotor(Robot.gamepad.getLeftYAxis());
-
+        // small elevator manual control
         if (Robot.gamepad.getPOV() == 0) elevator.setTopMotor(1);
         else if (Robot.gamepad.getPOV() == 180) elevator.setTopMotor(-1);
         else elevator.setTopMotor(0);
+        // resetting encoder once past zero
+        if (elevator.getEncoderTick() < 0) elevator.resetEncoder();
         log();
     }
 
