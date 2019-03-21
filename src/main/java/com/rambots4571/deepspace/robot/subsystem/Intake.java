@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.command.teleop.TeleOpIntake;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
@@ -42,7 +43,9 @@ public class Intake extends Subsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand() {
+        setDefaultCommand(new TeleOpIntake());
+    }
 
     public void setIntakePower(double value) {
         leftIntakeMotor.set(ControlMode.PercentOutput, value);

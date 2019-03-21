@@ -3,6 +3,7 @@ package com.rambots4571.deepspace.robot.subsystem;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.command.teleop.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -84,7 +85,9 @@ public class Elevator extends Subsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand() {
+        setDefaultCommand(new TeleOpElevator());
+    }
 
     @Override
     public void periodic() {
