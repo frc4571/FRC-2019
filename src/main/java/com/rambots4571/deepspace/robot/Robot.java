@@ -7,13 +7,12 @@ import com.rambots4571.rampage.joystick.Gamepad;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import static com.rambots4571.deepspace.robot.Constants.Controllers.*;
+
 public class Robot extends TimedRobot {
-    public static final DriveStick leftStick = new DriveStick(
-            Constants.Controllers.LEFT_STICK);
-    public static final DriveStick rightStick = new DriveStick(
-            Constants.Controllers.RIGHT_STICK);
-    public static final Gamepad gamepad = new Gamepad(
-            Constants.Controllers.GAMEPAD);
+    public static final DriveStick leftStick = new DriveStick(LEFT_STICK);
+    public static final DriveStick rightStick = new DriveStick(RIGHT_STICK);
+    public static final Gamepad gamepad = new Gamepad(GAMEPAD);
 
     @Override
     public void disabledInit() {
