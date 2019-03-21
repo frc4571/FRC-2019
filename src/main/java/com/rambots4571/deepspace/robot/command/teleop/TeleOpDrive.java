@@ -13,16 +13,6 @@ public class TeleOpDrive extends Command {
     }
 
     private void log() {
-        //        SmartDashboard.putNumber(
-        //                "Left encoder", drivetrain.getLeftEncoderTick());
-        //        SmartDashboard.putNumber(
-        //                "Left encoder", drivetrain.getRightEncoderTick());
-        //        SmartDashboard.putNumber(
-        //                "Left Speed", drivetrain.getLeftVelocity(Constants
-        //                .Units.Feet));
-        //        SmartDashboard.putNumber(
-        //                "Right Speed", drivetrain
-        //                        .getRightVelocity(Constants.Units.Feet));
         SmartDashboard.putNumber("left joystick", Robot.leftStick.getYAxis());
         SmartDashboard.putNumber("right joystick", Robot.rightStick.getYAxis());
     }
@@ -31,7 +21,6 @@ public class TeleOpDrive extends Command {
     protected void execute() {
         drivetrain.drive(
                 Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
-        log();
     }
 
     @Override
