@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import static com.rambots4571.deepspace.robot.Constants.Elevator.Height.*;
+
 public class Elevator extends Subsystem {
     private static Elevator instance;
     private TalonSRX baseMotorMaster, baseMotorFollower;
@@ -147,20 +149,33 @@ public class Elevator extends Subsystem {
     }
 
     public void setPosition(Height height) {
-        if (positionMode == PositionMode.Hatch) {
-            if (height == Height.Bottom)
-                setPosition(Constants.Elevator.Height.hatchBottom);
-            else if (height == Height.Middle)
-                setPosition(Constants.Elevator.Height.hatchMiddle);
-            else if (height == Height.Top)
-                setPosition(Constants.Elevator.Height.hatchTop);
-        } else  if (positionMode == PositionMode.Cargo) {
-            if (height == Height.Bottom)
-                setPosition(Constants.Elevator.Height.cargoBottom);
-            else if (height == Height.Middle)
-                setPosition(Constants.Elevator.Height.cargoMiddle);
-            else if (height == Height.Top)
-                setPosition(Constants.Elevator.Height.cargoTop);
+        switch (positionMode) {
+            case Hatch:
+                switch (height) {
+                    case Bottom:
+                        setPosition(hatchBottom);
+                        break;
+                    case Middle:
+                        setPosition(hatchMiddle);
+                        break;
+                    case Top:
+                        setPosition(hatchTop);
+                        break;
+                }
+                break;
+            case Cargo:
+                switch (height) {
+                    case Bottom:
+                        setPosition(cargoBottom);
+                        break;
+                    case Middle:
+                        setPosition(cargoMiddle);
+                        break;
+                    case Top:
+                        setPosition(cargoTop);
+                        break;
+                }
+                break;
         }
     }
 
