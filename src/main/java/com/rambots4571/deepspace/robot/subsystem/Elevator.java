@@ -1,26 +1,33 @@
-package org.usfirst.frc.team4571.robot.subsystem;
+package com.rambots4571.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
+import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.command.TeleOpElevator;
+import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team4571.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static com.rambots4571.deepspace.robot.Constants.Elevator.Height.*;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
     private TalonSRX baseMotorMaster, baseMotorFollower;
     private TalonSRX topMotor;
     private DigitalInput limitSwitch;
+    private PositionMode positionMode;
 
     private Elevator() {
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
-        baseMotorMaster.setSensorPhase(true);
+        baseMotorMaster.configReverseLimitSwitchSource(
+                LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyOpen, Constants.timeoutMs);
         baseMotorMaster.enableCurrentLimit(true);
-        baseMotorMaster.configContinuousCurrentLimit(20, Constants.timeoutMs);
-        baseMotorMaster.configPeakCurrentLimit(35, Constants.timeoutMs);
+        baseMotorMaster.configContinuousCurrentLimit(25, Constants.timeoutMs);
+        baseMotorMaster.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorMaster.configNeutralDeadband(0.06, Constants.timeoutMs);
         baseMotorMaster.configSelectedFeedbackSensor(
@@ -38,19 +45,16 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configPeakOutputReverse(-1, Constants.timeoutMs);
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
-        TalonUtilsKt.config_PIDF(
+        TalonUtils.config_PIDF(
                 baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
                 Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
                 Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
                 Constants.timeoutMs);
-        //        baseMotorMaster.configMotionCruiseVelocity(Constants.Elevator
-        //        .cruiseVel,
-        //                                             Constants.Elevator
-        //                                             .timeoutMs);
-        //        baseMotorMaster.configMotionAcceleration(Constants.Elevator
-        //        .acceleration,
-        //                                           Constants.Elevator
-        //                                           .timeoutMs);
+        baseMotorMaster.configMotionCruiseVelocity(
+                Constants.Elevator.cruiseVel, Constants.timeoutMs);
+        baseMotorMaster.configMotionAcceleration(
+                Constants.Elevator.acceleration, Constants.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
 
         baseMotorFollower = new TalonSRX(
                 Constants.Elevator.BASE_MOTOR_FOLLOWER);
@@ -59,9 +63,10 @@ public class Elevator extends Subsystem {
         baseMotorFollower.follow(baseMotorMaster);
         baseMotorFollower.setInverted(InvertType.FollowMaster);
         baseMotorFollower.enableCurrentLimit(true);
-        baseMotorFollower.configContinuousCurrentLimit(20, Constants.timeoutMs);
-        baseMotorFollower.configPeakCurrentLimit(35, Constants.timeoutMs);
+        baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
+        baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
@@ -69,21 +74,30 @@ public class Elevator extends Subsystem {
         topMotor.setInverted(true);
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
+        resetEncoder();
     }
 
     public static Elevator getInstance() {
         if (instance == null) {
-            instance = new Elevator();
+            synchronized (Elevator.class) {
+                instance = new Elevator();
+            }
         }
         return instance;
     }
 
     @Override
-    protected void initDefaultCommand() {}
+    protected void initDefaultCommand() {
+        setDefaultCommand(new TeleOpElevator());
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.getBoolean("limit switch pressed", isAtReverseLimit());
+    }
 
     public void teleOpInit() {
-        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
+        positionMode = PositionMode.Hatch;
     }
 
     public void setBaseMotor(double value) {
@@ -129,7 +143,64 @@ public class Elevator extends Subsystem {
         }
     }
 
+    public void setPosition(double inches) {
+        double ticks = inches * Constants.Elevator.TICKS_PER_INCH;
+        baseMotorMaster.set(ControlMode.MotionMagic, ticks);
+    }
+
+    public void setPosition(Height height) {
+        switch (positionMode) {
+            case Hatch:
+                switch (height) {
+                    case Bottom:
+                        setPosition(hatchBottom);
+                        break;
+                    case Middle:
+                        setPosition(hatchMiddle);
+                        break;
+                    case Top:
+                        setPosition(hatchTop);
+                        break;
+                }
+                break;
+            case Cargo:
+                switch (height) {
+                    case Bottom:
+                        setPosition(cargoBottom);
+                        break;
+                    case Middle:
+                        setPosition(cargoMiddle);
+                        break;
+                    case Top:
+                        setPosition(cargoTop);
+                        break;
+                }
+                break;
+        }
+    }
+
     public double getHeight() {
         return getEncoderTick() / Constants.Elevator.TICKS_PER_INCH;
+    }
+
+    public void togglePositionMode() {
+        positionMode = positionMode == PositionMode.Hatch ?
+                       PositionMode.Cargo : PositionMode.Hatch;
+    }
+
+    public boolean isAtReverseLimit() {
+        return baseMotorMaster.getSensorCollection().isRevLimitSwitchClosed();
+    }
+
+    public PositionMode getPositionMode() {
+        return positionMode;
+    }
+
+    public enum PositionMode {
+        Hatch, Cargo
+    }
+
+    public enum Height {
+        Bottom, Middle, Top
     }
 }

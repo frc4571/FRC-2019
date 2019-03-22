@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4571.robot.subsystem;
+package com.rambots4571.deepspace.robot.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -7,23 +7,20 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import com.rambots4571.rampage.ctre.motor.TalonUtilsKt;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
+import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.command.TeleOpDrive;
+import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.usfirst.frc.team4571.robot.Constants;
-import org.usfirst.frc.team4571.robot.command.teleop.TeleOpDrive;
 
-import static com.rambots4571.rampage.ctre.motor.TalonUtilsKt.checkError;
+import static com.rambots4571.rampage.ctre.motor.TalonUtils.checkError;
 
 public class Drivetrain extends Subsystem {
     private static Drivetrain instance;
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
-    private AHRS navx;
-    private PIDController turnController;
+    public final AHRS navx;
 
     private Drivetrain() {
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
@@ -31,11 +28,14 @@ public class Drivetrain extends Subsystem {
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
         leftMaster.setNeutralMode(NeutralMode.Brake);
         leftMaster.setInverted(true);
+        leftMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
+        rightMaster.setSensorPhase(true);
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
         rightMaster.setNeutralMode(NeutralMode.Brake);
+        rightMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         VictorSPX leftFollower1 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
@@ -43,6 +43,7 @@ public class Drivetrain extends Subsystem {
         leftFollower1.setNeutralMode(NeutralMode.Brake);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
+        leftFollower1.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         VictorSPX leftFollower2 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
@@ -50,6 +51,7 @@ public class Drivetrain extends Subsystem {
         leftFollower2.setNeutralMode(NeutralMode.Brake);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
+        leftFollower2.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         VictorSPX rightFollower1 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
@@ -57,6 +59,7 @@ public class Drivetrain extends Subsystem {
         rightFollower1.setNeutralMode(NeutralMode.Brake);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
+        rightFollower1.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         VictorSPX rightFollower2 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
@@ -64,6 +67,7 @@ public class Drivetrain extends Subsystem {
         rightFollower2.setNeutralMode(NeutralMode.Brake);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
+        rightFollower2.configOpenloopRamp(0.15, Constants.timeoutMs);
 
         checkError(leftMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
@@ -73,16 +77,7 @@ public class Drivetrain extends Subsystem {
                 FeedbackDevice.CTRE_MagEncoder_Relative, 0,
                 Constants.timeoutMs), "can't initialize right encoder!");
 
-        rightMaster.setSensorPhase(true);
-
         navx = new AHRS(SPI.Port.kMXP);
-        turnController = new PIDController(Constants.Drive.Turn.kP,
-                                           Constants.Drive.Turn.kI,
-                                           Constants.Drive.Turn.kD,
-                                           navx, new TurnOutput());
-        turnController.setInputRange(-180.0, 180.0);
-        turnController.setOutputRange(-0.8, 0.8);
-        turnController.setAbsoluteTolerance(3.0);
     }
 
     @Override
@@ -92,7 +87,9 @@ public class Drivetrain extends Subsystem {
 
     public static Drivetrain getInstance() {
         if (instance == null) {
-            instance = new Drivetrain();
+            synchronized (Drivetrain.class) {
+                instance = new Drivetrain();
+            }
         }
         return instance;
     }
@@ -154,23 +151,13 @@ public class Drivetrain extends Subsystem {
         navx.reset();
     }
 
-    public void turnToAngle(double angle) {
-        turnController.reset();
-        turnController.setSetpoint(angle);
-        turnController.enable();
-    }
-
-    public PIDController getTurnController() {
-        return turnController;
-    }
-
     public void configMPGains() {
-        TalonUtilsKt.config_PIDF(
+        TalonUtils.config_PIDF(
                 leftMaster, Constants.Drive.highGearPIDSlotIdx,
                 Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
                 Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
                 Constants.timeoutMs);
-        TalonUtilsKt.config_PIDF(
+        TalonUtils.config_PIDF(
                 rightMaster, Constants.Drive.highGearPIDSlotIdx,
                 Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
                 Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
@@ -184,12 +171,5 @@ public class Drivetrain extends Subsystem {
 
     public void stop() {
         drive(0, 0);
-    }
-
-    private class TurnOutput implements PIDOutput {
-        @Override
-        public void pidWrite(double output) {
-            drive(-output, output);
-        }
     }
 }

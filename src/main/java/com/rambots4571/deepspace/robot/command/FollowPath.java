@@ -1,13 +1,13 @@
-package org.usfirst.frc.team4571.robot.command.autonomous;
+package com.rambots4571.deepspace.robot.command;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.rambots4571.deepspace.robot.Constants;
+import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
 import com.rambots4571.rampage.ctre.motionprofile.Parser;
 import com.rambots4571.rampage.ctre.motionprofile.Profile;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4571.robot.Constants;
-import org.usfirst.frc.team4571.robot.subsystem.Drivetrain;
 
 import java.util.Queue;
 

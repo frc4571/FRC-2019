@@ -22,10 +22,11 @@ allprojects {
 }
 
 subprojects {
-    group 'com.rambots4571.rampage'
+    group "$group"
     buildDir = file("$rootDir/build/$lib/${project.name}")
 }
 
 dependencies {
     implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilib_version"
+    implementation "edu.wpi.first.ntcore:ntcore-java:$wpilib_version"
 }
