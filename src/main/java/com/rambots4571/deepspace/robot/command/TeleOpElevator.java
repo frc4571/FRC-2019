@@ -1,10 +1,11 @@
 package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.Constants;
-import com.rambots4571.deepspace.robot.Robot;
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
@@ -51,23 +52,25 @@ public class TeleOpElevator extends Command {
     protected void execute() {
         // toggling position mode
         prevButton = currentButton;
-        currentButton = Robot.gamepad.getRightBumper().get();
+        currentButton = gamepad.getRightBumper().get();
         if (currentButton && !prevButton) elevator.togglePositionMode();
         // set position
-        if (Robot.gamepad.getY().get())
+        if (gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);
-        else if (Robot.gamepad.getB().get())
+        else if (gamepad.getB().get())
             elevator.setPosition(Elevator.Height.Middle);
-        else if (Robot.gamepad.getA().get())
+        else if (gamepad.getA().get())
             elevator.setPosition(Elevator.Height.Bottom);
-        else if (Robot.gamepad.getLeftBumper().get()) elevator.setPosition(0);
-        else elevator.setBaseMotor(Robot.gamepad.getLeftYAxis());
+        else if (gamepad.getLeftBumper().get()) elevator.setPosition(0);
+        else elevator.setBaseMotor(gamepad.getLeftYAxis());
         // small elevator manual control
-        if (Robot.gamepad.getPOV() == 0) elevator.setTopMotor(1);
-        else if (Robot.gamepad.getPOV() == 180) elevator.setTopMotor(-1);
+        if (gamepad.getPOV() == 0) elevator.setTopMotor(1);
+        else if (gamepad.getPOV() == 180) elevator.setTopMotor(-1);
         else elevator.setTopMotor(0);
         // resetting encoder once past zero
         if (elevator.getEncoderTick() < 0) elevator.resetEncoder();
+        if (gamepad.getLeftYAxis() < 0 && elevator.getEncoderTick() <= 0)
+            elevator.setBaseMotor(0);
         log();
     }
 
