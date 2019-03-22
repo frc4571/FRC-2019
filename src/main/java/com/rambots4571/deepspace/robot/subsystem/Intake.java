@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.rambots4571.deepspace.robot.Constants;
-import com.rambots4571.deepspace.robot.command.teleop.TeleOpIntake;
+import com.rambots4571.deepspace.robot.command.TeleOpIntake;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {

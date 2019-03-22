@@ -1,4 +1,4 @@
-package com.rambots4571.deepspace.robot.command.autonomous;
+package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.subsystem.Drivetrain;

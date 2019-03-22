@@ -1,4 +1,4 @@
-package com.rambots4571.deepspace.robot.command.autonomous;
+package com.rambots4571.deepspace.robot.command;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;

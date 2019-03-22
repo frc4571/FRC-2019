@@ -1,7 +1,8 @@
 package com.rambots4571.deepspace.robot;
 
-import com.rambots4571.deepspace.robot.command.teleop.TeleOpElevator;
-import com.rambots4571.deepspace.robot.command.teleop.TeleOpIntake;
+import com.rambots4571.deepspace.robot.command.TeleOpDrive;
+import com.rambots4571.deepspace.robot.command.TeleOpElevator;
+import com.rambots4571.deepspace.robot.command.TeleOpIntake;
 import com.rambots4571.rampage.joystick.DriveStick;
 import com.rambots4571.rampage.joystick.Gamepad;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -35,7 +36,11 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopInit() {}
+    public void teleopInit() {
+        Scheduler.getInstance().add(new TeleOpDrive());
+        Scheduler.getInstance().add(new TeleOpElevator());
+        Scheduler.getInstance().add(new TeleOpIntake());
+    }
 
     @Override
     public void teleopPeriodic() {

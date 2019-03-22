@@ -1,4 +1,4 @@
-package com.rambots4571.deepspace.robot.command.teleop;
+package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.Robot;
 import com.rambots4571.deepspace.robot.subsystem.Intake;
