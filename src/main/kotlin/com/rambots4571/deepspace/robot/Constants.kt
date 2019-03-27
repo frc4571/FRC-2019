@@ -69,21 +69,21 @@ object Constants {
     }
 
     object Elevator {
-        const val BASE_MOTOR_MASTER = 8
-        const val BASE_MOTOR_FOLLOWER = 7
+        const val BASE_MOTOR_MASTER = 7
+        const val BASE_MOTOR_FOLLOWER = 8
         const val TOP_MOTOR = 12
         const val LIMIT_SWITCH = 0 // DIO port
 
         const val kPIDLoopIdx = 0
         const val kSlotIdx = 0
-        const val cruiseVel = 1177 // u/100ms
-        const val acceleration = 9500 // u/100ms^2
-        const val TICKS_PER_INCH = 908.202839757 // u/inch
+        const val cruiseVel = 65088 // u/100ms
+        const val acceleration = 301250 // u/100ms^2
+        const val TICKS_PER_INCH = 45276.0963855 // u/inch
 
         object Gains {
-            const val kP = 0.3
+            const val kP = 0.01
             const val kI = 0.0
-            const val kD = 0.1
+            const val kD = 0.4
             const val kF = 0.0
         }
 

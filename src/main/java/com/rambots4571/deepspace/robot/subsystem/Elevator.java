@@ -21,6 +21,8 @@ public class Elevator extends Subsystem {
     private Elevator() {
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
+        baseMotorMaster.setInverted(true);
+        baseMotorMaster.setSensorPhase(true);
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
         baseMotorMaster.configReverseLimitSwitchSource(
                 LimitSwitchSource.FeedbackConnector,
@@ -71,7 +73,6 @@ public class Elevator extends Subsystem {
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
         topMotor.setNeutralMode(NeutralMode.Brake);
-        topMotor.setInverted(true);
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
         resetEncoder();

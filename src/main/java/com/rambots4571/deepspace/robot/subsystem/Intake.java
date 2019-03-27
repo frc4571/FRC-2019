@@ -11,12 +11,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Intake extends Subsystem {
     private static Intake instance;
-    private TalonSRX leftIntakeMotor;
-    private TalonSRX pulleyMotor;
-    private TalonSRX hatchMotor;
+    private VictorSPX leftIntakeMotor;
+    private VictorSPX pulleyMotor;
+    private VictorSPX hatchMotor;
 
     private Intake() {
-        leftIntakeMotor = new TalonSRX(Constants.Intake.LEFT_INTAKE_MOTOR);
+        leftIntakeMotor = new VictorSPX(Constants.Intake.LEFT_INTAKE_MOTOR);
         leftIntakeMotor.setNeutralMode(NeutralMode.Brake);
 
         VictorSPX rightIntakeMotor = new VictorSPX(
@@ -25,11 +25,11 @@ public class Intake extends Subsystem {
         rightIntakeMotor.follow(leftIntakeMotor);
         rightIntakeMotor.setInverted(InvertType.OpposeMaster);
 
-        pulleyMotor = new TalonSRX(Constants.Intake.PULLEY_MOTOR);
+        pulleyMotor = new VictorSPX(Constants.Intake.PULLEY_MOTOR);
         pulleyMotor.setInverted(true);
         pulleyMotor.setNeutralMode(NeutralMode.Brake);
 
-        hatchMotor = new TalonSRX(Constants.Intake.HATCH_MOTOR);
+        hatchMotor = new VictorSPX(Constants.Intake.HATCH_MOTOR);
         hatchMotor.setNeutralMode(NeutralMode.Brake);
     }
 

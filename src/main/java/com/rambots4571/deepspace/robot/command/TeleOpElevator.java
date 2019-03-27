@@ -22,7 +22,6 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
-        elevator.resetEncoder();
         maxAcceleration = 0;
         maxVel = 0;
         prevVel = 0;
@@ -46,6 +45,7 @@ public class TeleOpElevator extends Command {
         SmartDashboard.putNumber("max acceleration u/100ms^2", maxAcceleration);
         SmartDashboard.putString(
                 "position mode", elevator.getPositionMode().toString());
+        System.out.println(elevator.getEncoderTick());
     }
 
     @Override
@@ -68,9 +68,6 @@ public class TeleOpElevator extends Command {
         else if (gamepad.getPOV() == 180) elevator.setTopMotor(-1);
         else elevator.setTopMotor(0);
         // resetting encoder once past zero
-        if (elevator.getEncoderTick() < 0) elevator.resetEncoder();
-        if (gamepad.getLeftYAxis() < 0 && elevator.getEncoderTick() <= 0)
-            elevator.setBaseMotor(0);
         log();
     }
 
