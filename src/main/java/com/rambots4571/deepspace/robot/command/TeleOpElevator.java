@@ -3,6 +3,7 @@ package com.rambots4571.deepspace.robot.command;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.rambots4571.deepspace.robot.Robot.gamepad;
@@ -12,8 +13,6 @@ public class TeleOpElevator extends Command {
     private double maxAcceleration;
     private double maxVel;
     private double prevVel;
-    private boolean prevButton;
-    private boolean currentButton;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -25,8 +24,6 @@ public class TeleOpElevator extends Command {
         maxAcceleration = 0;
         maxVel = 0;
         prevVel = 0;
-        prevButton = false;
-        currentButton = false;
     }
 
     private void log() {
@@ -50,10 +47,8 @@ public class TeleOpElevator extends Command {
 
     @Override
     protected void execute() {
-        // toggling position mode
-        prevButton = currentButton;
-        currentButton = gamepad.getRightBumper().get();
-        if (currentButton && !prevButton) elevator.togglePositionMode();
+        gamepad.getRightBumper().whenReleased(
+                new InstantCommand(elevator::togglePositionMode));
         // set position
         if (gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);
