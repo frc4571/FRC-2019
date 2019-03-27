@@ -5,6 +5,9 @@ import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.deepspace.robot.command.TeleOpIntake;
 import com.rambots4571.rampage.joystick.DriveStick;
 import com.rambots4571.rampage.joystick.Gamepad;
+import com.rambots4571.rampage.vision.CamMode;
+import com.rambots4571.rampage.vision.LedMode;
+import com.rambots4571.rampage.vision.Limelight;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -17,8 +20,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-//        Limelight.setCameraMode(CamMode.DriverCamera);
-//        Limelight.setLedMode(LedMode.Off);
+        Limelight.setLedMode(LedMode.Off);
+        Limelight.setCameraMode(CamMode.DriverCamera);
     }
 
     @Override
