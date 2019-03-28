@@ -35,4 +35,9 @@ class Gamepad(port: Int) : Joystick(port) {
 
     val rightTrigger: Double
         get() = getRawAxis(3)
+
+    fun rumble() {
+        setRumble(RumbleType.kLeftRumble, 0.5)
+        setRumble(RumbleType.kRightRumble, 0.5)
+    }
 }
