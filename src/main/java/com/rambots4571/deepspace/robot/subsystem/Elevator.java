@@ -8,6 +8,7 @@ import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+import static com.rambots4571.deepspace.robot.Constants.Elevator.Gains.*;
 import static com.rambots4571.deepspace.robot.Constants.Elevator.Height.*;
 
 public class Elevator extends Subsystem {
@@ -111,9 +112,7 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
         TalonUtils.config_PIDF(
                 baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
-                Constants.Elevator.Gains.kP, Constants.Elevator.Gains.kI,
-                Constants.Elevator.Gains.kD, Constants.Elevator.Gains.kF,
-                Constants.timeoutMs);
+                kP, kI, kD, kF, Constants.timeoutMs);
         baseMotorMaster.configMotionCruiseVelocity(
                 Constants.Elevator.cruiseVel, Constants.timeoutMs);
         baseMotorMaster.configMotionAcceleration(
