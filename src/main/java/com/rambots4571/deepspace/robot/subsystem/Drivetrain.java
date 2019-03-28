@@ -11,65 +11,70 @@ import com.rambots4571.deepspace.robot.command.TeleOpDrive;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+
+import static com.rambots4571.deepspace.robot.Constants.Drive.MP.Gains.*;
 
 public class Drivetrain extends Subsystem {
     private static Drivetrain instance;
+    public final AHRS navx;
     private TalonSRX leftMaster;
     private TalonSRX rightMaster;
-    public final AHRS navx;
+    private NeutralMode neutralMode = NeutralMode.Coast;
+    private double openLoopRampRate = 0.15;
 
     private Drivetrain() {
+        super("Drivetrain");
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
         leftMaster.configFactoryDefault();
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
-        leftMaster.setNeutralMode(NeutralMode.Coast);
+        leftMaster.setNeutralMode(neutralMode);
         leftMaster.setInverted(true);
-        leftMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
+        leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
-        rightMaster.setNeutralMode(NeutralMode.Coast);
-        leftMaster.configOpenloopRamp(0.15, Constants.timeoutMs);
+        rightMaster.setNeutralMode(neutralMode);
+        leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
         VictorSPX leftFollower1 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
         leftFollower1.configNeutralDeadband(Constants.Drive.deadband);
-        leftFollower1.setNeutralMode(NeutralMode.Coast);
+        leftFollower1.setNeutralMode(neutralMode);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
-        leftFollower1.configOpenloopRamp(0.15, Constants.timeoutMs);
+        leftFollower1.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
         VictorSPX leftFollower2 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
         leftFollower2.configNeutralDeadband(Constants.Drive.deadband);
-        leftFollower2.setNeutralMode(NeutralMode.Coast);
+        leftFollower2.setNeutralMode(neutralMode);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
-        leftFollower2.configOpenloopRamp(0.15, Constants.timeoutMs);
+        leftFollower2.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
-        VictorSPX rightFollower1 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER1);
+        VictorSPX rightFollower1 = new VictorSPX(
+                Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
         rightFollower1.configNeutralDeadband(Constants.Drive.deadband);
-        rightFollower1.setNeutralMode(NeutralMode.Coast);
+        rightFollower1.setNeutralMode(neutralMode);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
-        rightFollower1.configOpenloopRamp(0.15, Constants.timeoutMs);
+        rightFollower1.configOpenloopRamp(
+                openLoopRampRate, Constants.timeoutMs);
 
-        VictorSPX rightFollower2 = new VictorSPX(Constants.Drive.RIGHT_FOLLOWER2);
+        VictorSPX rightFollower2 = new VictorSPX(
+                Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
-        rightFollower2.setNeutralMode(NeutralMode.Coast);
+        rightFollower2.setNeutralMode(neutralMode);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
-        rightFollower2.configOpenloopRamp(0.15, Constants.timeoutMs);
+        rightFollower2.configOpenloopRamp(
+                openLoopRampRate, Constants.timeoutMs);
 
         navx = new AHRS(SPI.Port.kMXP);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleOpDrive());
     }
 
     public static Drivetrain getInstance() {
@@ -79,6 +84,22 @@ public class Drivetrain extends Subsystem {
             }
         }
         return instance;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new TeleOpDrive());
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Gyro Heading", this::getHeading, null);
+        builder.addDoubleProperty(
+                "Ramp Rate", () -> openLoopRampRate,
+                value -> openLoopRampRate = value);
+        builder.addStringProperty(
+                "Neutral Mode", () -> neutralMode.toString(), null);
     }
 
     public int getLeftEncoderTick() {
@@ -141,14 +162,10 @@ public class Drivetrain extends Subsystem {
     public void configMPGains() {
         TalonUtils.config_PIDF(
                 leftMaster, Constants.Drive.highGearPIDSlotIdx,
-                Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
-                Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
-                Constants.timeoutMs);
+                kP, kI, kD, kF, Constants.timeoutMs);
         TalonUtils.config_PIDF(
                 rightMaster, Constants.Drive.highGearPIDSlotIdx,
-                Constants.Drive.MP.Gains.kP, Constants.Drive.MP.Gains.kI,
-                Constants.Drive.MP.Gains.kD, Constants.Drive.MP.Gains.kF,
-                Constants.timeoutMs);
+                kP, kI, kD, kF, Constants.timeoutMs);
     }
 
     public void drive(double left, double right) {
