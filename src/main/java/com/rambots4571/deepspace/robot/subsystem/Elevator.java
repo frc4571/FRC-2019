@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
+import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
@@ -16,6 +17,7 @@ public class Elevator extends Subsystem {
     private TalonSRX baseMotorMaster;
     private TalonSRX topMotor;
     private PositionMode positionMode;
+    private Tuner tuner;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
     private double maxAcceleration;
@@ -54,6 +56,9 @@ public class Elevator extends Subsystem {
         topMotor.configFactoryDefault();
         topMotor.setNeutralMode(NeutralMode.Brake);
 
+        tuner = new Tuner(kP, kI, kD, kF);
+        addChild(tuner);
+
         resetEncoder();
 
         maxAcceleration = 0;
@@ -90,8 +95,8 @@ public class Elevator extends Subsystem {
                 "Raw Max Velocity (u/100ms)", () -> maxVel, null);
         builder.addDoubleProperty(
                 "Raw Acceleration (u/100ms^2)", () -> acceleration, null);
-        builder.addDoubleProperty("Raw Max Acceleration", () -> maxAcceleration, null);
-
+        builder.addDoubleProperty(
+                "Raw Max Acceleration", () -> maxAcceleration, null);
     }
 
     private void configMotionMagic() {
@@ -119,6 +124,12 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.acceleration, Constants.timeoutMs);
     }
 
+    private void setPIDF(double kP, double kI, double kD, double kF) {
+        TalonUtils.config_PIDF(
+                baseMotorMaster, Constants.Elevator.kPIDLoopIdx, kP, kI, kD, kF,
+                Constants.timeoutMs);
+    }
+
     @Override
     public void periodic() {
         vel = getVelocity(Constants.Units.Ticks);
@@ -131,6 +142,7 @@ public class Elevator extends Subsystem {
 
     public void teleOpInit() {
         positionMode = PositionMode.Hatch;
+        setPIDF(tuner.getKP(), tuner.getKI(), tuner.getKD(), tuner.getKF());
     }
 
     public void setBaseMotor(double value) {
