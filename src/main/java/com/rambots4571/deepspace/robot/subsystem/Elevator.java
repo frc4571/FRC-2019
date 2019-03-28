@@ -5,33 +5,95 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
 import static com.rambots4571.deepspace.robot.Constants.Elevator.Height.*;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
-    private TalonSRX baseMotorMaster, baseMotorFollower;
+    private TalonSRX baseMotorMaster;
     private TalonSRX topMotor;
-    private DigitalInput limitSwitch;
     private PositionMode positionMode;
+    private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
+    private double acceleration;
+    private double maxAcceleration;
+    private double vel;
+    private double maxVel;
+    private double prevVel;
 
     private Elevator() {
+        super("Elevator");
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
         baseMotorMaster.setInverted(true);
         baseMotorMaster.setSensorPhase(true);
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
-        baseMotorMaster.configReverseLimitSwitchSource(
-                LimitSwitchSource.FeedbackConnector,
-                LimitSwitchNormal.NormallyOpen, Constants.timeoutMs);
         baseMotorMaster.enableCurrentLimit(true);
         baseMotorMaster.configContinuousCurrentLimit(25, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorMaster.configNeutralDeadband(0.06, Constants.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
+        configMotionMagic();
+
+        TalonSRX baseMotorFollower = new TalonSRX(
+                Constants.Elevator.BASE_MOTOR_FOLLOWER);
+        baseMotorFollower.configFactoryDefault();
+        baseMotorFollower.setNeutralMode(NeutralMode.Brake);
+        baseMotorFollower.follow(baseMotorMaster);
+        baseMotorFollower.setInverted(InvertType.FollowMaster);
+        baseMotorFollower.enableCurrentLimit(true);
+        baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
+        baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
+        baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
+
+        topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
+        topMotor.configFactoryDefault();
+        topMotor.setNeutralMode(NeutralMode.Brake);
+
+        resetEncoder();
+
+        maxAcceleration = 0;
+        maxVel = 0;
+        prevVel = 0;
+    }
+
+    public static Elevator getInstance() {
+        if (instance == null) {
+            synchronized (Elevator.class) {
+                instance = new Elevator();
+            }
+        }
+        return instance;
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new TeleOpElevator());
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty(
+                "Ticks per Inch", () -> ticksPerInch,
+                value -> ticksPerInch = value);
+        builder.addStringProperty(
+                "Position Mode", () -> positionMode.toString(), null);
+        builder.addDoubleProperty("Encoder Tick", this::getEncoderTick, null);
+        builder.addDoubleProperty("Elevator Height", this::getHeight, null);
+        builder.addDoubleProperty("Raw Velocity (u/100ms)", () -> vel, null);
+        builder.addDoubleProperty(
+                "Raw Max Velocity (u/100ms)", () -> maxVel, null);
+        builder.addDoubleProperty(
+                "Raw Acceleration (u/100ms^2)", () -> acceleration, null);
+        builder.addDoubleProperty("Raw Max Acceleration", () -> maxAcceleration, null);
+
+    }
+
+    private void configMotionMagic() {
         baseMotorMaster.configSelectedFeedbackSensor(
                 FeedbackDevice.CTRE_MagEncoder_Relative,
                 Constants.Elevator.kPIDLoopIdx, Constants.timeoutMs);
@@ -56,45 +118,16 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.cruiseVel, Constants.timeoutMs);
         baseMotorMaster.configMotionAcceleration(
                 Constants.Elevator.acceleration, Constants.timeoutMs);
-        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
-
-        baseMotorFollower = new TalonSRX(
-                Constants.Elevator.BASE_MOTOR_FOLLOWER);
-        baseMotorFollower.configFactoryDefault();
-        baseMotorFollower.setNeutralMode(NeutralMode.Brake);
-        baseMotorFollower.follow(baseMotorMaster);
-        baseMotorFollower.setInverted(InvertType.FollowMaster);
-        baseMotorFollower.enableCurrentLimit(true);
-        baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
-        baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
-        baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
-
-        topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
-        topMotor.configFactoryDefault();
-        topMotor.setNeutralMode(NeutralMode.Brake);
-
-        limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
-        resetEncoder();
-    }
-
-    public static Elevator getInstance() {
-        if (instance == null) {
-            synchronized (Elevator.class) {
-                instance = new Elevator();
-            }
-        }
-        return instance;
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleOpElevator());
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.getBoolean("limit switch pressed", isAtReverseLimit());
+        vel = getVelocity(Constants.Units.Ticks);
+        acceleration = (vel - prevVel) / 0.02;
+        prevVel = vel;
+        if (Math.abs(acceleration) > Math.abs(maxAcceleration))
+            maxAcceleration = Math.abs(acceleration);
+        if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
     }
 
     public void teleOpInit() {
@@ -117,10 +150,6 @@ public class Elevator extends Subsystem {
         topMotor.set(ControlMode.PercentOutput, 0);
     }
 
-    public boolean isLimitSwitchPressed() {
-        return limitSwitch.get();
-    }
-
     public void resetEncoder() {
         baseMotorMaster.setSelectedSensorPosition(0);
     }
@@ -132,20 +161,22 @@ public class Elevator extends Subsystem {
 
     public double getVelocity(Constants.Units units) {
         switch (units) {
-            case Ticks:
+            case Ticks: // u / 100ms
                 return baseMotorMaster.getSelectedSensorVelocity(
                         Constants.Elevator.kPIDLoopIdx);
-            case Inches:
+            case Inches: // inches / s
                 return baseMotorMaster.getSelectedSensorVelocity(
-                        Constants.Elevator.kPIDLoopIdx) /
-                       Constants.Elevator.TICKS_PER_INCH / 10;
+                        Constants.Elevator.kPIDLoopIdx) / ticksPerInch / 10.0;
+            case Feet: // feet / s
+                return baseMotorMaster.getSelectedSensorVelocity(
+                        Constants.Elevator.kPIDLoopIdx) / ticksPerInch / 120.0;
             default:
                 return -1;
         }
     }
 
     public void setPosition(double inches) {
-        double ticks = inches * Constants.Elevator.TICKS_PER_INCH;
+        double ticks = inches * ticksPerInch;
         baseMotorMaster.set(ControlMode.MotionMagic, ticks);
     }
 
@@ -181,20 +212,12 @@ public class Elevator extends Subsystem {
     }
 
     public double getHeight() {
-        return getEncoderTick() / Constants.Elevator.TICKS_PER_INCH;
+        return getEncoderTick() / ticksPerInch;
     }
 
     public void togglePositionMode() {
         positionMode = positionMode == PositionMode.Hatch ?
                        PositionMode.Cargo : PositionMode.Hatch;
-    }
-
-    public boolean isAtReverseLimit() {
-        return baseMotorMaster.getSensorCollection().isRevLimitSwitchClosed();
-    }
-
-    public PositionMode getPositionMode() {
-        return positionMode;
     }
 
     public enum PositionMode {
