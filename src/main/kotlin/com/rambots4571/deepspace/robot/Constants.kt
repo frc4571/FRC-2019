@@ -1,10 +1,7 @@
 package com.rambots4571.deepspace.robot
 
 object Constants {
-    const val period = 0.02
-    const val periodMs = 20
     const val timeoutMs = 30
-    const val longTimeoutMs = 1000
 
     enum class Units {
         Feet, Inches, Ticks
@@ -23,6 +20,7 @@ object Constants {
         const val RIGHT_MASTER = 1
         const val RIGHT_FOLLOWER1 = 2
         const val RIGHT_FOLLOWER2 = 3
+
         const val highGearPIDSlotIdx = 0
 
         const val deadband = 0.06
@@ -76,6 +74,7 @@ object Constants {
 
         const val kPIDLoopIdx = 0
         const val kSlotIdx = 0
+
         const val cruiseVel = 65088 // u/100ms
         const val acceleration = 301250 // u/100ms^2
         const val TICKS_PER_INCH = 45276.0963855 // u/inch
