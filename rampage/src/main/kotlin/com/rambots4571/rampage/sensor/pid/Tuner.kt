@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 
 class Tuner(kP: Double, kI: Double, kD: Double, kF: Double = 0.0) :
         SendableBase() {
-    var kP: Double = 0.0
+    var kP: Double
         private set
-    var kI: Double = 0.0
+    var kI: Double
         private set
-    var kD: Double = 0.0
+    var kD: Double
         private set
-    var kF: Double = 0.0
+    var kF: Double
         private set
 
     constructor() : this(0.0, 0.0, 0.0)
