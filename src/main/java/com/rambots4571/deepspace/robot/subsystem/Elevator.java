@@ -9,14 +9,35 @@ import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import static com.rambots4571.deepspace.robot.Constants.Elevator.Gains.*;
 import static com.rambots4571.deepspace.robot.Constants.Elevator.Height.*;
 
 public class Elevator extends Subsystem {
     private static Elevator instance;
+    private static Map<Position,Double> heights = new HashMap<>();
+
+    static {
+        heights.put(new Position(PositionMode.Hatch, Height.Zero), 0.0);
+        heights.put(
+                new Position(PositionMode.Hatch, Height.Bottom), hatchBottom);
+        heights.put(
+                new Position(PositionMode.Hatch, Height.Middle), hatchMiddle);
+        heights.put(new Position(PositionMode.Hatch, Height.Top), hatchTop);
+        heights.put(new Position(PositionMode.Cargo, Height.Zero), 0.0);
+        heights.put(
+                new Position(PositionMode.Cargo, Height.Bottom), cargoBottom);
+        heights.put(
+                new Position(PositionMode.Cargo, Height.Middle), cargoMiddle);
+        heights.put(new Position(PositionMode.Cargo, Height.Top), cargoTop);
+    }
+
     private TalonSRX baseMotorMaster;
     private TalonSRX topMotor;
-    private PositionMode positionMode;
+    private Position position;
     private Tuner tuner;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
@@ -59,6 +80,8 @@ public class Elevator extends Subsystem {
         tuner = new Tuner(kP, kI, kD, kF);
         addChild(tuner);
 
+        position = new Position(PositionMode.Hatch, Height.Zero);
+
         resetEncoder();
 
         maxAcceleration = 0;
@@ -87,7 +110,7 @@ public class Elevator extends Subsystem {
                 "Ticks per Inch", () -> ticksPerInch,
                 value -> ticksPerInch = value);
         builder.addStringProperty(
-                "Position Mode", () -> positionMode.toString(), null);
+                "Position Mode", () -> position.mode.toString(), null);
         builder.addDoubleProperty("Encoder Tick", this::getEncoderTick, null);
         builder.addDoubleProperty("Elevator Height", this::getHeight, null);
         builder.addDoubleProperty("Raw Velocity (u/100ms)", () -> vel, null);
@@ -141,7 +164,7 @@ public class Elevator extends Subsystem {
     }
 
     public void teleOpInit() {
-        positionMode = PositionMode.Hatch;
+        position = new Position(PositionMode.Hatch, Height.Zero);
         setPIDF(tuner.getKP(), tuner.getKI(), tuner.getKD(), tuner.getKF());
     }
 
@@ -192,34 +215,8 @@ public class Elevator extends Subsystem {
     }
 
     public void setPosition(Height height) {
-        switch (positionMode) {
-            case Hatch:
-                switch (height) {
-                    case Bottom:
-                        setPosition(hatchBottom);
-                        break;
-                    case Middle:
-                        setPosition(hatchMiddle);
-                        break;
-                    case Top:
-                        setPosition(hatchTop);
-                        break;
-                }
-                break;
-            case Cargo:
-                switch (height) {
-                    case Bottom:
-                        setPosition(cargoBottom);
-                        break;
-                    case Middle:
-                        setPosition(cargoMiddle);
-                        break;
-                    case Top:
-                        setPosition(cargoTop);
-                        break;
-                }
-                break;
-        }
+        position.height = height;
+        setPosition(heights.get(position));
     }
 
     public double getHeight() {
@@ -227,7 +224,7 @@ public class Elevator extends Subsystem {
     }
 
     public void togglePositionMode() {
-        positionMode = positionMode == PositionMode.Hatch ?
+        position.mode = position.mode == PositionMode.Hatch ?
                        PositionMode.Cargo : PositionMode.Hatch;
     }
 
@@ -236,6 +233,30 @@ public class Elevator extends Subsystem {
     }
 
     public enum Height {
-        Bottom, Middle, Top
+        Zero, Bottom, Middle, Top
+    }
+
+    public static class Position {
+        private PositionMode mode;
+        private Height height;
+
+        public Position(PositionMode mode, Height height) {
+            this.mode = mode;
+            this.height = height;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Position)) return false;
+            Position position = (Position) o;
+            return mode == position.mode &&
+                   height == position.height;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(mode, height);
+        }
     }
 }
