@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpDrive;
@@ -38,7 +37,7 @@ public class Drivetrain extends Subsystem {
         rightMaster.setNeutralMode(neutralMode);
         leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
-        VictorSPX leftFollower1 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER1);
+        TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
         leftFollower1.configNeutralDeadband(Constants.Drive.deadband);
         leftFollower1.setNeutralMode(neutralMode);
@@ -46,7 +45,7 @@ public class Drivetrain extends Subsystem {
         leftFollower1.setInverted(InvertType.FollowMaster);
         leftFollower1.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
-        VictorSPX leftFollower2 = new VictorSPX(Constants.Drive.LEFT_FOLLOWER2);
+        TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
         leftFollower2.configNeutralDeadband(Constants.Drive.deadband);
         leftFollower2.setNeutralMode(neutralMode);
@@ -54,8 +53,7 @@ public class Drivetrain extends Subsystem {
         leftFollower2.setInverted(InvertType.FollowMaster);
         leftFollower2.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
-        VictorSPX rightFollower1 = new VictorSPX(
-                Constants.Drive.RIGHT_FOLLOWER1);
+        TalonSRX rightFollower1 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
         rightFollower1.configNeutralDeadband(Constants.Drive.deadband);
         rightFollower1.setNeutralMode(neutralMode);
@@ -64,8 +62,7 @@ public class Drivetrain extends Subsystem {
         rightFollower1.configOpenloopRamp(
                 openLoopRampRate, Constants.timeoutMs);
 
-        VictorSPX rightFollower2 = new VictorSPX(
-                Constants.Drive.RIGHT_FOLLOWER2);
+        TalonSRX rightFollower2 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
         rightFollower2.setNeutralMode(neutralMode);
