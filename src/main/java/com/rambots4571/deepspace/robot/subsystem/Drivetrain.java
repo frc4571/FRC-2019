@@ -21,6 +21,7 @@ public class Drivetrain extends Subsystem {
     private TalonSRX rightMaster;
     private NeutralMode neutralMode = NeutralMode.Coast;
     private double openLoopRampRate = 0.15;
+    private int peakCurrent = 40;
 
     private Drivetrain() {
         super("Drivetrain");
@@ -30,12 +31,21 @@ public class Drivetrain extends Subsystem {
         leftMaster.setNeutralMode(neutralMode);
         leftMaster.setInverted(true);
         leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        leftMaster.enableCurrentLimit(true);
+        leftMaster.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftMaster.configPeakCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
 
         rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
         rightMaster.configFactoryDefault();
         rightMaster.configNeutralDeadband(Constants.Drive.deadband);
         rightMaster.setNeutralMode(neutralMode);
         leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        rightMaster.enableCurrentLimit(true);
+        rightMaster.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        rightMaster.configPeakCurrentLimit(peakCurrent,Constants.timeoutMs);
+        rightMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
+
 
         TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
@@ -44,6 +54,11 @@ public class Drivetrain extends Subsystem {
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
         leftFollower1.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        leftFollower1.enableCurrentLimit(true);
+        leftFollower1.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftFollower1.configPeakCurrentLimit(peakCurrent);
+        leftFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
+
 
         TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
@@ -52,6 +67,11 @@ public class Drivetrain extends Subsystem {
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
         leftFollower2.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        leftFollower2.enableCurrentLimit(true);
+        leftFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftFollower2.configPeakCurrentLimit(peakCurrent);
+        leftFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
+
 
         TalonSRX rightFollower1 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
@@ -61,6 +81,11 @@ public class Drivetrain extends Subsystem {
         rightFollower1.setInverted(InvertType.FollowMaster);
         rightFollower1.configOpenloopRamp(
                 openLoopRampRate, Constants.timeoutMs);
+        rightFollower1.enableCurrentLimit(true);
+        rightFollower1.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        rightFollower1.configPeakCurrentLimit(peakCurrent);
+        rightFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
+
 
         TalonSRX rightFollower2 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
@@ -70,6 +95,11 @@ public class Drivetrain extends Subsystem {
         rightFollower2.setInverted(InvertType.FollowMaster);
         rightFollower2.configOpenloopRamp(
                 openLoopRampRate, Constants.timeoutMs);
+        rightFollower2.enableCurrentLimit(true);
+        rightFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        rightFollower2.configPeakCurrentLimit(peakCurrent);
+        rightFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
+
 
         navx = new AHRS(SPI.Port.kMXP);
     }
