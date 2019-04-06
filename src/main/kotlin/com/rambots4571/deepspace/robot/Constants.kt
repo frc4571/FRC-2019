@@ -75,23 +75,23 @@ object Constants {
         const val kPIDLoopIdx = 0
         const val kSlotIdx = 0
 
-        const val cruiseVel = 65088 // u/100ms
-        const val acceleration = 301250 // u/100ms^2
-        const val TICKS_PER_INCH = 45276.0963855 // u/inch
+        const val cruiseVel = 108288 // u/100ms
+        const val acceleration = 3370800 // u/100ms^2
+        const val TICKS_PER_INCH = 63350.0377 // u/inch
 
         object Gains {
             const val kP = 0.01
             const val kI = 0.0
-            const val kD = 0.4
+            const val kD = 0.0
             const val kF = 0.0
         }
 
         object Height {
-            const val hatchBottom = 3.5
-            const val hatchMiddle = 16.875
-            const val hatchTop = 31.75
-            const val cargoBottom = hatchBottom + 9.5
-            const val cargoMiddle = hatchMiddle + 9.5
+            const val hatchBottom = 3.0
+            const val hatchMiddle = 16.75
+            const val hatchTop = 30.0
+            const val cargoBottom = 11.30
+            const val cargoMiddle = hatchMiddle + 9.0
             const val cargoTop = hatchTop
         }
     }
