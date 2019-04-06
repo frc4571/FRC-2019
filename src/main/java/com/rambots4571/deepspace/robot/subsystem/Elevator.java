@@ -6,8 +6,10 @@ import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import com.rambots4571.rampage.sensor.pid.Tuner;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +39,7 @@ public class Elevator extends Subsystem {
 
     private TalonSRX baseMotorMaster;
     private TalonSRX topMotor;
+    private DigitalInput limitSwitch;
     private Position position;
     private Tuner tuner;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
@@ -45,20 +48,20 @@ public class Elevator extends Subsystem {
     private double vel;
     private double maxVel;
     private double prevVel;
+    private double openLoopRampRate = .15;
 
     private Elevator() {
         super("Elevator");
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
-        baseMotorMaster.setInverted(true);
-        baseMotorMaster.setSensorPhase(true);
+        baseMotorMaster.setInverted(false);
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
         baseMotorMaster.enableCurrentLimit(true);
         baseMotorMaster.configContinuousCurrentLimit(25, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
-        baseMotorMaster.configNeutralDeadband(0.06, Constants.timeoutMs);
-        baseMotorMaster.configOpenloopRamp(0.35, Constants.timeoutMs);
+        baseMotorMaster.configNeutralDeadband(0.07, Constants.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
         configMotionMagic();
 
         TalonSRX baseMotorFollower = new TalonSRX(
@@ -71,11 +74,14 @@ public class Elevator extends Subsystem {
         baseMotorFollower.configContinuousCurrentLimit(25, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(0.35, Constants.timeoutMs);
+        baseMotorFollower.configNeutralDeadband(0.07, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
         topMotor.setNeutralMode(NeutralMode.Brake);
+
+        limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
 
         tuner = new Tuner(kP, kI, kD, kF);
         addChild(tuner);
@@ -161,6 +167,7 @@ public class Elevator extends Subsystem {
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
             maxAcceleration = Math.abs(acceleration);
         if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
+        SmartDashboard.putBoolean("Limit Switch", isLimitSwitchPressed());
     }
 
     public void teleOpInit() {
@@ -169,7 +176,8 @@ public class Elevator extends Subsystem {
     }
 
     public void setBaseMotor(double value) {
-        baseMotorMaster.set(ControlMode.PercentOutput, value);
+        if (isLimitSwitchPressed() && value < 0) stopBaseMotor();
+        else baseMotorMaster.set(ControlMode.PercentOutput, value);
     }
 
     public void setTopMotor(double value) {
@@ -182,6 +190,10 @@ public class Elevator extends Subsystem {
 
     public void stopTopMotor() {
         topMotor.set(ControlMode.PercentOutput, 0);
+    }
+
+    public boolean isLimitSwitchPressed() {
+        return !limitSwitch.get();
     }
 
     public void resetEncoder() {
