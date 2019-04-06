@@ -29,12 +29,14 @@ public class Elevator extends Subsystem {
         heights.put(
                 new Position(PositionMode.Hatch, Height.Middle), hatchMiddle);
         heights.put(new Position(PositionMode.Hatch, Height.Top), hatchTop);
+        heights.put(new Position(PositionMode.Hatch, Height.Cargo), cargoLevel);
         heights.put(new Position(PositionMode.Cargo, Height.Zero), 0.0);
         heights.put(
                 new Position(PositionMode.Cargo, Height.Bottom), cargoBottom);
         heights.put(
                 new Position(PositionMode.Cargo, Height.Middle), cargoMiddle);
         heights.put(new Position(PositionMode.Cargo, Height.Top), cargoTop);
+        heights.put(new Position(PositionMode.Cargo, Height.Cargo), cargoLevel);
     }
 
     private TalonSRX baseMotorMaster;
@@ -117,6 +119,7 @@ public class Elevator extends Subsystem {
                 value -> ticksPerInch = value);
         builder.addStringProperty(
                 "Position Mode", () -> position.mode.toString(), null);
+        builder.addBooleanProperty("Is limit switch pressed?", this::isLimitSwitchPressed, null);
         builder.addDoubleProperty("Encoder Tick", this::getEncoderTick, null);
         builder.addDoubleProperty("Elevator Height", this::getHeight, null);
         builder.addDoubleProperty("Raw Velocity (u/100ms)", () -> vel, null);
@@ -167,7 +170,6 @@ public class Elevator extends Subsystem {
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
             maxAcceleration = Math.abs(acceleration);
         if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
-        SmartDashboard.putBoolean("Limit Switch", isLimitSwitchPressed());
     }
 
     public void teleOpInit() {
@@ -245,7 +247,7 @@ public class Elevator extends Subsystem {
     }
 
     public enum Height {
-        Zero, Bottom, Middle, Top
+        Zero, Bottom, Middle, Cargo, Top
     }
 
     public static class Position {

@@ -8,6 +8,8 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
+    private boolean prevButton;
+    private boolean currentButton;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -16,14 +18,18 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
+        prevButton = false;
+        currentButton = false;
     }
 
     @Override
     protected void execute() {
-        gamepad.getRightBumper().whenReleased(
-                new InstantCommand(elevator::togglePositionMode));
+        prevButton = currentButton;
+        currentButton = gamepad.getRightBumper().get();
+        if (currentButton && !prevButton) elevator.togglePositionMode();
         // set position
-        if (gamepad.getY().get())
+        if (gamepad.getX().get()) elevator.setPosition(Elevator.Height.Cargo);
+        else if (gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);
         else if (gamepad.getB().get())
             elevator.setPosition(Elevator.Height.Middle);
