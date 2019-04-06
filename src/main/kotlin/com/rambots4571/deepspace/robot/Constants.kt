@@ -82,7 +82,7 @@ object Constants {
         object Gains {
             const val kP = 0.01
             const val kI = 0.0
-            const val kD = 0.0
+            const val kD = 0.3
             const val kF = 0.0
         }
 
@@ -90,6 +90,7 @@ object Constants {
             const val hatchBottom = 3.0
             const val hatchMiddle = 16.75
             const val hatchTop = 30.0
+            const val cargoLevel = 25.0
             const val cargoBottom = 11.30
             const val cargoMiddle = hatchMiddle + 9.0
             const val cargoTop = hatchTop
@@ -101,6 +102,10 @@ object Constants {
         const val RIGHT_INTAKE_MOTOR = 10
         const val PULLEY_MOTOR = 11
         const val HATCH_MOTOR = 13
+    }
+
+    object Climber {
+        const val CLIMBER_MOTOR = 14
     }
 
     object Pipelines {
