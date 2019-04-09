@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
-import com.rambots4571.rampage.command.DoOnce;
+import com.rambots4571.rampage.function.DoOnce;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.command.Subsystem;
