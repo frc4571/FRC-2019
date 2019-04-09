@@ -4,8 +4,8 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
-import com.rambots4571.rampage.function.DoOnce;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
+import com.rambots4571.rampage.function.DoOnce;
 import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -40,8 +40,8 @@ public class Elevator extends Subsystem {
     private TalonSRX topMotor;
     private Position position;
     private Tuner tuner;
-    private ControlState controlState;
-    private DoOnce<ControlState> statePrinter;
+    private ControlMode controlMode;
+    private DoOnce<ControlMode> statePrinter;
     private DoOnce<Position> positionPrinter;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
@@ -91,7 +91,8 @@ public class Elevator extends Subsystem {
         maxVel = 0;
         prevVel = 0;
 
-        statePrinter = new DoOnce<>(() -> controlState, ControlState.Manual);
+        statePrinter = new DoOnce<>(
+                () -> controlMode, ControlMode.PercentOutput);
         positionPrinter = new DoOnce<>(
                 () -> position, new Position(PositionMode.Hatch, Height.Zero));
     }
@@ -170,7 +171,8 @@ public class Elevator extends Subsystem {
         if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
         statePrinter.run(
                 () -> System.out
-                        .println("Elevator Control Mode: " + controlState));
+                        .println("Elevator Control Mode: " +
+                                 controlMode));
         positionPrinter.run(
                 () -> System.out.println("Elevator Position: " + position));
     }
@@ -185,8 +187,8 @@ public class Elevator extends Subsystem {
     }
 
     public void setTopMotor(double value) {
-        controlState = ControlState.Manual;
-        topMotor.set(ControlMode.PercentOutput, value);
+        controlMode = ControlMode.PercentOutput;
+        topMotor.set(controlMode, value);
     }
 
     public void stopBaseMotor() {
@@ -223,9 +225,9 @@ public class Elevator extends Subsystem {
     }
 
     public void setPosition(double inches) {
-        controlState = ControlState.MotionMagic;
+        controlMode = ControlMode.MotionMagic;
         double ticks = inches * ticksPerInch;
-        baseMotorMaster.set(ControlMode.MotionMagic, ticks);
+        baseMotorMaster.set(controlMode, ticks);
     }
 
     public void setPosition(Height height) {
@@ -248,10 +250,6 @@ public class Elevator extends Subsystem {
 
     public enum Height {
         Zero, Bottom, Middle, Top
-    }
-
-    public enum ControlState {
-        Manual, MotionMagic
     }
 
     public static class Position {
