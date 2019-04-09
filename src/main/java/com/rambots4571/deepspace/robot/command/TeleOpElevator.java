@@ -20,7 +20,7 @@ public class TeleOpElevator extends Command {
     @Override
     protected void execute() {
         // toggling position mode
-        gamepad.getRightBumper().doOnce(elevator::togglePositionMode);
+        gamepad.getRightBumper().whenPressedDoOnce(elevator::togglePositionMode);
         // set position
         if (gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);

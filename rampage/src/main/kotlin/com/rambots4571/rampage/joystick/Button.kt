@@ -13,7 +13,7 @@ class Button(joystick: GenericHID, buttonNumber: Int) :
      * Use this method when you want to do an action once inside a continuous
      * loop, such as the execute() method inside the Command class.
      */
-    fun doOnce(action: Runnable) {
+    fun whenPressedDoOnce(action: Runnable) {
         doOnce.run(action)
     }
 }
