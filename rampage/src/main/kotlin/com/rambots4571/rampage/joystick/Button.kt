@@ -10,7 +10,7 @@ class Button(joystick: GenericHID, buttonNumber: Int) :
     private val doOnce = DoOnce(Supplier(this::get), false)
 
     init {
-        doOnce.doWhenBackToInitial = false
+        doOnce.runWhenBackToInitial = false
     }
 
     /**
