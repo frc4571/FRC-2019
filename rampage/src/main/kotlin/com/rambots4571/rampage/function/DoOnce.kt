@@ -3,14 +3,14 @@ package com.rambots4571.rampage.function
 import java.util.function.Supplier
 
 /**
- * This class is used to execute an action once, if it is inside a continuous
- * loop, it needs to compare the states that you supply and it will execute
- * the action you provide when the states switch.
+ * This class is used to execute an action once when the state you provide
+ * switches, this is meant to be used inside a continuous loop.
  */
 class DoOnce<S>(
-    private val stateSupplier: Supplier<S>, private val initialState: S) {
+    private val stateSupplier: Supplier<S>, private var initialState: S) {
     private var prevState: S
     private var currentState: S
+    var doWhenBackToInitial = true
 
     init {
         currentState = initialState
@@ -21,6 +21,7 @@ class DoOnce<S>(
         prevState = currentState
         currentState = stateSupplier.get()
         if (currentState != initialState && prevState == initialState)
+            if (doWhenBackToInitial) initialState = currentState
             action.run()
     }
 }

@@ -9,6 +9,10 @@ class Button(joystick: GenericHID, buttonNumber: Int) :
         JoystickButton(joystick, buttonNumber) {
     private val doOnce = DoOnce(Supplier(this::get), false)
 
+    init {
+        doOnce.doWhenBackToInitial = false
+    }
+
     /**
      * Use this method when you want to do an action once inside a continuous
      * loop, such as the execute() method inside the Command class.
