@@ -92,7 +92,7 @@ public class Elevator extends Subsystem {
         prevVel = 0;
 
         statePrinter = new DoOnce<>(
-                () -> controlMode, ControlMode.PercentOutput);
+                () -> controlMode, ControlMode.Disabled);
         positionPrinter = new DoOnce<>(
                 () -> position, new Position(PositionMode.Hatch, Height.Zero));
     }
