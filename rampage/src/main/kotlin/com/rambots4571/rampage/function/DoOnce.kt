@@ -10,7 +10,7 @@ class DoOnce<S>(
     private val stateSupplier: Supplier<S>, private var initialState: S) {
     private var prevState: S
     private var currentState: S
-    var runWhenBackToInitial = true
+    @JvmField var runWhenBackToInitial = true
 
     init {
         currentState = initialState
