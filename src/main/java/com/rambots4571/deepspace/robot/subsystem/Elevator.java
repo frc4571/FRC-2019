@@ -276,5 +276,13 @@ public class Elevator extends Subsystem {
         public int hashCode() {
             return Objects.hash(mode, height);
         }
+
+        @Override
+        public String toString() {
+            return "Position{" +
+                   "mode=" + mode +
+                   ", height=" + height +
+                   '}';
+        }
     }
 }
