@@ -55,6 +55,7 @@ deploy {
         frcJavaArtifact('frcJava') {
             targets << "roborio"
             debug = frc.getDebugOrDefault(false)
+            jvmArgs = ["-XX:+UseConcMarkSweepGC"]
         }
         fileTreeArtifact('frcStaticFileDeploy') {
             files = fileTree(dir: 'src/main/deploy')
@@ -74,7 +75,9 @@ dependencies {
 }
 
 jar {
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
     manifest GradleRIOPlugin.javaManifest(MAIN_CLASS)
 }
 
