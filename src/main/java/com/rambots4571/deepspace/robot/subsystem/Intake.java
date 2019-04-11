@@ -27,6 +27,8 @@ public class Intake extends Subsystem {
         pulleyMotor = new VictorSPX(Constants.Intake.PULLEY_MOTOR);
         pulleyMotor.setInverted(true);
         pulleyMotor.setNeutralMode(NeutralMode.Brake);
+        pulleyMotor.configNeutralDeadband(0.15);
+        pulleyMotor.configNominalOutputReverse(-0.3, Constants.timeoutMs);
 
         hatchMotor = new VictorSPX(Constants.Intake.HATCH_MOTOR);
         hatchMotor.setNeutralMode(NeutralMode.Brake);
