@@ -33,8 +33,9 @@ class SwitchAction<S>(
     fun run(action: Runnable) {
         prevState = currentState
         currentState = stateSupplier.get()
-        if (currentState != initialState && prevState == initialState)
+        if (currentState != initialState && prevState == initialState) {
             if (runWhenBackToInitial) initialState = currentState
-        action.run()
+            action.run()
+        }
     }
 }
