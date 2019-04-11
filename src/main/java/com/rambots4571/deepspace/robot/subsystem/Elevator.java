@@ -9,7 +9,6 @@ import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -147,6 +146,7 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configPeakOutputReverse(-1, Constants.timeoutMs);
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
+        baseMotorMaster.configClosedloopRamp(0.15, Constants.timeoutMs);
         TalonUtils.config_PIDF(
                 baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
                 kP, kI, kD, kF, Constants.timeoutMs);
@@ -231,6 +231,7 @@ public class Elevator extends Subsystem {
     public void setPosition(Height height) {
         position.height = height;
         setPosition(heights.get(position));
+        System.out.println(position);
     }
 
     public double getHeight() {
@@ -271,6 +272,14 @@ public class Elevator extends Subsystem {
         @Override
         public int hashCode() {
             return Objects.hash(mode, height);
+        }
+
+        @Override
+        public String toString() {
+            return "Position{" +
+                    "mode=" + mode +
+                    ", height=" + height +
+                    '}';
         }
     }
 }
