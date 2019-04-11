@@ -66,7 +66,8 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorMaster.configNeutralDeadband(0.07, Constants.timeoutMs);
-        baseMotorMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(
+                openLoopRampRate, Constants.timeoutMs);
         configMotionMagic();
 
         TalonSRX baseMotorFollower = new TalonSRX(
@@ -80,7 +81,8 @@ public class Elevator extends Subsystem {
         baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorFollower.configNeutralDeadband(0.07, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(
+                openLoopRampRate, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
@@ -125,7 +127,8 @@ public class Elevator extends Subsystem {
                 value -> ticksPerInch = value);
         builder.addStringProperty(
                 "Position Mode", () -> position.mode.toString(), null);
-        builder.addBooleanProperty("Is limit switch pressed?", this::isLimitSwitchPressed, null);
+        builder.addBooleanProperty(
+                "Is limit switch pressed?", this::isLimitSwitchPressed, null);
         builder.addDoubleProperty("Encoder Tick", this::getEncoderTick, null);
         builder.addDoubleProperty("Elevator Height", this::getHeight, null);
         builder.addDoubleProperty("Raw Velocity (u/100ms)", () -> vel, null);
@@ -177,10 +180,8 @@ public class Elevator extends Subsystem {
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
             maxAcceleration = Math.abs(acceleration);
         if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
-        statePrinter.run(
-                () -> System.out
-                        .println("Elevator Control Mode: " +
-                                 controlMode));
+        statePrinter.run(() -> System.out
+                .println("Elevator Control Mode: " + controlMode));
         positionPrinter.run(
                 () -> System.out.println("Elevator Position: " + position));
     }
@@ -225,10 +226,6 @@ public class Elevator extends Subsystem {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     public void setPosition(double inches) {
         controlMode = ControlMode.MotionMagic;
         double ticks = inches * ticksPerInch;
@@ -236,7 +233,7 @@ public class Elevator extends Subsystem {
     }
 
     public void setPosition(Height height) {
-        position.height = height;
+        position.setHeight(height);
         setPosition(heights.get(position));
     }
 
@@ -271,8 +268,9 @@ public class Elevator extends Subsystem {
     }
 
     public void togglePositionMode() {
-        position.mode = position.mode == PositionMode.Hatch ?
-                        PositionMode.Cargo : PositionMode.Hatch;
+        position.setMode(
+                position.getMode() == PositionMode.Hatch ? PositionMode.Cargo :
+                PositionMode.Hatch);
     }
 
     public enum PositionMode {
@@ -309,9 +307,9 @@ public class Elevator extends Subsystem {
         @Override
         public String toString() {
             return "Position{" +
-                    "mode=" + mode +
-                    ", height=" + height +
-                    '}';
+                   "mode=" + mode +
+                   ", height=" + height +
+                   '}';
         }
 
         public PositionMode getMode() {
