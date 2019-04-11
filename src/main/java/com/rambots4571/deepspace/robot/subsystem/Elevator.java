@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
-import com.rambots4571.rampage.function.DoOnce;
+import com.rambots4571.rampage.function.SwitchAction;
 import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
@@ -41,8 +41,8 @@ public class Elevator extends Subsystem {
     private Position position;
     private Tuner tuner;
     private ControlMode controlMode;
-    private DoOnce<ControlMode> statePrinter;
-    private DoOnce<Position> positionPrinter;
+    private SwitchAction<ControlMode> statePrinter;
+    private SwitchAction<Position> positionPrinter;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
     private double maxAcceleration;
@@ -91,10 +91,9 @@ public class Elevator extends Subsystem {
         maxVel = 0;
         prevVel = 0;
 
-        statePrinter = new DoOnce<>(
+        statePrinter = new SwitchAction<>(
                 () -> controlMode, ControlMode.Disabled);
-        positionPrinter = new DoOnce<>(
-                () -> position, new Position(PositionMode.Hatch, Height.Zero));
+        positionPrinter = new SwitchAction<>(this::getPosition, position);
     }
 
     public static Elevator getInstance() {
@@ -208,6 +207,31 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.kPIDLoopIdx);
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(double inches) {
+        controlMode = ControlMode.MotionMagic;
+        double ticks = inches * ticksPerInch;
+        baseMotorMaster.set(controlMode, ticks);
+    }
+
+    public void setPosition(Height height) {
+        position.height = height;
+        setPosition(heights.get(position));
+    }
+
+    /**
+     * Ensures that the height is in between 0 < height < max height.
+     *
+     * @param inches target height
+     * @return clamped height
+     */
+    public double clamp(double inches) {
+        return Math.min(Math.max(0, inches), hatchTop);
+    }
+
     public double getVelocity(Constants.Units units) {
         switch (units) {
             case Ticks: // u / 100ms
@@ -222,17 +246,6 @@ public class Elevator extends Subsystem {
             default:
                 return -1;
         }
-    }
-
-    public void setPosition(double inches) {
-        controlMode = ControlMode.MotionMagic;
-        double ticks = inches * ticksPerInch;
-        baseMotorMaster.set(controlMode, ticks);
-    }
-
-    public void setPosition(Height height) {
-        position.height = height;
-        setPosition(heights.get(position));
     }
 
     public double getHeight() {
