@@ -7,8 +7,6 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
-    private boolean prevButton;
-    private boolean currentButton;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -17,8 +15,6 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
-        prevButton = false;
-        currentButton = false;
     }
 
     @Override
