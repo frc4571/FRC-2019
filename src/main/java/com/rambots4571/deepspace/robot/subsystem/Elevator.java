@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
+import com.rambots4571.rampage.function.SwitchAction;
 import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -43,6 +44,9 @@ public class Elevator extends Subsystem {
     private DigitalInput limitSwitch;
     private Position position;
     private Tuner tuner;
+    private ControlMode controlMode;
+    private SwitchAction<ControlMode> statePrinter;
+    private SwitchAction<Position> positionPrinter;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
     private double maxAcceleration;
@@ -85,7 +89,6 @@ public class Elevator extends Subsystem {
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
 
         tuner = new Tuner(kP, kI, kD, kF);
-        addChild(tuner);
 
         position = new Position(PositionMode.Hatch, Height.Zero);
 
@@ -94,6 +97,10 @@ public class Elevator extends Subsystem {
         maxAcceleration = 0;
         maxVel = 0;
         prevVel = 0;
+
+        statePrinter = new SwitchAction<>(
+                () -> controlMode, ControlMode.Disabled);
+        positionPrinter = new SwitchAction<>(this::getPosition, position);
     }
 
     public static Elevator getInstance() {
@@ -170,6 +177,12 @@ public class Elevator extends Subsystem {
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
             maxAcceleration = Math.abs(acceleration);
         if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
+        statePrinter.run(
+                () -> System.out
+                        .println("Elevator Control Mode: " +
+                                 controlMode));
+        positionPrinter.run(
+                () -> System.out.println("Elevator Position: " + position));
     }
 
     public void teleOpInit() {
@@ -183,7 +196,8 @@ public class Elevator extends Subsystem {
     }
 
     public void setTopMotor(double value) {
-        topMotor.set(ControlMode.PercentOutput, value);
+        controlMode = ControlMode.PercentOutput;
+        topMotor.set(controlMode, value);
     }
 
     public void stopBaseMotor() {
@@ -207,6 +221,31 @@ public class Elevator extends Subsystem {
                 Constants.Elevator.kPIDLoopIdx);
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(double inches) {
+        controlMode = ControlMode.MotionMagic;
+        double ticks = inches * ticksPerInch;
+        baseMotorMaster.set(controlMode, ticks);
+    }
+
+    public void setPosition(Height height) {
+        position.height = height;
+        setPosition(heights.get(position));
+    }
+
+    /**
+     * Ensures that the height is in between 0 < height < max height.
+     *
+     * @param inches target height
+     * @return clamped height
+     */
+    public double clamp(double inches) {
+        return Math.min(Math.max(0, inches), hatchTop);
+    }
+
     public double getVelocity(Constants.Units units) {
         switch (units) {
             case Ticks: // u / 100ms
@@ -223,24 +262,13 @@ public class Elevator extends Subsystem {
         }
     }
 
-    public void setPosition(double inches) {
-        double ticks = inches * ticksPerInch;
-        baseMotorMaster.set(ControlMode.MotionMagic, ticks);
-    }
-
-    public void setPosition(Height height) {
-        position.height = height;
-        setPosition(heights.get(position));
-        System.out.println(position);
-    }
-
     public double getHeight() {
         return getEncoderTick() / ticksPerInch;
     }
 
     public void togglePositionMode() {
         position.mode = position.mode == PositionMode.Hatch ?
-                       PositionMode.Cargo : PositionMode.Hatch;
+                        PositionMode.Cargo : PositionMode.Hatch;
     }
 
     public enum PositionMode {
