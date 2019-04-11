@@ -41,6 +41,9 @@ public class TeleOpElevator extends Command {
         } else if (controlType == ControlType.Manual) {
             elevator.setBaseMotor(gamepad.getLeftYAxis());
         }
+
+        if(elevator.isLimitSwitchPressed()) elevator.resetEncoder();
+
         // small elevator manual control
         if (gamepad.getPOV() == 0) elevator.setTopMotor(1);
         else if (gamepad.getPOV() == 180) elevator.setTopMotor(-1);

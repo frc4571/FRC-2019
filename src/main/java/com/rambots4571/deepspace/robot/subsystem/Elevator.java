@@ -91,6 +91,7 @@ public class Elevator extends Subsystem {
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
 
         tuner = new Tuner(kP, kI, kD, kF);
+        addChild(tuner);
 
         position = new Position(PositionMode.Hatch, Height.Zero);
 
