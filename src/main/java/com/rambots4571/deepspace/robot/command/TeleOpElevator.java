@@ -8,7 +8,7 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
     private Elevator.Height height;
-    private ControlType controlType = ControlType.MotionMagic;
+    private ControlType controlType;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -26,11 +26,11 @@ public class TeleOpElevator extends Command {
         // toggling position mode
         gamepad.getRightBumper()
                .whenPressedDoOnce(elevator::togglePositionMode);
-        // set position
         gamepad.getLeftStick().whenPressedDoOnce(
                 () -> controlType = controlType == ControlType.MotionMagic ?
                                     ControlType.Manual :
                                     ControlType.MotionMagic);
+        // set position
         if (controlType == ControlType.MotionMagic) {
             if (gamepad.getY().get()) height = Elevator.Height.Top;
             else if (gamepad.getB().get()) height = Elevator.Height.Middle;
