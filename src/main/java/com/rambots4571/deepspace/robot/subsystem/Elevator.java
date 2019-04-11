@@ -211,6 +211,10 @@ public class Elevator extends Subsystem {
         return position;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public void setPosition(double inches) {
         controlMode = ControlMode.MotionMagic;
         double ticks = inches * ticksPerInch;
@@ -294,6 +298,22 @@ public class Elevator extends Subsystem {
                    "mode=" + mode +
                    ", height=" + height +
                    '}';
+        }
+
+        public PositionMode getMode() {
+            return mode;
+        }
+
+        public void setMode(PositionMode mode) {
+            this.mode = mode;
+        }
+
+        public Height getHeight() {
+            return height;
+        }
+
+        public void setHeight(Height height) {
+            this.height = height;
         }
     }
 }

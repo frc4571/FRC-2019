@@ -7,6 +7,8 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
+    private Elevator.Height height;
+    private ControlType controlType = ControlType.MotionMagic;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -15,23 +17,30 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
+        height = elevator.getPosition().getHeight();
+        controlType = ControlType.MotionMagic;
     }
 
     @Override
     protected void execute() {
         // toggling position mode
-        gamepad.getRightBumper().whenPressedDoOnce(
-                elevator::togglePositionMode);
+        gamepad.getRightBumper()
+               .whenPressedDoOnce(elevator::togglePositionMode);
         // set position
-        if (gamepad.getY().get())
-            elevator.setPosition(Elevator.Height.Top);
-        else if (gamepad.getB().get())
-            elevator.setPosition(Elevator.Height.Middle);
-        else if (gamepad.getA().get())
-            elevator.setPosition(Elevator.Height.Bottom);
-        else if (gamepad.getLeftBumper().get())
-            elevator.setPosition(Elevator.Height.Zero);
-        else elevator.setBaseMotor(gamepad.getLeftYAxis());
+        gamepad.getLeftStick().whenPressedDoOnce(
+                () -> controlType = controlType == ControlType.MotionMagic ?
+                                    ControlType.Manual :
+                                    ControlType.MotionMagic);
+        if (controlType == ControlType.MotionMagic) {
+            if (gamepad.getY().get()) height = Elevator.Height.Top;
+            else if (gamepad.getB().get()) height = Elevator.Height.Middle;
+            else if (gamepad.getA().get()) height = Elevator.Height.Bottom;
+            else if (gamepad.getLeftBumper().get())
+                height = Elevator.Height.Zero;
+            elevator.setPosition(height);
+        } else if (controlType == ControlType.Manual) {
+            elevator.setBaseMotor(gamepad.getLeftYAxis());
+        }
         // small elevator manual control
         if (gamepad.getPOV() == 0) elevator.setTopMotor(1);
         else if (gamepad.getPOV() == 180) elevator.setTopMotor(-1);
@@ -47,5 +56,9 @@ public class TeleOpElevator extends Command {
     protected void end() {
         elevator.stopBaseMotor();
         elevator.stopTopMotor();
+    }
+
+    private enum ControlType {
+        MotionMagic, Manual
     }
 }
