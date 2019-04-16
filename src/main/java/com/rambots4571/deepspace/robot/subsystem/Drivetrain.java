@@ -46,7 +46,6 @@ public class Drivetrain extends Subsystem {
         rightMaster.configPeakCurrentLimit(peakCurrent,Constants.timeoutMs);
         rightMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-
         TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
         leftFollower1.configFactoryDefault();
         leftFollower1.configNeutralDeadband(Constants.Drive.deadband);
@@ -59,7 +58,6 @@ public class Drivetrain extends Subsystem {
         leftFollower1.configPeakCurrentLimit(peakCurrent);
         leftFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-
         TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
         leftFollower2.configFactoryDefault();
         leftFollower2.configNeutralDeadband(Constants.Drive.deadband);
@@ -71,7 +69,6 @@ public class Drivetrain extends Subsystem {
         leftFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
         leftFollower2.configPeakCurrentLimit(peakCurrent);
         leftFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
-
 
         TalonSRX rightFollower1 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER1);
         rightFollower1.configFactoryDefault();
@@ -86,7 +83,6 @@ public class Drivetrain extends Subsystem {
         rightFollower1.configPeakCurrentLimit(peakCurrent);
         rightFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-
         TalonSRX rightFollower2 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER2);
         rightFollower2.configFactoryDefault();
         rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
@@ -99,8 +95,7 @@ public class Drivetrain extends Subsystem {
         rightFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
         rightFollower2.configPeakCurrentLimit(peakCurrent);
         rightFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
-
-
+        
         navx = new AHRS(SPI.Port.kMXP);
     }
 
