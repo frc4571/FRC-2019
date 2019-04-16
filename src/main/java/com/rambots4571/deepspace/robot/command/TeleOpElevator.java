@@ -2,7 +2,6 @@ package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import static com.rambots4571.deepspace.robot.Robot.gamepad;
 

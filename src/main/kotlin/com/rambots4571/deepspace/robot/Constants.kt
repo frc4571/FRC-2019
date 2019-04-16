@@ -34,6 +34,7 @@ object Constants {
         object MP {
             const val trajectoryPointPeriod = 10
             private const val maxVel = 32169 // u / 100 ms
+
             object Gains {
                 const val kP = 0.0
                 const val kI = 0.0

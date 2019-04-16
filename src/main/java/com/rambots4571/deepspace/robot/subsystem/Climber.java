@@ -10,7 +10,8 @@ public class Climber extends Subsystem {
     private CANSparkMax climberMotor;
 
     private Climber() {
-        climberMotor = new CANSparkMax(Constants.Climber.CLIMBER_MOTOR,
+        climberMotor = new CANSparkMax(
+                Constants.Climber.CLIMBER_MOTOR,
                 CANSparkMaxLowLevel.MotorType.kBrushless);
     }
 

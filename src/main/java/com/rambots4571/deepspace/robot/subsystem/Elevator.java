@@ -62,7 +62,8 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorMaster.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorMaster.configNeutralDeadband(0.07, Constants.timeoutMs);
-        baseMotorMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        baseMotorMaster.configOpenloopRamp(
+                openLoopRampRate, Constants.timeoutMs);
         configMotionMagic();
 
         TalonSRX baseMotorFollower = new TalonSRX(
@@ -76,7 +77,8 @@ public class Elevator extends Subsystem {
         baseMotorFollower.configPeakCurrentLimit(30, Constants.timeoutMs);
         baseMotorFollower.configPeakCurrentDuration(500, Constants.timeoutMs);
         baseMotorFollower.configNeutralDeadband(0.07, Constants.timeoutMs);
-        baseMotorFollower.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
+        baseMotorFollower.configOpenloopRamp(
+                openLoopRampRate, Constants.timeoutMs);
 
         topMotor = new TalonSRX(Constants.Elevator.TOP_MOTOR);
         topMotor.configFactoryDefault();
@@ -118,7 +120,8 @@ public class Elevator extends Subsystem {
                 value -> ticksPerInch = value);
         builder.addStringProperty(
                 "Position Mode", () -> position.mode.toString(), null);
-        builder.addBooleanProperty("Is limit switch pressed?", this::isLimitSwitchPressed, null);
+        builder.addBooleanProperty(
+                "Is limit switch pressed?", this::isLimitSwitchPressed, null);
         builder.addDoubleProperty("Encoder Tick", this::getEncoderTick, null);
         builder.addDoubleProperty("Elevator Height", this::getHeight, null);
         builder.addDoubleProperty("Raw Velocity (u/100ms)", () -> vel, null);
@@ -240,7 +243,7 @@ public class Elevator extends Subsystem {
 
     public void togglePositionMode() {
         position.mode = position.mode == PositionMode.Hatch ?
-                       PositionMode.Cargo : PositionMode.Hatch;
+                        PositionMode.Cargo : PositionMode.Hatch;
     }
 
     public enum PositionMode {
@@ -277,9 +280,9 @@ public class Elevator extends Subsystem {
         @Override
         public String toString() {
             return "Position{" +
-                    "mode=" + mode +
-                    ", height=" + height +
-                    '}';
+                   "mode=" + mode +
+                   ", height=" + height +
+                   '}';
         }
     }
 }

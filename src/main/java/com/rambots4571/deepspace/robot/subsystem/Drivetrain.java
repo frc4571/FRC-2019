@@ -32,7 +32,8 @@ public class Drivetrain extends Subsystem {
         leftMaster.setInverted(true);
         leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
         leftMaster.enableCurrentLimit(true);
-        leftMaster.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftMaster.configContinuousCurrentLimit(
+                peakCurrent, Constants.timeoutMs);
         leftMaster.configPeakCurrentLimit(peakCurrent, Constants.timeoutMs);
         leftMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
 
@@ -42,8 +43,9 @@ public class Drivetrain extends Subsystem {
         rightMaster.setNeutralMode(neutralMode);
         leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
         rightMaster.enableCurrentLimit(true);
-        rightMaster.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
-        rightMaster.configPeakCurrentLimit(peakCurrent,Constants.timeoutMs);
+        rightMaster.configContinuousCurrentLimit(
+                peakCurrent, Constants.timeoutMs);
+        rightMaster.configPeakCurrentLimit(peakCurrent, Constants.timeoutMs);
         rightMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
 
 
@@ -55,7 +57,8 @@ public class Drivetrain extends Subsystem {
         leftFollower1.setInverted(InvertType.FollowMaster);
         leftFollower1.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
         leftFollower1.enableCurrentLimit(true);
-        leftFollower1.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftFollower1.configContinuousCurrentLimit(
+                peakCurrent, Constants.timeoutMs);
         leftFollower1.configPeakCurrentLimit(peakCurrent);
         leftFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
 
@@ -68,7 +71,8 @@ public class Drivetrain extends Subsystem {
         leftFollower2.setInverted(InvertType.FollowMaster);
         leftFollower2.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
         leftFollower2.enableCurrentLimit(true);
-        leftFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        leftFollower2.configContinuousCurrentLimit(
+                peakCurrent, Constants.timeoutMs);
         leftFollower2.configPeakCurrentLimit(peakCurrent);
         leftFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
 
@@ -82,7 +86,8 @@ public class Drivetrain extends Subsystem {
         rightFollower1.configOpenloopRamp(
                 openLoopRampRate, Constants.timeoutMs);
         rightFollower1.enableCurrentLimit(true);
-        rightFollower1.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        rightFollower1.configContinuousCurrentLimit(
+                peakCurrent, Constants.timeoutMs);
         rightFollower1.configPeakCurrentLimit(peakCurrent);
         rightFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
 
@@ -96,7 +101,8 @@ public class Drivetrain extends Subsystem {
         rightFollower2.configOpenloopRamp(
                 openLoopRampRate, Constants.timeoutMs);
         rightFollower2.enableCurrentLimit(true);
-        rightFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
+        rightFollower2.configContinuousCurrentLimit(
+                peakCurrent, Constants.timeoutMs);
         rightFollower2.configPeakCurrentLimit(peakCurrent);
         rightFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
 

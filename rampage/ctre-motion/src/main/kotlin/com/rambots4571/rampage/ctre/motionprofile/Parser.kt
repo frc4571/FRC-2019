@@ -25,11 +25,11 @@ class Parser(private val ticksPerUnit: Double) {
             } catch (e: IndexOutOfBoundsException) {
                 DriverStation.reportWarning(
                         "could not parse $values because column values were " +
-                        "not specified correctly, \n" +
-                        "position column = $positionCol \n" +
-                        "velocity column = $velocityCol \n" +
-                        "time duration column = $timeDurationCol \n" +
-                        "there are only ${values.size} columns", false)
+                                "not specified correctly, \n" +
+                                "position column = $positionCol \n" +
+                                "velocity column = $velocityCol \n" +
+                                "time duration column = $timeDurationCol \n" +
+                                "there are only ${values.size} columns", false)
             }
             point.headingDeg = 0.0
             point.profileSlotSelect0 = 0
