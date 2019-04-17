@@ -95,7 +95,7 @@ public class Drivetrain extends Subsystem {
         rightFollower2.configContinuousCurrentLimit(peakCurrent, Constants.timeoutMs);
         rightFollower2.configPeakCurrentLimit(peakCurrent);
         rightFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
-        
+
         navx = new AHRS(SPI.Port.kMXP);
     }
 
