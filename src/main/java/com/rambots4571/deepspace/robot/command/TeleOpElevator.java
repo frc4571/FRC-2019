@@ -2,6 +2,7 @@ package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
@@ -15,13 +16,12 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
+        gamepad.getRightBumper().whenPressed(
+                new InstantCommand(elevator::togglePositionMode));
     }
 
     @Override
     protected void execute() {
-        // toggling position mode
-        gamepad.getRightBumper().whenPressedDoOnce(
-                elevator::togglePositionMode);
         // set position
         if (gamepad.getY().get())
             elevator.setPosition(Elevator.Height.Top);
@@ -33,7 +33,7 @@ public class TeleOpElevator extends Command {
             elevator.setPosition(Elevator.Height.Zero);
         else elevator.setBaseMotor(gamepad.getLeftYAxis());
 
-        if(elevator.isLimitSwitchPressed()) elevator.resetEncoder();
+        if (elevator.isLimitSwitchPressed()) elevator.resetEncoder();
 
         // small elevator manual control
         if (gamepad.getPOV() == 0) elevator.setTopMotor(1);
