@@ -189,7 +189,7 @@ public class Elevator extends Subsystem {
 
     public void setBaseMotor(double value) {
         if (isLimitSwitchPressed() && value < 0) stopBaseMotor();
-        else baseMotorMaster.set(ControlMode.PercentOutput, value);
+        else baseMotorMaster.set(controlMode = ControlMode.PercentOutput, value);
     }
 
     public void setTopMotor(double value) {
