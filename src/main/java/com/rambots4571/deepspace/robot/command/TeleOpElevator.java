@@ -22,10 +22,8 @@ public class TeleOpElevator extends Command {
         controlType = ControlType.MotionMagic;
         gamepad.getRightBumper().whenPressed(
                 new InstantCommand(elevator::togglePositionMode));
-        gamepad.getLeftStick().whenPressed(new InstantCommand(
-                () -> controlType = controlType == ControlType.MotionMagic ?
-                                    ControlType.Manual :
-                                    ControlType.MotionMagic));
+        gamepad.getLeftStick().whenPressed(
+                new InstantCommand(this::toggleControlType));
     }
 
     @Override
@@ -59,6 +57,12 @@ public class TeleOpElevator extends Command {
     protected void end() {
         elevator.stopBaseMotor();
         elevator.stopTopMotor();
+    }
+
+    private void toggleControlType() {
+        controlType = controlType == ControlType.MotionMagic ?
+                      ControlType.Manual :
+                      ControlType.MotionMagic;
     }
 
     private enum ControlType {
