@@ -39,21 +39,19 @@ public class Elevator extends Subsystem {
         heights.put(new Position(PositionMode.Cargo, Height.Cargo), cargoLevel);
     }
 
+    private final double openLoopRampRate = 0.15;
     private TalonSRX baseMotorMaster;
     private TalonSRX topMotor;
     private DigitalInput limitSwitch;
     private Position position;
     private Tuner tuner;
-    private ControlMode controlMode;
-    private SwitchAction<ControlMode> statePrinter;
-    private SwitchAction<Position> positionPrinter;
+    private ControlMode controlMode = ControlMode.Disabled;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
     private double maxAcceleration;
     private double vel;
     private double maxVel;
     private double prevVel;
-    private double openLoopRampRate = .15;
 
     private Elevator() {
         super("Elevator");
@@ -101,9 +99,10 @@ public class Elevator extends Subsystem {
         maxVel = 0;
         prevVel = 0;
 
-        statePrinter = new SwitchAction<>(
-                () -> controlMode, ControlMode.Disabled);
-        positionPrinter = new SwitchAction<>(this::getPosition, position);
+        new SwitchAction<>(() -> controlMode).whenDiff(() -> System.out
+                .println("Elevator Control Mode: " + controlMode));
+        new SwitchAction<>(this::getPosition).whenDiff(
+                () -> System.out.println("Elevator Position: " + position));
     }
 
     public static Elevator getInstance() {
@@ -181,10 +180,6 @@ public class Elevator extends Subsystem {
         if (Math.abs(acceleration) > Math.abs(maxAcceleration))
             maxAcceleration = Math.abs(acceleration);
         if (Math.abs(vel) > Math.abs(maxVel)) maxVel = Math.abs(vel);
-        statePrinter.run(() -> System.out
-                .println("Elevator Control Mode: " + controlMode));
-        positionPrinter.run(
-                () -> System.out.println("Elevator Position: " + position));
     }
 
     public void teleOpInit() {
@@ -198,8 +193,7 @@ public class Elevator extends Subsystem {
     }
 
     public void setTopMotor(double value) {
-        controlMode = ControlMode.PercentOutput;
-        topMotor.set(controlMode, value);
+        topMotor.set(ControlMode.PercentOutput, value);
     }
 
     public void stopBaseMotor() {
@@ -228,9 +222,8 @@ public class Elevator extends Subsystem {
     }
 
     public void setPosition(double inches) {
-        controlMode = ControlMode.MotionMagic;
         double ticks = inches * ticksPerInch;
-        baseMotorMaster.set(controlMode, ticks);
+        baseMotorMaster.set(controlMode = ControlMode.MotionMagic, ticks);
     }
 
     public void setPosition(Height height) {

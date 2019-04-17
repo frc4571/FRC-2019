@@ -7,18 +7,18 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton
  * Class for the Logitech Extreme 3D Pro joystick
  */
 class DriveStick(port: Int) : Joystick(port) {
-    val button1 = Button(this, 1)
-    val button2 = Button(this, 2)
-    val button3 = Button(this, 3)
-    val button4 = Button(this, 4)
-    val button5 = Button(this, 5)
-    val button6 = Button(this, 6)
-    val button7 = Button(this, 7)
-    val button8 = Button(this, 8)
-    val button9 = Button(this, 9)
-    val button10 = Button(this, 10)
-    val button11 = Button(this, 11)
-    val button12 = Button(this, 12)
+    val button1 = JoystickButton(this, 1)
+    val button2 = JoystickButton(this, 2)
+    val button3 = JoystickButton(this, 3)
+    val button4 = JoystickButton(this, 4)
+    val button5 = JoystickButton(this, 5)
+    val button6 = JoystickButton(this, 6)
+    val button7 = JoystickButton(this, 7)
+    val button8 = JoystickButton(this, 8)
+    val button9 = JoystickButton(this, 9)
+    val button10 = JoystickButton(this, 10)
+    val button11 = JoystickButton(this, 11)
+    val button12 = JoystickButton(this, 12)
 
     val xAxis: Double
         get() = getRawAxis(0)
