@@ -8,6 +8,8 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
+    private Elevator.Position position = elevator.getPosition();
+    private ControlMode controlMode = ControlMode.Manual;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -16,25 +18,45 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
-        gamepad.getRightBumper().whileHeld(
+        gamepad.getRightBumper().whenPressed(
                 new InstantCommand(elevator::togglePositionMode));
-        gamepad.getY().whileHeld(new InstantCommand(
-                () -> elevator.gotoHeight(Elevator.Height.Top)));
-        gamepad.getB().whileHeld(new InstantCommand(
-                () -> elevator.gotoHeight(Elevator.Height.Middle)));
-        gamepad.getA().whileHeld(new InstantCommand(
-                () -> elevator.gotoHeight(Elevator.Height.Bottom)));
-        gamepad.getLeftBumper().whileHeld(new InstantCommand(
-                () -> elevator.gotoHeight(Elevator.Height.Zero)));
+        gamepad.getY().whenPressed(new InstantCommand(
+                () -> {
+                    controlMode = ControlMode.MotionMagic;
+                    position.setHeight(Elevator.Height.Top);
+                }));
+        gamepad.getB().whenPressed(new InstantCommand(
+                () -> {
+                    controlMode = ControlMode.MotionMagic;
+                    position.setHeight(Elevator.Height.Middle);
+                }));
+        gamepad.getA().whenPressed(new InstantCommand(
+                () -> {
+                    controlMode = ControlMode.MotionMagic;
+                    position.setHeight(Elevator.Height.Bottom);
+                }));
+        gamepad.getLeftBumper().whenPressed(new InstantCommand(
+                () -> {
+                    controlMode = ControlMode.MotionMagic;
+                    position.setHeight(Elevator.Height.Zero);
+                }));
     }
 
     @Override
     protected void execute() {
-        elevator.setBaseMotor(gamepad.getLeftYAxis());
+        double y = gamepad.getLeftYAxis();
+        if (Math.abs(y) > 0.2) controlMode = ControlMode.Manual;
+
+        if (controlMode == ControlMode.MotionMagic)
+            elevator.gotoHeight(position.getHeight());
+        else if (controlMode == ControlMode.Manual)
+            elevator.setBaseMotor(y);
+
         if (elevator.isLimitSwitchPressed()) elevator.resetEncoder();
         // small elevator manual control
-        if (gamepad.getPOV() == 0) elevator.setTopMotor(1);
-        else if (gamepad.getPOV() == 180) elevator.setTopMotor(-1);
+        int pov = gamepad.getPOV();
+        if (pov == 0) elevator.setTopMotor(1);
+        else if (pov == 180) elevator.setTopMotor(-1);
         else elevator.setTopMotor(0);
     }
 
@@ -47,5 +69,9 @@ public class TeleOpElevator extends Command {
     protected void end() {
         elevator.stopBaseMotor();
         elevator.stopTopMotor();
+    }
+
+    private enum ControlMode {
+        MotionMagic, Manual
     }
 }
