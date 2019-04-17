@@ -3,6 +3,7 @@ package com.rambots4571.rampage.joystick
 import com.rambots4571.rampage.function.SwitchAction
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.buttons.JoystickButton
+import edu.wpi.first.wpilibj.command.InstantCommand
 import java.util.function.Supplier
 
 class Button(joystick: GenericHID, buttonNumber: Int) :
@@ -18,4 +19,8 @@ class Button(joystick: GenericHID, buttonNumber: Int) :
      * loop, such as the execute() method inside the Command class.
      */
     fun whenPressedDoOnce(action: Runnable) = buttonListener.run(action)
+
+    fun whenPressed(action: Runnable) {
+        whenPressed(InstantCommand(action))
+    }
 }
