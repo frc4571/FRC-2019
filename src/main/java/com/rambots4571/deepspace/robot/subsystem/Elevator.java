@@ -55,8 +55,6 @@ public class Elevator extends Subsystem {
         super("Elevator");
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
-        baseMotorMaster.setInverted(true);
-        baseMotorMaster.setSensorPhase(true);
         baseMotorMaster.setNeutralMode(NeutralMode.Brake);
         baseMotorMaster.enableCurrentLimit(true);
         baseMotorMaster.configContinuousCurrentLimit(25, Constants.timeoutMs);
@@ -155,6 +153,7 @@ public class Elevator extends Subsystem {
         baseMotorMaster.configPeakOutputReverse(-1, Constants.timeoutMs);
         baseMotorMaster.selectProfileSlot(
                 Constants.Elevator.kSlotIdx, Constants.Elevator.kPIDLoopIdx);
+        baseMotorMaster.configClosedloopRamp(0.15, Constants.timeoutMs);
         TalonUtils.config_PIDF(
                 baseMotorMaster, Constants.Elevator.kPIDLoopIdx,
                 kP, kI, kD, kF, Constants.timeoutMs);
