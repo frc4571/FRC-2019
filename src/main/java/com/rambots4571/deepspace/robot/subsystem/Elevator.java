@@ -218,14 +218,18 @@ public class Elevator extends Subsystem {
         return position;
     }
 
-    public void setPosition(double inches) {
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public void gotoHeight(double inches) {
         double ticks = inches * ticksPerInch;
         baseMotorMaster.set(controlMode = ControlMode.MotionMagic, ticks);
     }
 
-    public void setPosition(Height height) {
+    public void gotoHeight(Height height) {
         position.setHeight(height);
-        setPosition(heights.get(position));
+        gotoHeight(heights.get(position));
     }
 
     /**
