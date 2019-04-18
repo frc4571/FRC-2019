@@ -55,6 +55,7 @@ deploy {
         frcJavaArtifact('frcJava') {
             targets << "roborio"
             debug = frc.getDebugOrDefault(false)
+            jvmArgs = ["-XX:+UseConcMarkSweepGC"]
         }
         fileTreeArtifact('frcStaticFileDeploy') {
             files = fileTree(dir: 'src/main/deploy')
