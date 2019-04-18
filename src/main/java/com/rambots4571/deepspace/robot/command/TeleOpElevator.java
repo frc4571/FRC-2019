@@ -21,30 +21,15 @@ public class TeleOpElevator extends Command {
         gamepad.getRightBumper().whenPressed(
                 new InstantCommand(elevator::togglePositionMode));
         gamepad.getY().whenPressed(new InstantCommand(
-                () -> {
-                    controlType = ControlType.MotionMagic;
-                    height = Elevator.Height.Top;
-                }));
+                () -> setHeight(Elevator.Height.Top)));
         gamepad.getX().whenPressed(new InstantCommand(
-                () -> {
-                    controlType = ControlType.MotionMagic;
-                    height = Elevator.Height.CargoShip;
-                }));
+                () -> setHeight(Elevator.Height.CargoShip)));
         gamepad.getB().whenPressed(new InstantCommand(
-                () -> {
-                    controlType = ControlType.MotionMagic;
-                    height = Elevator.Height.Middle;
-                }));
+                () -> setHeight(Elevator.Height.Middle)));
         gamepad.getA().whenPressed(new InstantCommand(
-                () -> {
-                    controlType = ControlType.MotionMagic;
-                    height = Elevator.Height.Bottom;
-                }));
+                () -> setHeight(Elevator.Height.Bottom)));
         gamepad.getLeftBumper().whenPressed(new InstantCommand(
-                () -> {
-                    controlType = ControlType.MotionMagic;
-                    height = Elevator.Height.Zero;
-                }));
+                () -> setHeight(Elevator.Height.Zero)));
     }
 
     @Override
@@ -74,6 +59,11 @@ public class TeleOpElevator extends Command {
     protected void end() {
         elevator.stopBaseMotor();
         elevator.stopTopMotor();
+    }
+
+    private void setHeight(Elevator.Height height) {
+        controlType = ControlType.MotionMagic;
+        this.height = height;
     }
 
     private enum ControlType {
