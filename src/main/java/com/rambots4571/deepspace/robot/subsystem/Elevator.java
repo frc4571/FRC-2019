@@ -29,6 +29,7 @@ public class Elevator extends Subsystem {
         heights.put(
                 new Position(PositionMode.Hatch, Height.Middle), hatchMiddle);
         heights.put(new Position(PositionMode.Hatch, Height.Top), hatchTop);
+        heights.put(new Position(PositionMode.Hatch, Height.CargoShip), cargoLevel);
         heights.put(new Position(PositionMode.Cargo, Height.Zero), 0.0);
         heights.put(
                 new Position(PositionMode.Cargo, Height.Bottom), cargoBottom);
@@ -273,7 +274,7 @@ public class Elevator extends Subsystem {
     }
 
     public enum Height {
-        Zero, Bottom, Middle, Top
+        Zero, Bottom, Middle, CargoShip, Top
     }
 
     public static class Position {

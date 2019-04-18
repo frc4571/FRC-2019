@@ -9,7 +9,7 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
     private Elevator.Position position = elevator.getPosition();
-    private ControlMode controlMode = ControlMode.Manual;
+    private ControlType controlType = ControlType.Manual;
 
     public TeleOpElevator() {
         requires(elevator);
@@ -22,22 +22,27 @@ public class TeleOpElevator extends Command {
                 new InstantCommand(elevator::togglePositionMode));
         gamepad.getY().whenPressed(new InstantCommand(
                 () -> {
-                    controlMode = ControlMode.MotionMagic;
+                    controlType = ControlType.MotionMagic;
                     position.setHeight(Elevator.Height.Top);
+                }));
+        gamepad.getX().whenPressed(new InstantCommand(
+                () -> {
+                    controlType = ControlType.MotionMagic;
+                    position.setHeight(Elevator.Height.CargoShip);
                 }));
         gamepad.getB().whenPressed(new InstantCommand(
                 () -> {
-                    controlMode = ControlMode.MotionMagic;
+                    controlType = ControlType.MotionMagic;
                     position.setHeight(Elevator.Height.Middle);
                 }));
         gamepad.getA().whenPressed(new InstantCommand(
                 () -> {
-                    controlMode = ControlMode.MotionMagic;
+                    controlType = ControlType.MotionMagic;
                     position.setHeight(Elevator.Height.Bottom);
                 }));
         gamepad.getLeftBumper().whenPressed(new InstantCommand(
                 () -> {
-                    controlMode = ControlMode.MotionMagic;
+                    controlType = ControlType.MotionMagic;
                     position.setHeight(Elevator.Height.Zero);
                 }));
     }
@@ -45,11 +50,11 @@ public class TeleOpElevator extends Command {
     @Override
     protected void execute() {
         double y = gamepad.getLeftYAxis();
-        if (Math.abs(y) > 0.2) controlMode = ControlMode.Manual;
+        if (Math.abs(y) > 0.2) controlType = ControlType.Manual;
 
-        if (controlMode == ControlMode.MotionMagic)
+        if (controlType == ControlType.MotionMagic)
             elevator.gotoHeight(position.getHeight());
-        else if (controlMode == ControlMode.Manual)
+        else if (controlType == ControlType.Manual)
             elevator.setBaseMotor(y);
 
         if (elevator.isLimitSwitchPressed()) elevator.resetEncoder();
@@ -71,7 +76,7 @@ public class TeleOpElevator extends Command {
         elevator.stopTopMotor();
     }
 
-    private enum ControlMode {
+    private enum ControlType {
         MotionMagic, Manual
     }
 }
