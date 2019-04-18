@@ -2,7 +2,6 @@ package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 
 import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
@@ -18,18 +17,13 @@ public class TeleOpElevator extends Command {
     @Override
     protected void initialize() {
         elevator.teleOpInit();
-        gamepad.getRightBumper().whenPressed(
-                new InstantCommand(elevator::togglePositionMode));
-        gamepad.getY().whenPressed(new InstantCommand(
-                () -> setHeight(Elevator.Height.Top)));
-        gamepad.getX().whenPressed(new InstantCommand(
-                () -> setHeight(Elevator.Height.CargoShip)));
-        gamepad.getB().whenPressed(new InstantCommand(
-                () -> setHeight(Elevator.Height.Middle)));
-        gamepad.getA().whenPressed(new InstantCommand(
-                () -> setHeight(Elevator.Height.Bottom)));
-        gamepad.getLeftBumper().whenPressed(new InstantCommand(
-                () -> setHeight(Elevator.Height.Zero)));
+        gamepad.getRightBumper().whenPressed(elevator::togglePositionMode);
+        gamepad.getY().whenPressed(() -> setHeight(Elevator.Height.Top));
+        gamepad.getX().whenPressed(() -> setHeight(Elevator.Height.CargoShip));
+        gamepad.getB().whenPressed(() -> setHeight(Elevator.Height.Middle));
+        gamepad.getA().whenPressed(() -> setHeight(Elevator.Height.Bottom));
+        gamepad.getLeftBumper().whenPressed(
+                () -> setHeight(Elevator.Height.Zero));
     }
 
     @Override
