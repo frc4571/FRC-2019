@@ -8,6 +8,6 @@ class Button(joystick: GenericHID, buttonNumber: Int) :
         JoystickButton(joystick, buttonNumber) {
 
     fun whenPressed(action: Runnable) {
-        super.whenPressed(InstantCommand(action))
+        whenPressed(InstantCommand(action))
     }
 }
