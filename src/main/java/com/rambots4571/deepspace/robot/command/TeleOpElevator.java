@@ -8,7 +8,7 @@ import static com.rambots4571.deepspace.robot.Robot.gamepad;
 
 public class TeleOpElevator extends Command {
     private Elevator elevator = Elevator.getInstance();
-    private Elevator.Position position = elevator.getPosition();
+    private Elevator.Height height = elevator.getPosition().getHeight();
     private ControlType controlType = ControlType.Manual;
 
     public TeleOpElevator() {
@@ -23,27 +23,27 @@ public class TeleOpElevator extends Command {
         gamepad.getY().whenPressed(new InstantCommand(
                 () -> {
                     controlType = ControlType.MotionMagic;
-                    position.setHeight(Elevator.Height.Top);
+                    height = Elevator.Height.Top;
                 }));
         gamepad.getX().whenPressed(new InstantCommand(
                 () -> {
                     controlType = ControlType.MotionMagic;
-                    position.setHeight(Elevator.Height.CargoShip);
+                    height = Elevator.Height.CargoShip;
                 }));
         gamepad.getB().whenPressed(new InstantCommand(
                 () -> {
                     controlType = ControlType.MotionMagic;
-                    position.setHeight(Elevator.Height.Middle);
+                    height = Elevator.Height.Middle;
                 }));
         gamepad.getA().whenPressed(new InstantCommand(
                 () -> {
                     controlType = ControlType.MotionMagic;
-                    position.setHeight(Elevator.Height.Bottom);
+                    height = Elevator.Height.Bottom;
                 }));
         gamepad.getLeftBumper().whenPressed(new InstantCommand(
                 () -> {
                     controlType = ControlType.MotionMagic;
-                    position.setHeight(Elevator.Height.Zero);
+                    height = Elevator.Height.Zero;
                 }));
     }
 
@@ -53,7 +53,7 @@ public class TeleOpElevator extends Command {
         if (Math.abs(y) > 0.2) controlType = ControlType.Manual;
 
         if (controlType == ControlType.MotionMagic)
-            elevator.gotoHeight(position.getHeight());
+            elevator.gotoHeight(height);
         else if (controlType == ControlType.Manual)
             elevator.setBaseMotor(y);
 
