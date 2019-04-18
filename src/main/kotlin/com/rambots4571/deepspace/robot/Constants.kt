@@ -104,10 +104,6 @@ object Constants {
         const val HATCH_MOTOR = 13
     }
 
-    object Climber {
-        const val CLIMBER_MOTOR = 14
-    }
-
     object Pipelines {
         const val CARGO = 0
     }
