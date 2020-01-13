@@ -2,28 +2,28 @@ package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.Robot;
 import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class TeleOpDrive extends Command {
+public class TeleOpDrive extends CommandBase {
     private Drivetrain drivetrain = Drivetrain.getInstance();
 
     public TeleOpDrive() {
-        requires(drivetrain);
+        addRequirements(drivetrain);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         drivetrain.drive(
                 Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         drivetrain.stop();
         drivetrain.resetEncoders();
     }

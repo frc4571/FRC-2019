@@ -3,9 +3,9 @@ package com.rambots4571.deepspace.robot.subsystem;
 import com.rambots4571.deepspace.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Climber extends Subsystem {
+public class Climber extends SubsystemBase {
     private static Climber instance;
     private CANSparkMax climberMotor;
 
@@ -22,11 +22,6 @@ public class Climber extends Subsystem {
             }
         }
         return instance;
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-
     }
 
     public void setClimberMotor(double value) {

@@ -6,17 +6,17 @@ import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
 import com.rambots4571.rampage.ctre.motionprofile.Parser;
 import com.rambots4571.rampage.ctre.motionprofile.Profile;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import java.util.Queue;
 
-public class FollowPath extends Command {
+public class FollowPath extends CommandBase {
     private Drivetrain drivetrain = Drivetrain.getInstance();
     private Profile profile;
 
     public FollowPath(String pathName) {
-        requires(drivetrain);
+        addRequirements(drivetrain);
         TalonSRX[] talons = drivetrain.getTalonMasters();
         Parser parser = new Parser(
                 Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET);
@@ -28,13 +28,13 @@ public class FollowPath extends Command {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         drivetrain.configMPGains();
         profile.execute();
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         SmartDashboard.putNumber("left distance", drivetrain
                 .getLeftDistance(Constants.Units.Feet));
         SmartDashboard.putNumber("right distance", drivetrain
@@ -42,17 +42,12 @@ public class FollowPath extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return profile.isFinished();
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         drivetrain.stop();
-    }
-
-    @Override
-    protected void interrupted() {
-        profile.onInterrupt();
     }
 }

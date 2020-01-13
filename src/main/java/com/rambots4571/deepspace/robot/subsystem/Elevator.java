@@ -3,12 +3,10 @@ package com.rambots4571.deepspace.robot.subsystem;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.rambots4571.deepspace.robot.Constants;
-import com.rambots4571.deepspace.robot.command.TeleOpElevator;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
-import com.rambots4571.rampage.sensor.pid.Tuner;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +15,7 @@ import java.util.Objects;
 import static com.rambots4571.deepspace.robot.Constants.Elevator.Gains.*;
 import static com.rambots4571.deepspace.robot.Constants.Elevator.Height.*;
 
-public class Elevator extends Subsystem {
+public class Elevator extends SubsystemBase {
     private static Elevator instance;
     private static Map<Position,Double> heights = new HashMap<>();
 
@@ -42,7 +40,6 @@ public class Elevator extends Subsystem {
     private TalonSRX topMotor;
     private DigitalInput limitSwitch;
     private Position position;
-    private Tuner tuner;
     private double ticksPerInch = Constants.Elevator.TICKS_PER_INCH;
     private double acceleration;
     private double maxAcceleration;
@@ -52,7 +49,6 @@ public class Elevator extends Subsystem {
     private double openLoopRampRate = .15;
 
     private Elevator() {
-        super("Elevator");
         baseMotorMaster = new TalonSRX(Constants.Elevator.BASE_MOTOR_MASTER);
         baseMotorMaster.configFactoryDefault();
         baseMotorMaster.setInverted(false);
@@ -86,9 +82,6 @@ public class Elevator extends Subsystem {
 
         limitSwitch = new DigitalInput(Constants.Elevator.LIMIT_SWITCH);
 
-        tuner = new Tuner(kP, kI, kD, kF);
-        addChild(tuner);
-
         position = new Position(PositionMode.Hatch, Height.Zero);
 
         resetEncoder();
@@ -105,11 +98,6 @@ public class Elevator extends Subsystem {
             }
         }
         return instance;
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleOpElevator());
     }
 
     @Override
@@ -177,7 +165,6 @@ public class Elevator extends Subsystem {
 
     public void teleOpInit() {
         position = new Position(PositionMode.Hatch, Height.Zero);
-        setPIDF(tuner.getKP(), tuner.getKI(), tuner.getKD(), tuner.getKF());
     }
 
     public void setBaseMotor(double value) {

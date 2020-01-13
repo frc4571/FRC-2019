@@ -1,2 +1,1 @@
 rootProject.name = 'Voyager-Chiriboga'
-include ':rampage', ':rampage:ctre-motion'

@@ -6,9 +6,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.command.TeleOpIntake;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends Subsystem {
+public class Intake extends SubsystemBase {
     private static Intake instance;
     private VictorSPX leftIntakeMotor;
     private VictorSPX pulleyMotor;
@@ -41,11 +41,6 @@ public class Intake extends Subsystem {
             }
         }
         return instance;
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleOpIntake());
     }
 
     public void setIntakePower(double value) {

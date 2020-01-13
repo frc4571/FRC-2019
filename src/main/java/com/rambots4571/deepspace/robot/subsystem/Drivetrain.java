@@ -6,15 +6,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.deepspace.robot.Constants;
-import com.rambots4571.deepspace.robot.command.TeleOpDrive;
 import com.rambots4571.rampage.ctre.motor.TalonUtils;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static com.rambots4571.deepspace.robot.Constants.Drive.MP.Gains.*;
 
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends SubsystemBase {
     private static Drivetrain instance;
     public final AHRS navx;
     private TalonSRX leftMaster;
@@ -24,7 +23,6 @@ public class Drivetrain extends Subsystem {
     private int peakCurrent = 40;
 
     private Drivetrain() {
-        super("Drivetrain");
         leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
         leftMaster.configFactoryDefault();
         leftMaster.configNeutralDeadband(Constants.Drive.deadband);
@@ -117,11 +115,6 @@ public class Drivetrain extends Subsystem {
             }
         }
         return instance;
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new TeleOpDrive());
     }
 
     @Override

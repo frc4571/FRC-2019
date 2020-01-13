@@ -2,17 +2,17 @@ package com.rambots4571.deepspace.robot.command;
 
 import com.rambots4571.deepspace.robot.Robot;
 import com.rambots4571.deepspace.robot.subsystem.Intake;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class TeleOpIntake extends Command {
+public class TeleOpIntake extends CommandBase {
     private Intake intake = Intake.getInstance();
 
     public TeleOpIntake() {
-        requires(intake);
+        addRequirements(intake);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         intake.setIntakePower(Robot.gamepad.getLeftTrigger() -
                               Robot.gamepad.getRightTrigger());
         intake.setPulleyPower(Robot.gamepad.getRightYAxis() * 0.5);
@@ -23,12 +23,12 @@ public class TeleOpIntake extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         intake.setIntakePower(0);
         intake.setPulleyPower(0);
     }
