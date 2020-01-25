@@ -1,6 +1,6 @@
 package com.rambots4571.deepspace.robot.command;
 
-import com.rambots4571.deepspace.robot.Robot;
+import com.rambots4571.deepspace.robot.RobotContainer;
 import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -28,7 +28,8 @@ public class TipFreeDrive extends CommandBase {
         double output = tipController.calculate(drivetrain.navx.getRoll());
         if (drivetrain.navx.getRoll() > 5f) drivetrain.drive(output, output);
         else drivetrain.drive(
-                Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
+                RobotContainer.leftStick.getYAxis(),
+                RobotContainer.rightStick.getYAxis());
     }
 
     @Override

@@ -17,6 +17,8 @@ public class SeekCargo extends CommandBase {
     public SeekCargo() {
         addRequirements(intake, drivetrain);
         turnController = new PIDController(kP, kI, kD);
+        turnController.enableContinuousInput(Limelight.TX_MIN, Limelight.TX_MAX);
+        turnController.setTolerance(0.3);
     }
 
     @Override

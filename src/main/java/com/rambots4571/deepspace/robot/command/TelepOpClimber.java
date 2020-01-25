@@ -3,7 +3,7 @@ package com.rambots4571.deepspace.robot.command;
 import com.rambots4571.deepspace.robot.subsystem.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import static com.rambots4571.deepspace.robot.Robot.rightStick;
+import static com.rambots4571.deepspace.robot.RobotContainer.rightStick;
 
 public class TelepOpClimber extends CommandBase {
     private Climber climber = Climber.getInstance();

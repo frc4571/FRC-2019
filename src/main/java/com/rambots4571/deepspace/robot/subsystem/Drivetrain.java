@@ -3,109 +3,67 @@ package com.rambots4571.deepspace.robot.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.deepspace.robot.Constants;
-import com.rambots4571.rampage.ctre.motor.TalonUtils;
+import com.rambots4571.deepspace.robot.component.DriveTalon;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import static com.rambots4571.deepspace.robot.Constants.Drive.MP.Gains.*;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain instance;
     public final AHRS navx;
-    private TalonSRX leftMaster;
-    private TalonSRX rightMaster;
+    private WPI_TalonSRX leftMaster;
+    private WPI_TalonSRX rightMaster;
     private NeutralMode neutralMode = NeutralMode.Coast;
-    private double openLoopRampRate = 0.15;
-    private int peakCurrent = 40;
+    private DifferentialDrive drive;
+    private DifferentialDriveKinematics kinematics;
+    private DifferentialDriveOdometry odometry;
+    private Pose2d pose;
 
     private Drivetrain() {
-        leftMaster = new TalonSRX(Constants.Drive.LEFT_MASTER);
-        leftMaster.configFactoryDefault();
-        leftMaster.configNeutralDeadband(Constants.Drive.deadband);
-        leftMaster.setNeutralMode(neutralMode);
+        leftMaster = new DriveTalon(Constants.Drive.LEFT_MASTER, neutralMode);
         leftMaster.setInverted(true);
-        leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
-        leftMaster.enableCurrentLimit(true);
-        leftMaster.configContinuousCurrentLimit(
-                peakCurrent, Constants.timeoutMs);
-        leftMaster.configPeakCurrentLimit(peakCurrent, Constants.timeoutMs);
-        leftMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-        rightMaster = new TalonSRX(Constants.Drive.RIGHT_MASTER);
-        rightMaster.configFactoryDefault();
-        rightMaster.configNeutralDeadband(Constants.Drive.deadband);
-        rightMaster.setNeutralMode(neutralMode);
-        leftMaster.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
-        rightMaster.enableCurrentLimit(true);
-        rightMaster.configContinuousCurrentLimit(
-                peakCurrent, Constants.timeoutMs);
-        rightMaster.configPeakCurrentLimit(peakCurrent, Constants.timeoutMs);
-        rightMaster.configPeakCurrentDuration(0, Constants.timeoutMs);
+        rightMaster = new DriveTalon(Constants.Drive.RIGHT_MASTER, neutralMode);
 
-
-        TalonSRX leftFollower1 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER1);
-        leftFollower1.configFactoryDefault();
-        leftFollower1.configNeutralDeadband(Constants.Drive.deadband);
-        leftFollower1.setNeutralMode(neutralMode);
+        WPI_TalonSRX leftFollower1 = new DriveTalon(
+                Constants.Drive.LEFT_FOLLOWER1, neutralMode);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
-        leftFollower1.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
-        leftFollower1.enableCurrentLimit(true);
-        leftFollower1.configContinuousCurrentLimit(
-                peakCurrent, Constants.timeoutMs);
-        leftFollower1.configPeakCurrentLimit(peakCurrent);
-        leftFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-
-        TalonSRX leftFollower2 = new TalonSRX(Constants.Drive.LEFT_FOLLOWER2);
-        leftFollower2.configFactoryDefault();
-        leftFollower2.configNeutralDeadband(Constants.Drive.deadband);
-        leftFollower2.setNeutralMode(neutralMode);
+        WPI_TalonSRX leftFollower2 = new DriveTalon(
+                Constants.Drive.LEFT_FOLLOWER2, neutralMode);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
-        leftFollower2.configOpenloopRamp(openLoopRampRate, Constants.timeoutMs);
-        leftFollower2.enableCurrentLimit(true);
-        leftFollower2.configContinuousCurrentLimit(
-                peakCurrent, Constants.timeoutMs);
-        leftFollower2.configPeakCurrentLimit(peakCurrent);
-        leftFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-
-        TalonSRX rightFollower1 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER1);
-        rightFollower1.configFactoryDefault();
-        rightFollower1.configNeutralDeadband(Constants.Drive.deadband);
-        rightFollower1.setNeutralMode(neutralMode);
+        WPI_TalonSRX rightFollower1 = new DriveTalon(
+                Constants.Drive.RIGHT_FOLLOWER1, neutralMode);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
-        rightFollower1.configOpenloopRamp(
-                openLoopRampRate, Constants.timeoutMs);
-        rightFollower1.enableCurrentLimit(true);
-        rightFollower1.configContinuousCurrentLimit(
-                peakCurrent, Constants.timeoutMs);
-        rightFollower1.configPeakCurrentLimit(peakCurrent);
-        rightFollower1.configPeakCurrentDuration(0, Constants.timeoutMs);
 
-
-        TalonSRX rightFollower2 = new TalonSRX(Constants.Drive.RIGHT_FOLLOWER2);
-        rightFollower2.configFactoryDefault();
-        rightFollower2.configNeutralDeadband(Constants.Drive.deadband);
-        rightFollower2.setNeutralMode(neutralMode);
+        WPI_TalonSRX rightFollower2 = new DriveTalon(
+                Constants.Drive.RIGHT_FOLLOWER2, neutralMode);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
-        rightFollower2.configOpenloopRamp(
-                openLoopRampRate, Constants.timeoutMs);
-        rightFollower2.enableCurrentLimit(true);
-        rightFollower2.configContinuousCurrentLimit(
-                peakCurrent, Constants.timeoutMs);
-        rightFollower2.configPeakCurrentLimit(peakCurrent);
-        rightFollower2.configPeakCurrentDuration(0, Constants.timeoutMs);
 
+        drive = new DifferentialDrive(leftMaster, rightMaster);
 
         navx = new AHRS(SPI.Port.kMXP);
+
+        kinematics = new DifferentialDriveKinematics(
+                Constants.Drive.trackWidth);
+
+        resetEncoders();
+        odometry = new DifferentialDriveOdometry(getHeading());
     }
 
     public static Drivetrain getInstance() {
@@ -118,54 +76,96 @@ public class Drivetrain extends SubsystemBase {
     }
 
     @Override
-    public void initSendable(SendableBuilder builder) {
-        super.initSendable(builder);
-        builder.addDoubleProperty("Gyro Heading", this::getHeading, null);
-        builder.addDoubleProperty(
-                "Ramp Rate", () -> openLoopRampRate,
-                value -> openLoopRampRate = value);
-        builder.addStringProperty(
-                "Neutral Mode", () -> neutralMode.toString(), null);
+    public void periodic() {
+        odometry.update(
+                getHeading(), Units.inchesToMeters(getLeftDistance()),
+                Units.inchesToMeters(getRightDistance()));
     }
 
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addDoubleProperty("Gyro Heading", this::getAngle, null);
+        builder.addDoubleProperty(
+                "Left Encoder raw", this::getLeftEncoderTick, null);
+        builder.addDoubleProperty(
+                "Right Encoder raw", this::getRightEncoderTick, null);
+    }
+
+    /**
+     * @return raw encoder ticks of the left side.
+     */
     public int getLeftEncoderTick() {
         return leftMaster.getSelectedSensorPosition(
                 Constants.Drive.highGearPIDSlotIdx);
     }
 
+    /**
+     * @return raw encoder ticks of the right side.
+     */
     public int getRightEncoderTick() {
         return rightMaster.getSelectedSensorPosition(
                 Constants.Drive.highGearPIDSlotIdx);
     }
 
-    public double getLeftDistance(Constants.Units units) {
+    /**
+     * @return distance in inches of the left side.
+     */
+    public double getLeftDistance() {
         return getLeftEncoderTick() /
-               ((units == Constants.Units.Feet) ?
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH);
+               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH;
     }
 
-    public double getRightDistance(Constants.Units units) {
+    /**
+     * @return distance in inches of the right side.
+     */
+    public double getRightDistance() {
         return getRightEncoderTick() /
-               ((units == Constants.Units.Feet) ?
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH);
+               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH;
     }
 
-    public double getLeftVelocity(Constants.Units units) {
+    /**
+     * @return the velocity of the left side in inches per second.
+     */
+    public double getLeftVelocity() {
         return leftMaster.getSelectedSensorVelocity(
                 Constants.Drive.highGearPIDSlotIdx) /
-               ((units == Constants.Units.Feet) ?
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
+               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH * 10;
     }
 
-    public double getRightVelocity(Constants.Units units) {
+    /**
+     * @return the velocity of the right side in inches per second.
+     */
+    public double getRightVelocity() {
         return rightMaster.getSelectedSensorVelocity(
                 Constants.Drive.highGearPIDSlotIdx) /
-               ((units == Constants.Units.Feet) ?
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_FEET :
-                Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH) / 10.0;
+               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH * 10;
+    }
+
+    public double getAngle() {
+        return navx.getAngle();
+    }
+
+    public Rotation2d getHeading() {
+        return Rotation2d.fromDegrees(-getAngle());
+    }
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
+    public DifferentialDriveKinematics getKinematics() {
+        return kinematics;
+    }
+
+    public DifferentialDriveWheelSpeeds getSpeeds() {
+        return new DifferentialDriveWheelSpeeds(
+                Units.inchesToMeters(getLeftVelocity()),
+                Units.inchesToMeters(getRightVelocity()));
+    }
+
+    public void resetGyro() {
+        navx.reset();
     }
 
     public void resetEncoders() {
@@ -173,30 +173,15 @@ public class Drivetrain extends SubsystemBase {
         rightMaster.setSelectedSensorPosition(0);
     }
 
-    public double getHeading() {
-        return navx.getAngle();
-    }
-
-    public TalonSRX[] getTalonMasters() {
-        return new TalonSRX[] {leftMaster, rightMaster};
-    }
-
-    public void resetGyro() {
-        navx.reset();
-    }
-
-    public void configMPGains() {
-        TalonUtils.config_PIDF(
-                leftMaster, Constants.Drive.highGearPIDSlotIdx,
-                kP, kI, kD, kF, Constants.timeoutMs);
-        TalonUtils.config_PIDF(
-                rightMaster, Constants.Drive.highGearPIDSlotIdx,
-                kP, kI, kD, kF, Constants.timeoutMs);
-    }
-
     public void drive(double left, double right) {
         leftMaster.set(ControlMode.PercentOutput, left);
         rightMaster.set(ControlMode.PercentOutput, right);
+    }
+
+    public void setVoltage(double left, double right) {
+        leftMaster.setVoltage(left);
+        rightMaster.setVoltage(right);
+        drive.feed();
     }
 
     public void stop() {

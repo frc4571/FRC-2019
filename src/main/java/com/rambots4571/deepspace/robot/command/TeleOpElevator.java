@@ -3,7 +3,7 @@ package com.rambots4571.deepspace.robot.command;
 import com.rambots4571.deepspace.robot.subsystem.Elevator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import static com.rambots4571.deepspace.robot.Robot.gamepad;
+import static com.rambots4571.deepspace.robot.RobotContainer.gamepad;
 
 public class TeleOpElevator extends CommandBase {
     private Elevator elevator = Elevator.getInstance();

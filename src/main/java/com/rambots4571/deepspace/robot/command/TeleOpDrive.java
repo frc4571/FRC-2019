@@ -1,6 +1,6 @@
 package com.rambots4571.deepspace.robot.command;
 
-import com.rambots4571.deepspace.robot.Robot;
+import com.rambots4571.deepspace.robot.RobotContainer;
 import com.rambots4571.deepspace.robot.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -14,7 +14,7 @@ public class TeleOpDrive extends CommandBase {
     @Override
     public void execute() {
         drivetrain.drive(
-                Robot.leftStick.getYAxis(), Robot.rightStick.getYAxis());
+                RobotContainer.leftStick.getYAxis(), RobotContainer.rightStick.getYAxis());
     }
 
     @Override

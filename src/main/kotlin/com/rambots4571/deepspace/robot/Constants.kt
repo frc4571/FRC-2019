@@ -24,23 +24,26 @@ object Constants {
         const val highGearPIDSlotIdx = 0
 
         const val deadband = 0.06
+        const val openLoopRampRate = 0.15
+        const val peakCurrent = 40
+        const val trackWidth = 25 // inches
+
+        const val ksVolts = 0.0
+        const val kvVoltsSecPerMeter = 0.0
+        const val kaVoltSecSquaredPerMeter = 0.0
+
+        const val maxAccel = 4.0 // ft/s^2
+        const val maxVel = 4.0 // ft/s
+
+        const val kRamseteB = 0.0
+        const val kRamseteZeta = 0.0
+
+        const val kP = 0.0
 
         object Turn {
             const val kP = 0.0
             const val kI = 0.0
             const val kD = 0.0
-        }
-
-        object MP {
-            const val trajectoryPointPeriod = 10
-            private const val maxVel = 32169 // u / 100 ms
-
-            object Gains {
-                const val kP = 0.0
-                const val kI = 0.0
-                const val kD = 0.0
-                const val kF = (100.0 * 1023) / maxVel
-            }
         }
 
         object Transmission {
@@ -50,21 +53,11 @@ object Constants {
             private const val outputTeeth = 60
             private const val wheelDiameter = 8.0
             private const val ticksPerRotation = 4096
-            private const val highToLowGearSpread = 2.16
             const val HIGH_GEAR_TICKS_PER_INCH = ((encoderTeeth / magnetTeeth) *
                     (outputTeeth / compoundGearTeeth) * ticksPerRotation) /
                     (wheelDiameter * Math.PI)
             const val HIGH_GEAR_TICKS_PER_FEET = HIGH_GEAR_TICKS_PER_INCH * 12
-            const val LOW_GEAR_TICKS_PER_INCH = HIGH_GEAR_TICKS_PER_INCH *
-                    highToLowGearSpread
-            const val LOW_GEAR_TICKS_PER_FEET = LOW_GEAR_TICKS_PER_INCH * 12
         }
-    }
-
-    object Paths {
-        const val dir = "/home/lvuser/deploy/paths/"
-        const val leftSuffix = "_left.csv"
-        const val rightSuffix = "_right.csv"
     }
 
     object Elevator {
