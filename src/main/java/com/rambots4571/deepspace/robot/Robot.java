@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
-
+    public static RobotContainer container = new RobotContainer();
 
     @Override
     public void robotInit() {
@@ -33,12 +33,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        teleopInit();
+        container.testTraj().schedule();
     }
 
     @Override
     public void autonomousPeriodic() {
-        teleopPeriodic();
+        CommandScheduler.getInstance().run();
     }
 
     @Override

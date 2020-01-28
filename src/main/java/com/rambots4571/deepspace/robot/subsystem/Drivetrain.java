@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.rambots4571.deepspace.robot.Constants;
 import com.rambots4571.deepspace.robot.component.DriveTalon;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,7 +25,11 @@ public class Drivetrain extends SubsystemBase {
     private static Drivetrain instance;
     public final AHRS navx;
     private WPI_TalonSRX leftMaster;
+    private WPI_TalonSRX leftFollower1;
+    private WPI_TalonSRX leftFollower2;
     private WPI_TalonSRX rightMaster;
+    private WPI_TalonSRX rightFollower1;
+    private WPI_TalonSRX rightFollower2;
     private NeutralMode neutralMode = NeutralMode.Coast;
     private DifferentialDrive drive;
     private DifferentialDriveKinematics kinematics;
@@ -35,27 +42,28 @@ public class Drivetrain extends SubsystemBase {
 
         rightMaster = new DriveTalon(Constants.Drive.RIGHT_MASTER, neutralMode);
 
-        WPI_TalonSRX leftFollower1 = new DriveTalon(
+        leftFollower1 = new DriveTalon(
                 Constants.Drive.LEFT_FOLLOWER1, neutralMode);
         leftFollower1.follow(leftMaster);
         leftFollower1.setInverted(InvertType.FollowMaster);
 
-        WPI_TalonSRX leftFollower2 = new DriveTalon(
+        leftFollower2 = new DriveTalon(
                 Constants.Drive.LEFT_FOLLOWER2, neutralMode);
         leftFollower2.follow(leftMaster);
         leftFollower2.setInverted(InvertType.FollowMaster);
 
-        WPI_TalonSRX rightFollower1 = new DriveTalon(
+        rightFollower1 = new DriveTalon(
                 Constants.Drive.RIGHT_FOLLOWER1, neutralMode);
         rightFollower1.follow(rightMaster);
         rightFollower1.setInverted(InvertType.FollowMaster);
 
-        WPI_TalonSRX rightFollower2 = new DriveTalon(
+        rightFollower2 = new DriveTalon(
                 Constants.Drive.RIGHT_FOLLOWER2, neutralMode);
         rightFollower2.follow(rightMaster);
         rightFollower2.setInverted(InvertType.FollowMaster);
 
         drive = new DifferentialDrive(leftMaster, rightMaster);
+        drive.setSafetyEnabled(false);
 
         navx = new AHRS(SPI.Port.kMXP);
 
@@ -87,9 +95,13 @@ public class Drivetrain extends SubsystemBase {
         super.initSendable(builder);
         builder.addDoubleProperty("Gyro Heading", this::getAngle, null);
         builder.addDoubleProperty(
-                "Left Encoder raw", this::getLeftEncoderTick, null);
+                "Left Distance (in)", this::getLeftDistance, null);
         builder.addDoubleProperty(
-                "Right Encoder raw", this::getRightEncoderTick, null);
+                "Right Distance (in)", this::getRightDistance, null);
+        builder.addDoubleProperty(
+                "Right Speed", this::getLeftSpeedMetersPerSec, null);
+        builder.addDoubleProperty(
+                "Left Speed", this::getRightSpeedMetersPerSec, null);
     }
 
     /**
@@ -113,7 +125,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public double getLeftDistance() {
         return getLeftEncoderTick() /
-               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH;
+               Constants.Drive.Transmission.TICKS_PER_INCH;
     }
 
     /**
@@ -121,7 +133,7 @@ public class Drivetrain extends SubsystemBase {
      */
     public double getRightDistance() {
         return getRightEncoderTick() /
-               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH;
+               Constants.Drive.Transmission.TICKS_PER_INCH;
     }
 
     /**
@@ -130,7 +142,7 @@ public class Drivetrain extends SubsystemBase {
     public double getLeftVelocity() {
         return leftMaster.getSelectedSensorVelocity(
                 Constants.Drive.highGearPIDSlotIdx) /
-               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH * 10;
+               Constants.Drive.Transmission.TICKS_PER_INCH * 10;
     }
 
     /**
@@ -139,7 +151,15 @@ public class Drivetrain extends SubsystemBase {
     public double getRightVelocity() {
         return rightMaster.getSelectedSensorVelocity(
                 Constants.Drive.highGearPIDSlotIdx) /
-               Constants.Drive.Transmission.HIGH_GEAR_TICKS_PER_INCH * 10;
+               Constants.Drive.Transmission.TICKS_PER_INCH * 10;
+    }
+
+    private double getLeftSpeedMetersPerSec() {
+        return Units.inchesToMeters(getLeftVelocity());
+    }
+
+    private double getRightSpeedMetersPerSec() {
+        return Units.inchesToMeters(getRightVelocity());
     }
 
     public double getAngle() {
@@ -160,8 +180,25 @@ public class Drivetrain extends SubsystemBase {
 
     public DifferentialDriveWheelSpeeds getSpeeds() {
         return new DifferentialDriveWheelSpeeds(
-                Units.inchesToMeters(getLeftVelocity()),
-                Units.inchesToMeters(getRightVelocity()));
+                getLeftSpeedMetersPerSec(),
+                getRightSpeedMetersPerSec());
+    }
+
+    public DifferentialDriveVoltageConstraint getVoltageConstraint() {
+        return new DifferentialDriveVoltageConstraint(
+                new SimpleMotorFeedforward(
+                        Constants.Drive.ksVolts,
+                        Constants.Drive.kvVoltsSecPerMeter,
+                        Constants.Drive.kaVoltSecSquaredPerMeter),
+                Drivetrain.getInstance().getKinematics(), 10);
+    }
+
+    public TrajectoryConfig getTrajectoryConfig() {
+        return new TrajectoryConfig(
+                Units.feetToMeters(Constants.Drive.maxVel),
+                Units.feetToMeters(Constants.Drive.maxAccel)).setKinematics(
+                Drivetrain.getInstance().getKinematics()).addConstraint(
+                Drivetrain.getInstance().getVoltageConstraint());
     }
 
     public void resetGyro() {
@@ -176,12 +213,22 @@ public class Drivetrain extends SubsystemBase {
     public void drive(double left, double right) {
         leftMaster.set(ControlMode.PercentOutput, left);
         rightMaster.set(ControlMode.PercentOutput, right);
+        drive.feed();
     }
 
     public void setVoltage(double left, double right) {
         leftMaster.setVoltage(left);
         rightMaster.setVoltage(right);
         drive.feed();
+    }
+
+    public void setNeutralMode(NeutralMode mode) {
+        leftMaster.setNeutralMode(mode);
+        leftFollower1.setNeutralMode(mode);
+        leftFollower2.setNeutralMode(mode);
+        rightMaster.setNeutralMode(mode);
+        rightFollower1.setNeutralMode(mode);
+        rightFollower2.setNeutralMode(mode);
     }
 
     public void stop() {

@@ -24,21 +24,22 @@ object Constants {
         const val highGearPIDSlotIdx = 0
 
         const val deadband = 0.06
-        const val openLoopRampRate = 0.15
+        const val openLoopRampRate = 0.0
         const val peakCurrent = 40
         const val trackWidth = 25 // inches
 
-        const val ksVolts = 0.0
-        const val kvVoltsSecPerMeter = 0.0
-        const val kaVoltSecSquaredPerMeter = 0.0
+        const val ksVolts = 1.06
+        const val kvVoltsSecPerMeter = 1.53
+        const val kaVoltSecSquaredPerMeter = 0.78
 
         const val maxAccel = 4.0 // ft/s^2
         const val maxVel = 4.0 // ft/s
 
-        const val kRamseteB = 0.0
-        const val kRamseteZeta = 0.0
+        const val kRamseteB = 0.1 // kP
+        const val kRamseteZeta = 0.8 // kD
 
-        const val kP = 0.0
+        const val kP = 1.2
+        const val kD = 0.3
 
         object Turn {
             const val kP = 0.0
@@ -50,13 +51,13 @@ object Constants {
             private const val encoderTeeth = 36
             private const val magnetTeeth = 12
             private const val compoundGearTeeth = 24
-            private const val outputTeeth = 60
+            private const val outputTeeth = 60.0
             private const val wheelDiameter = 8.0
             private const val ticksPerRotation = 4096
-            const val HIGH_GEAR_TICKS_PER_INCH = ((encoderTeeth / magnetTeeth) *
-                    (outputTeeth / compoundGearTeeth) * ticksPerRotation) /
-                    (wheelDiameter * Math.PI)
-            const val HIGH_GEAR_TICKS_PER_FEET = HIGH_GEAR_TICKS_PER_INCH * 12
+            private const val TICKS_PER_REV =
+                (((outputTeeth / compoundGearTeeth) *
+                        encoderTeeth) / magnetTeeth) * ticksPerRotation
+            const val TICKS_PER_INCH = TICKS_PER_REV / (wheelDiameter * Math.PI)
         }
     }
 

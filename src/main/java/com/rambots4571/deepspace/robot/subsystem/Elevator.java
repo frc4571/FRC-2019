@@ -165,6 +165,7 @@ public class Elevator extends SubsystemBase {
 
     public void teleOpInit() {
         position = new Position(PositionMode.Hatch, Height.Zero);
+
     }
 
     public void setBaseMotor(double value) {
